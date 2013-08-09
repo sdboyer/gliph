@@ -102,7 +102,7 @@ class TopologicalSort implements \IteratorAggregate {
 
     public function visit($v) {
         if ($visiting_key = array_search($v, $this->visiting) !== FALSE) {
-            throw new \RuntimeException('Provided graph is not a DAG.', E_RECOVERABLE_ERROR);
+            throw new \RuntimeException('Cycle detected - provided graph is not acyclic, topsort is not possible.', E_RECOVERABLE_ERROR);
         }
 
         if (array_search($v, $this->visited) === FALSE) {
