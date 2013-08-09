@@ -1,6 +1,6 @@
-# Piglet - A Graph library for PHP
+# Gliph
 
-Piglet provides graph building blocks and datastructures for use in other applications. It is designed with performance in mind, but primarily to provide a sane interface. Graphs are hard enough without an arcane API making it worse.
+Gliph is a _g_raph _li_brary for _PH_P. It provides graph building blocks and datastructures for use in other applications. It is designed with performance in mind, but primarily to provide a sane interface. Graphs are hard enough to work with without an arcane API that makes it worse.
 
 ## Acknowledgements
 

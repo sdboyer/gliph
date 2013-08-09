@@ -1,8 +1,9 @@
 {
-    "name": "sdboyer/piglet",
+    "name": "sdboyer/gliph",
     "description": "A graph library for PHP.",
     "license": "MIT",
-    "homepage": "http://github.com/sdboyer/piglet",
+    "keywords": ["gliph", "library", "php", "spl"],
+    "homepage": "http://github.com/sdboyer/gliph",
     "type": "library",
     "authors": [
         {
@@ -11,9 +12,9 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3"
     },
     "autoload": {
-        "psr-0": { "Piglet": "src/" }
+        "psr-0": { "Gliph": "src/" }
     }
 }
