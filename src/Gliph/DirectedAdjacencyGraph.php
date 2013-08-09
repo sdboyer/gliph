@@ -4,7 +4,7 @@ namespace Gliph;
 
 use Gliph\Util\HashMap;
 
-class Graph {
+class DirectedAdjacencyGraph {
     protected $vertices;
 
     public function __construct() {
