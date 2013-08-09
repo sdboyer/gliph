@@ -5,36 +5,36 @@ namespace Gliph;
 use Gliph\Util\HashMap;
 
 class Graph {
-    protected $v;
+    protected $vertices;
 
     public function __construct() {
-        $this->v = new HashMap();
+        $this->vertices = new HashMap();
     }
 
-    public function addVertex($v) {
-        if (!isset($this->v[$v])) {
-            $this->v[$v] = array();
+    public function addVertex($vertex) {
+        if ($this->hasVertex($vertex)) {
+            $this->vertices[$vertex] = array();
         }
     }
 
-    public function addDirectedEdge($u, $v) {
-        $this->addVertex($u);
-        $this->addVertex($v);
-        $val = &$this->v->get($u);
-        $val[] = $v;
+    public function addDirectedEdge($from, $to) {
+        $this->addVertex($from);
+        $this->addVertex($to);
+        $val = &$this->vertices->get($from);
+        $val[] = $to;
     }
 
-    public function removeVertex($v) {
-        unset($this->v[$v]);
+    public function removeVertex($vertex) {
+        unset($this->vertices[$vertex]);
     }
 
-    public function removeEdge($u, $v) {
-        $val = &$this->v->get($u);
-        unset($val[array_search($v, $val)]);
+    public function removeEdge($from, $to) {
+        $val = &$this->vertices->get($from);
+        unset($val[array_search($to, $val)]);
     }
 
-    public function eachAdjacent($v, $callback) {
-        foreach ($this->v[$v] as $e) {
+    public function eachAdjacent($vertex, $callback) {
+        foreach ($this->vertices[$vertex] as $e) {
             call_user_func($callback, $e);
         }
     }
@@ -47,11 +47,11 @@ class Graph {
 
     public function eachEdge($callback) {
         $edges = array();
-        $this->fev(function ($v, $outgoing) use (&$edges) {
-            foreach ($outgoing as $u) {
+        $this->fev(function ($from, $outgoing) use (&$edges) {
+            foreach ($outgoing as $to) {
                 $arr = new \SplFixedArray(2);
-                $arr[0] = $v;
-                $arr[1] = $u;
+                $arr[0] = $from;
+                $arr[1] = $to;
                 $edges[] = $arr;
             }
         });
@@ -61,15 +61,14 @@ class Graph {
         }
     }
 
-    public function hasVertex($v) {
-        return isset($this->v[$v]);
+    public function hasVertex($vertex) {
+        return isset($this->vertices[$vertex]);
     }
 
     protected function fev($callback) {
-        for ($this->v->rewind(); $this->v->valid(); $this->v->next()) {
-            $v = $this->v->key();
-            $outgoing = $this->v->current();
-            $callback($v, $outgoing);
+        for ($this->vertices->rewind(); $this->vertices->valid(); $this->vertices->next()) {
+            list($vertex, $outgoing) = $this->vertices->pair();
+            $callback($vertex, $outgoing);
         }
     }
 }
