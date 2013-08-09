@@ -101,7 +101,7 @@ class TopologicalSort implements \IteratorAggregate {
     }
 
     public function visit($v) {
-        if ($visiting_key = array_search($v, $this->visiting) !== FALSE) {
+        if (array_search($v, $this->visiting) !== FALSE) {
             throw new \RuntimeException('Cycle detected - provided graph is not acyclic, topsort is not possible.', E_RECOVERABLE_ERROR);
         }
 
