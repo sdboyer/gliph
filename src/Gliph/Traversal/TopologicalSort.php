@@ -3,117 +3,78 @@
 
 namespace Gliph\Traversal;
 
-use Gliph\Graph;
+use Gliph\DirectedAdjacencyGraph;
 use Gliph\Util\HashMap;
 
 class TopologicalSort implements \IteratorAggregate {
     public $graph;
 
-    public $startVertex;
-
-    /**
-     * @var \SplStack
-     */
-    public $waiting;
-
-    /**
-     * @var \SplQueue
-     */
-    public $solution;
-
-    public $currentVertex;
-
-    /**
-     * @var HashMap
-     */
-    public $inDegrees;
-
-    public $visiting;
-
-    public $visited;
-
-    public function __construct(Graph $graph, $start_vertex) {
+    public function __construct(DirectedAdjacencyGraph $graph) {
         $this->graph = $graph;
-        $this->startVertex = $start_vertex;
-    }
-
-    public function rewind() {
-
-    }
-
-    public function next() {
-        $graph = $this->graph;
-        $that = $this;
-
-        $v = $this->currentVertex = $this->waiting->pop();
-        $graph->eachAdjacent($v, function ($u) use ($that, $graph, $v) {
-            $vc = &$that->inDegrees->get($u);
-            if (!--$vc) {
-                $that->waiting->push($u);
-            }
-        });
-        return $v;
-    }
-
-    public function key() {
-        return $this->waiting->key();
-    }
-
-    public function current() {
-        return $this->currentVertex;
-    }
-
-    public function valid() {
-        return $this->waiting->count() > 0;
     }
 
     public function getIterator() {
-        $graph = $this->graph;
-        $that = $this;
-        $this->inDegrees = new HashMap();
-        $this->visited = $this->visiting = array();
-        $this->waiting = new \SplStack();
-        $this->solution = new \SplQueue();
+        $graph = $this->graph->reverse();
+        $incomings = new HashMap();
+        $queue = new \SplDoublyLinkedList();
+        $tsl = new \SplQueue();
 
-        $graph->eachVertex(function ($v) use ($that, $graph) {
-            if (!isset($that->inDegrees[$v])) {
-                $that->inDegrees[$v] = 0;
+        $graph->eachEdge(function ($edge) use (&$incomings) {
+            if (!isset($incomings[$edge[1]])) {
+                $incomings[$edge[1]] = array();
             }
-            $graph->eachAdjacent($v, function ($e) use ($that, $v) {
-                $vc = &$that->inDegrees->get($v);
-                $vc++;
-            });
+
+            $in = &$incomings->get($edge[1]);
+            $in[] = $edge[0];
         });
 
-        for ($this->inDegrees->rewind(); $this->inDegrees->valid(); $this->inDegrees->next()) {
-            list($v, $count) = $this->inDegrees->pair();
-            if (!empty($count)) {
-                $this->waiting->push($v);
+        // Prime the queue with vertices that have no incoming edges.
+        $graph->eachVertex(function($vertex) use (&$queue, &$incomings) {
+            if (empty($incomings[$vertex])) {
+                print "{$vertex->val}, ";
+                $queue->push($vertex);
             }
+        });
+
+        while (!$queue->isEmpty()) {
+            $vertex = $this->queueProcessor($queue);
+            $tsl->push($vertex);
+
+            $graph->eachAdjacent($vertex, function($to) use (&$vertex, &$incomings, &$queue) {
+                $ins = &$incomings->get($to);
+                $key = array_search($vertex, $ins);
+                unset($ins[$key]);
+
+                if (count($ins) === 0) {
+                    print "{$to->val}, ";
+                    $queue->push($to);
+                }
+            });
         }
 
-        while (!$this->waiting->isEmpty()) {
-            $v = $this->waiting->pop();
-            $this->visit($v);
-        }
-
-        return $this->solution;
+        return $tsl;
     }
 
-    public function visit($v) {
+    protected function queueProcessor(\SplDoublyLinkedList $queue) {
+        return $queue->shift();
+    }
+
+    protected function visit($v) {
         if (array_search($v, $this->visiting) !== FALSE) {
             throw new \RuntimeException('Cycle detected - provided graph is not acyclic, topsort is not possible.', E_RECOVERABLE_ERROR);
         }
 
         if (array_search($v, $this->visited) === FALSE) {
             $this->visiting[] = $v;
-            $this->graph->eachAdjacent($v, array($this, 'visit'));
+            $waiting = $this->waiting;
+            $this->graph->eachAdjacent($v, function($t) use ($waiting) {
+                $waiting->push($t);
+            });
 
             $k = array_search($v, $this->visiting);
             unset($this->visiting[$k]);
 
             $this->visited[] = $v;
-            $this->solution->enqueue($v);
         }
     }
 
