@@ -71,5 +71,21 @@ class DirectedAdjacencyGraph {
             $callback($vertex, $outgoing);
         }
     }
+
+    /**
+     * Returns the reverse of this graph.
+     *
+     * Also sometimes known as the 'transpose' or 'converse'.
+     *
+     * @return DirectedAdjacencyGraph
+     */
+    public function reverse() {
+        $graph = new self();
+        $this->eachEdge(function($edge) use (&$graph) {
+            $graph->addDirectedEdge($edge[1], $edge[0]);
+        });
+
+        return $graph;
+    }
 }
 
