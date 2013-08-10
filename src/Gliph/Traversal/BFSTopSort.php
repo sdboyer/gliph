@@ -31,7 +31,6 @@ class BFSTopSort implements \IteratorAggregate {
         // Prime the queue with vertices that have no incoming edges.
         $graph->eachVertex(function($vertex) use (&$queue, &$incomings) {
             if (empty($incomings[$vertex])) {
-                print "{$vertex->val}, ";
                 $queue->push($vertex);
             }
         });
@@ -46,7 +45,6 @@ class BFSTopSort implements \IteratorAggregate {
                 unset($ins[$key]);
 
                 if (count($ins) === 0) {
-                    print "{$to->val}, ";
                     $queue->push($to);
                 }
             });
