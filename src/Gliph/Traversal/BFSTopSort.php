@@ -37,7 +37,7 @@ class BFSTopSort implements \IteratorAggregate {
         });
 
         while (!$queue->isEmpty()) {
-            $vertex = $this->queueProcessor($queue);
+            $vertex = $this->nextVertex($queue);
             $tsl->push($vertex);
 
             $graph->eachAdjacent($vertex, function($to) use (&$vertex, &$incomings, &$queue) {
@@ -55,7 +55,7 @@ class BFSTopSort implements \IteratorAggregate {
         return $tsl;
     }
 
-    protected function queueProcessor(\SplDoublyLinkedList $queue) {
+    protected function nextVertex(\SplDoublyLinkedList $queue) {
         return $queue->shift();
     }
 
