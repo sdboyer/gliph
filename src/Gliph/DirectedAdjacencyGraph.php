@@ -73,13 +73,16 @@ class DirectedAdjacencyGraph {
     }
 
     /**
-     * Returns the reverse of this graph.
+     * Returns the transpose of this graph.
      *
-     * Also sometimes known as the 'transpose' or 'converse'.
+     * A transpose is identical to the current graph, except that
+     * its edges have had their directionality reversed.
+     *
+     * Also sometimes known as the 'reverse' or 'converse'.
      *
      * @return DirectedAdjacencyGraph
      */
-    public function reverse() {
+    public function transpose() {
         $graph = new self();
         $this->eachEdge(function($edge) use (&$graph) {
             $graph->addDirectedEdge($edge[1], $edge[0]);

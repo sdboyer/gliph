@@ -14,7 +14,7 @@ class BFSTopSort implements \IteratorAggregate {
     }
 
     public function getIterator() {
-        $graph = $this->graph->reverse();
+        $graph = $this->graph->transpose();
         $incomings = new HashMap();
         $queue = new \SplDoublyLinkedList();
         $tsl = new \SplQueue();
