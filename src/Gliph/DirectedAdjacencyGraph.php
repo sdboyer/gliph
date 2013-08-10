@@ -12,7 +12,7 @@ class DirectedAdjacencyGraph {
     }
 
     public function addVertex($vertex) {
-        if ($this->hasVertex($vertex)) {
+        if (!$this->hasVertex($vertex)) {
             $this->vertices[$vertex] = array();
         }
     }
