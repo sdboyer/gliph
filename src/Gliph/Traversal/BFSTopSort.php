@@ -6,7 +6,7 @@ namespace Gliph\Traversal;
 use Gliph\DirectedAdjacencyGraph;
 use Gliph\Util\HashMap;
 
-class TopologicalSort implements \IteratorAggregate {
+class BFSTopSort implements \IteratorAggregate {
     public $graph;
 
     public function __construct(DirectedAdjacencyGraph $graph) {
