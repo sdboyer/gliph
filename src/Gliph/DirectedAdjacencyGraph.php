@@ -7,8 +7,8 @@ use Gliph\Util\HashMap;
 class DirectedAdjacencyGraph {
     protected $vertices;
 
-    public function __construct() {
-        $this->vertices = new HashMap();
+    public function __construct($object_vertices = FALSE) {
+        $this->vertices = $object_vertices ? new \SplObjectStorage() : new HashMap();
     }
 
     public function addVertex($vertex) {
@@ -20,8 +20,9 @@ class DirectedAdjacencyGraph {
     public function addDirectedEdge($from, $to) {
         $this->addVertex($from);
         $this->addVertex($to);
-        $val = &$this->vertices->get($from);
+        $val = $this->vertices[$from];
         $val[] = $to;
+        $this->vertices[$from] = $val;
     }
 
     public function removeVertex($vertex) {
@@ -29,8 +30,9 @@ class DirectedAdjacencyGraph {
     }
 
     public function removeEdge($from, $to) {
-        $val = &$this->vertices->get($from);
+        $val = $this->vertices[$from];
         unset($val[array_search($to, $val)]);
+        $this->vertices[$from] = $val;
     }
 
     public function eachAdjacent($vertex, $callback) {
@@ -66,9 +68,17 @@ class DirectedAdjacencyGraph {
     }
 
     protected function fev($callback) {
-        for ($this->vertices->rewind(); $this->vertices->valid(); $this->vertices->next()) {
-            list($vertex, $outgoing) = $this->vertices->pair();
-            $callback($vertex, $outgoing);
+        if ($this->vertices instanceof \SplObjectStorage) {
+            foreach ($this->vertices as $vertex) {
+                $outgoing = $this->vertices->getInfo();
+                $callback($vertex, $outgoing);
+            }
+        }
+        else {
+            for ($this->vertices->rewind(); $this->vertices->valid(); $this->vertices->next()) {
+                list($vertex, $outgoing) = $this->vertices->pair();
+                $callback($vertex, $outgoing);
+            }
         }
     }
 
