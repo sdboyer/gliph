@@ -7,8 +7,19 @@ use Gliph\Util\HashMap;
 class DirectedAdjacencyGraph {
     protected $vertices;
 
-    public function __construct($object_vertices = FALSE) {
-        $this->vertices = $object_vertices ? new \SplObjectStorage() : new HashMap();
+    protected $vertexTypes;
+
+    const OBJECT_VERTICES = 0x01;
+    const SCALAR_VERTICES = 0x02;
+    const ARRAY_VERTICES = 0x04;
+
+    public function __construct($vertex_types = self::OBJECT_VERTICES) {
+        $this->vertices = $vertex_types == self::OBJECT_VERTICES ? new \SplObjectStorage() : new HashMap();
+        $this->vertexTypes = $vertex_types;
+    }
+
+    public function getVertexTypes() {
+        return $this->vertexTypes;
     }
 
     public function addVertex($vertex) {
