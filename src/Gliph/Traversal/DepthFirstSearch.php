@@ -63,11 +63,10 @@ class DepthFirstSearch {
 
     public function visit($graph, $vertex) {
         if (array_search($vertex, $this->visiting) !== FALSE) {
-            // Indicates a cycle in the graph; bail out.
-            return;
+            // Indicates a cycle in the graph
+            $this->emit('onBackEdge', $vertex);
         }
-
-        if (array_search($vertex, $this->visited) === FALSE) {
+        else if (array_search($vertex, $this->visited) === FALSE) {
             $this->emit('onStartVertex', $vertex);
 
             $this->visiting[] = $vertex;
