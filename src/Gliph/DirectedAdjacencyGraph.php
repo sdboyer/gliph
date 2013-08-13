@@ -111,5 +111,11 @@ class DirectedAdjacencyGraph {
 
         return $graph;
     }
+
+    public function getCycles() {
+        $tarjan = new Tarjan();
+        $scc = $tarjan->getCycles($this);
+        return $scc->count() > 0 ? $scc : FALSE;
+    }
 }
 
