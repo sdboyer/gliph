@@ -9,41 +9,33 @@ class DirectedAdjacencyGraph {
 
     protected $vertexTypes;
 
-    const OBJECT_VERTICES = 0x01;
-    const SCALAR_VERTICES = 0x02;
-    const ARRAY_VERTICES = 0x04;
-
-    public function __construct($vertex_types = self::OBJECT_VERTICES) {
-        $this->vertices = $vertex_types == self::OBJECT_VERTICES ? new \SplObjectStorage() : new HashMap();
-        $this->vertexTypes = $vertex_types;
-    }
-
-    public function getVertexTypes() {
-        return $this->vertexTypes;
+    public function __construct() {
+        $this->vertices = new \SplObjectStorage();
     }
 
     public function addVertex($vertex) {
         if (!$this->hasVertex($vertex)) {
-            $this->vertices[$vertex] = array();
+            $this->vertices[$vertex] = new \SplObjectStorage();
         }
     }
 
     public function addDirectedEdge($from, $to) {
         $this->addVertex($from);
         $this->addVertex($to);
-        $val = $this->vertices[$from];
-        $val[] = $to;
-        $this->vertices[$from] = $val;
+        $this->vertices[$from]->attach($to);
     }
 
     public function removeVertex($vertex) {
         unset($this->vertices[$vertex]);
+        $this->eachVertex(function($v, $outgoing) use ($vertex) {
+            if ($outgoing->contains($vertex)) {
+                $outgoing->detach($vertex);
+            }
+        });
     }
 
     public function removeEdge($from, $to) {
-        $val = $this->vertices[$from];
-        unset($val[array_search($to, $val)]);
-        $this->vertices[$from] = $val;
+        $this->vertices[$from]->detach($to);
     }
 
     public function eachAdjacent($vertex, $callback) {
@@ -54,7 +46,7 @@ class DirectedAdjacencyGraph {
 
     public function eachVertex($callback) {
         $this->fev(function ($v, $outgoing) use ($callback) {
-            call_user_func($callback, $v);
+            call_user_func($callback, $v, $outgoing);
         });
     }
 
@@ -75,21 +67,13 @@ class DirectedAdjacencyGraph {
     }
 
     public function hasVertex($vertex) {
-        return isset($this->vertices[$vertex]);
+        return $this->vertices->contains($vertex);
     }
 
     protected function fev($callback) {
-        if ($this->vertices instanceof \SplObjectStorage) {
-            foreach ($this->vertices as $vertex) {
-                $outgoing = $this->vertices->getInfo();
-                $callback($vertex, $outgoing);
-            }
-        }
-        else {
-            for ($this->vertices->rewind(); $this->vertices->valid(); $this->vertices->next()) {
-                list($vertex, $outgoing) = $this->vertices->pair();
-                $callback($vertex, $outgoing);
-            }
+        foreach ($this->vertices as $vertex) {
+            $outgoing = $this->vertices->getInfo();
+            $callback($vertex, $outgoing);
         }
     }
 
