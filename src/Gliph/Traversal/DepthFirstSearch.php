@@ -12,8 +12,8 @@ class DepthFirstSearch {
      */
     protected $graph;
 
-    protected $visiting = array();
-    protected $visited = array();
+    protected $visiting;
+    protected $visited;
     protected $handlers = array();
 
     public function __construct(DirectedAdjacencyGraph $graph) {
@@ -23,7 +23,8 @@ class DepthFirstSearch {
     public function walk() {
         $graph = $this->graph->transpose();
         $queue = $this->findSources($graph);
-        $this->visiting = $this->visited = array();
+        $this->visiting = new \SplObjectStorage();
+        $this->visited = new \SplObjectStorage();
 
         while (!$queue->isEmpty()) {
             // TODO just call directly; BFS shouldn't inherit from DFS
@@ -33,22 +34,20 @@ class DepthFirstSearch {
     }
 
     protected function findSources(DirectedAdjacencyGraph $graph) {
-        $incomings = new HashMap();
+        $incomings = new \SplObjectStorage();
         $queue = new \SplDoublyLinkedList();
         $that = $this;
 
         $graph->eachEdge(function ($edge) use (&$incomings) {
             if (!isset($incomings[$edge[1]])) {
-                $incomings[$edge[1]] = array();
+                $incomings[$edge[1]] = new \SplObjectStorage();
             }
-
-            $in = &$incomings->get($edge[1]);
-            $in[] = $edge[0];
+            $incomings[$edge[1]]->attach($edge[0]);
         });
 
         // Prime the queue with vertices that have no incoming edges.
         $graph->eachVertex(function($vertex) use (&$queue, &$incomings, &$that) {
-            if (empty($incomings[$vertex])) {
+            if (!$incomings->contains($vertex)) {
                 $queue->push($vertex);
                 // TRUE second param indicates source vertex
                 $that->emit('onInitializeVertex', $vertex, TRUE);
@@ -62,14 +61,14 @@ class DepthFirstSearch {
     }
 
     public function visit($graph, $vertex) {
-        if (array_search($vertex, $this->visiting) !== FALSE) {
+        if ($this->visiting->contains($vertex)) {
             // Indicates a cycle in the graph
             $this->emit('onBackEdge', $vertex);
         }
-        else if (array_search($vertex, $this->visited) === FALSE) {
+        else if (!$this->visited->contains($vertex)) {
             $this->emit('onStartVertex', $vertex);
 
-            $this->visiting[] = $vertex;
+            $this->visiting->attach($vertex);
             $that = $this;
             $graph->eachAdjacent($vertex, function($to) use (&$that, &$graph, &$vertex) {
                 $that->emit('onExamineEdge', $vertex, $to);
@@ -78,10 +77,8 @@ class DepthFirstSearch {
 
             $this->emit('onFinishVertex', $vertex);
 
-            $k = array_search($vertex, $this->visiting);
-            unset($this->visiting[$k]);
-
-            $this->visited[] = $vertex;
+            $this->visiting->detach($vertex);
+            $this->visited->attach($vertex);
         }
     }
 
