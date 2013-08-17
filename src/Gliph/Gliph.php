@@ -2,7 +2,7 @@
 
 namespace Gliph;
 
-use Gliph\Visitor\DFSVisitorInterface;
+use Gliph\Visitor\DepthFirstVisitorInterface;
 
 class Gliph {
 
@@ -11,13 +11,13 @@ class Gliph {
      *
      * @param DirectedAdjacencyGraph $graph
      *   The graph on which to perform the depth-first search.
-     * @param DFSVisitorInterface $visitor
+     * @param DepthFirstVisitorInterface $visitor
      *   The visitor object to use during the traversal.
      * @param \SplDoublyLinkedList $queue
      *   A queue of vertices to ensure are visited. The traversal will deque
      *   them in order and visit them.
      */
-    public static function depth_first_traverse(DirectedAdjacencyGraph $graph, DFSVisitorInterface $visitor, \SplDoublyLinkedList $queue = NULL) {
+    public static function depth_first_traverse(DirectedAdjacencyGraph $graph, DepthFirstVisitorInterface $visitor, \SplDoublyLinkedList $queue = NULL) {
         if ($queue === NULL) {
             self::find_sources($graph, $visitor);
         }
@@ -55,11 +55,11 @@ class Gliph {
      * Finds source vertices in a DirectedAdjacencyGraph, then enqueues them.
      *
      * @param DirectedAdjacencyGraph $graph
-     * @param DFSVisitorInterface $visitor
+     * @param DepthFirstVisitorInterface $visitor
      *
      * @return \SplQueue
      */
-    public static function find_sources(DirectedAdjacencyGraph $graph, DFSVisitorInterface $visitor) {
+    public static function find_sources(DirectedAdjacencyGraph $graph, DepthFirstVisitorInterface $visitor) {
         $incomings = new \SplObjectStorage();
         $queue = new \SplQueue();
 

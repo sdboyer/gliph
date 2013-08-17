@@ -2,7 +2,28 @@
 
 namespace Gliph\Visitor;
 
-class DFSBasicVisitor implements DFSVisitorInterface {
+/**
+ * Basic depth-first visitor.
+ *
+ * This visitor records reachability data for each vertex and creates a
+ * topologically sorted list.
+ */
+class DepthFirstBasicVisitor implements DepthFirstVisitorInterface {
+
+    /**
+     * @var \SplObjectStorage
+     */
+    public $active;
+
+    /**
+     * @var \SplObjectStorage
+     */
+    public $paths;
+
+    /**
+     * @var \SplQueue
+     */
+    public $tsl;
 
     public function __construct() {
         $this->active = new \SplObjectStorage();

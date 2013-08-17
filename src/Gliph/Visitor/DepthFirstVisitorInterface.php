@@ -2,7 +2,7 @@
 
 namespace Gliph\Visitor;
 
-interface DFSVisitorInterface {
+interface DepthFirstVisitorInterface {
     public function onInitializeVertex($vertex, $source, \SplQueue $queue);
     public function onBackEdge($vertex, \Closure $visit);
     public function onStartVertex($vertex, \Closure $visit);

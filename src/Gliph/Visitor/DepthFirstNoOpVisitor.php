@@ -2,7 +2,10 @@
 
 namespace Gliph\Visitor;
 
-class DFSNoOpVisitor implements DFSVisitorInterface {
+/**
+ * A no-op visitor for depth first traversal algorithms.
+ */
+class DFSNoOpVisitor implements DepthFirstVisitorInterface {
     public function onInitializeVertex($vertex, $source, \SplQueue $queue) {}
     public function onBackEdge($vertex, \Closure $visit) {}
     public function onStartVertex($vertex, \Closure $visit) {}
