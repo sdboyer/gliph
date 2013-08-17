@@ -2,6 +2,7 @@
 
 namespace Gliph;
 
+use Gliph\Graph\DirectedAdjacencyGraph;
 use Gliph\Visitor\DepthFirstVisitorInterface;
 
 class Gliph {

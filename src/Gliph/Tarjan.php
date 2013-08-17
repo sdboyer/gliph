@@ -2,6 +2,7 @@
 
 namespace Gliph;
 
+use Gliph\Graph\DirectedAdjacencyGraph;
 use Gliph\Util\HashMap;
 
 class Tarjan {

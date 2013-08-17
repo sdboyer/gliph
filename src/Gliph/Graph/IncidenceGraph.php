@@ -1,6 +1,6 @@
 <?php
 
-namespace Gliph;
+namespace Gliph\Graph;
 
 class IncidenceGraph {
 

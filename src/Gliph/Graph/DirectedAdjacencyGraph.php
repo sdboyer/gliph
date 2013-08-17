@@ -1,8 +1,8 @@
 <?php
 
-namespace Gliph;
+namespace Gliph\Graph;
 
-use Gliph\Util\HashMap;
+use Gliph\Tarjan;
 
 class DirectedAdjacencyGraph {
     protected $vertices;
@@ -85,7 +85,7 @@ class DirectedAdjacencyGraph {
      *
      * Also sometimes known as the 'reverse' or 'converse'.
      *
-     * @return DirectedAdjacencyGraph
+     * @return \Gliph\Graph\DirectedAdjacencyGraph
      */
     public function transpose() {
         $graph = new self();
