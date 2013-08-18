@@ -14,6 +14,10 @@ class DirectedAdjacencyGraph {
     }
 
     public function addVertex($vertex) {
+        if (!is_object($vertex)) {
+            throw new \OutOfBoundsException('Vertices must be objects; non-object provided.');
+        }
+
         if (!$this->hasVertex($vertex)) {
             $this->vertices[$vertex] = new \SplObjectStorage();
         }
@@ -26,6 +30,10 @@ class DirectedAdjacencyGraph {
     }
 
     public function removeVertex($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new \OutOfRangeException('Vertex is not in the graph, it cannot be removed.', E_WARNING);
+        }
+
         unset($this->vertices[$vertex]);
         $this->eachVertex(function($v, $outgoing) use ($vertex) {
             if ($outgoing->contains($vertex)) {
