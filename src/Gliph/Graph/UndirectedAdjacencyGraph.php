@@ -2,7 +2,7 @@
 
 namespace Gliph\Graph;
 
-class IncidenceGraph {
+class UndirectedAdjacencyGraph {
 
     protected $vertices;
 
