@@ -62,10 +62,7 @@ class DirectedAdjacencyGraph {
         $edges = array();
         $this->fev(function ($from, $outgoing) use (&$edges) {
             foreach ($outgoing as $to) {
-                $arr = new \SplFixedArray(2);
-                $arr[0] = $from;
-                $arr[1] = $to;
-                $edges[] = $arr;
+                $edges[] = array($from, $to);
             }
         });
 
