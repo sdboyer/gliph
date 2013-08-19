@@ -1,11 +1,11 @@
 <?php
 
-namespace Gliph;
+namespace Gliph\Traversal;
 
 use Gliph\Graph\DirectedAdjacencyGraph;
 use Gliph\Visitor\DepthFirstVisitorInterface;
 
-class Gliph {
+class DepthFirst {
 
     /**
      * Perform a depth-first traversal on the provided graph.
@@ -18,7 +18,7 @@ class Gliph {
      *   A queue of vertices to ensure are visited. The traversal will deque
      *   them in order and visit them.
      */
-    public static function depth_first_traverse(DirectedAdjacencyGraph $graph, DepthFirstVisitorInterface $visitor, \SplDoublyLinkedList $queue = NULL) {
+    public static function traverse(DirectedAdjacencyGraph $graph, DepthFirstVisitorInterface $visitor, \SplDoublyLinkedList $queue = NULL) {
         if ($queue === NULL) {
             self::find_sources($graph, $visitor);
         }
