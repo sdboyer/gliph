@@ -4,4 +4,4 @@ Gliph is a **g**raph **li**brary for **PH**P. It provides graph building blocks 
 
 ## Acknowledgements
 
-This library draws inspiration from the [Ruby Graph Library](http://rgl.rubyforge.org/rgl/index.html), and in turn from the [C++ Boost Graph Library](http://www.boost.org/libs/graph/doc).
+This library draws heavy inspiration from the [C++ Boost Graph Library](http://www.boost.org/libs/graph/doc).
