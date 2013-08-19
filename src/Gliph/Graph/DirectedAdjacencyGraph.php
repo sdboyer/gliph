@@ -17,12 +17,12 @@ class DirectedAdjacencyGraph extends AdjacencyGraph {
             throw new \OutOfRangeException('Vertex is not in the graph, it cannot be removed.', E_WARNING);
         }
 
-        unset($this->vertices[$vertex]);
         $this->eachVertex(function($v, $outgoing) use ($vertex) {
             if ($outgoing->contains($vertex)) {
                 $outgoing->detach($vertex);
             }
         });
+        unset($this->vertices[$vertex]);
     }
 
     public function removeEdge($from, $to) {
