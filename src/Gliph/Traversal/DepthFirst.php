@@ -14,13 +14,26 @@ class DepthFirst {
      *   The graph on which to perform the depth-first search.
      * @param DepthFirstVisitorInterface $visitor
      *   The visitor object to use during the traversal.
-     * @param \SplDoublyLinkedList $queue
+     * @param mixed $start
      *   A queue of vertices to ensure are visited. The traversal will deque
      *   them in order and visit them.
+     *
+     * @throws \OutOfBoundsException
+     *   Thrown if an invalid $start parameter is provided.
      */
-    public static function traverse(DirectedAdjacencyGraph $graph, DepthFirstVisitorInterface $visitor, \SplDoublyLinkedList $queue = NULL) {
-        if ($queue === NULL) {
-            self::find_sources($graph, $visitor);
+    public static function traverse(DirectedAdjacencyGraph $graph, DepthFirstVisitorInterface $visitor, $start = NULL) {
+        if ($start === NULL) {
+            $queue = self::find_sources($graph, $visitor);
+        }
+        else if ($start instanceof \SplDoublyLinkedList) {
+            $queue = $start;
+        }
+        else if (is_object($start)) {
+            $queue = new \SplDoublyLinkedList();
+            $queue->push($start);
+        }
+        else {
+            throw new \OutOfBoundsException('Vertices must be objects; non-object start vertex provided.');
         }
 
         $visiting = new \SplObjectStorage();
