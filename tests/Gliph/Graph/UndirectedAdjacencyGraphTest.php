@@ -58,5 +58,13 @@ class UndirectedAdjacencyGraphTest extends AdjacencyGraphTest {
         $this->assertCount(2, $found);
         $this->assertEquals(array($this->v['a'], $this->v['b']), $found[0]);
         $this->assertEquals(array($this->v['b'], $this->v['c']), $found[1]);
+
+        // Ensure bidirectionality of created edges
+        $found = array();
+        $this->g->eachAdjacent($this->v['b'], function($adjacent) use (&$found) {
+            $found[] = $adjacent;
+        });
+
+        $this->assertCount(2, $found);
     }
 }
