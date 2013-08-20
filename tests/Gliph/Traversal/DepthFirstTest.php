@@ -5,6 +5,7 @@ namespace Gliph\Traversal;
 
 use Gliph\Graph\DirectedAdjacencyGraph;
 use Gliph\TestVertex;
+use Gliph\Visitor\DepthFirstNoOpVisitor;
 
 class DepthFirstTest extends \PHPUnit_Framework_TestCase {
 
@@ -59,5 +60,14 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
         $visitor->expects($this->exactly(1))->method('onBackEdge');
 
         DepthFirst::traverse($this->g, $visitor, $this->v['a']);
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testExceptionOnEmptyTraversalQueue() {
+        // Create a cycle that ensures there are no source vertices
+        $this->g->addDirectedEdge($this->v['d'], $this->v['a']);
+        DepthFirst::traverse($this->g, new DepthFirstNoOpVisitor());
     }
 }
