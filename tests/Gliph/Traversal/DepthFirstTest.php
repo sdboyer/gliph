@@ -63,11 +63,26 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @covers Gliph\Traversal\DepthFirst::traverse
      * @expectedException RuntimeException
      */
     public function testExceptionOnEmptyTraversalQueue() {
         // Create a cycle that ensures there are no source vertices
         $this->g->addDirectedEdge($this->v['d'], $this->v['a']);
         DepthFirst::traverse($this->g, new DepthFirstNoOpVisitor());
+    }
+
+    /**
+     * @covers Gliph\Traversal\DepthFirst::traverse
+     * @expectedException UnexpectedValueException
+     *
+     * This relies on the graph class to internally throw an exception
+     * when in attempt is made to visit a vertex that is not in the graph.
+     */
+    public function testProvideQueueAsStartPoint() {
+        $queue = new \SplQueue();
+        $queue->push($this->v['a']);
+        $queue->push($this->v['e']);
+        DepthFirst::traverse($this->g, new DepthFirstNoOpVisitor(), $queue);
     }
 }
