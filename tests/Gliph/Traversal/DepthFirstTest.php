@@ -42,4 +42,22 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
 
         DepthFirst::traverse($this->g, $visitor);
     }
+
+    public function testDirectCycleDepthFirstTraversal() {
+        $this->g->addDirectedEdge($this->v['d'], $this->v['b']);
+
+        $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
+        $visitor->expects($this->exactly(1))->method('onBackEdge');
+
+        DepthFirst::traverse($this->g, $visitor);
+    }
+
+    public function testIndirectCycleDepthFirstTraversal() {
+        $this->g->addDirectedEdge($this->v['d'], $this->v['a']);
+
+        $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
+        $visitor->expects($this->exactly(1))->method('onBackEdge');
+
+        DepthFirst::traverse($this->g, $visitor, $this->v['a']);
+    }
 }
