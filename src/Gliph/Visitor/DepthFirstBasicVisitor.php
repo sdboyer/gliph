@@ -18,17 +18,17 @@ class DepthFirstBasicVisitor implements DepthFirstVisitorInterface {
     /**
      * @var \SplObjectStorage
      */
-    public $paths;
+    protected $paths;
 
     /**
-     * @var \SplQueue
+     * @var array
      */
-    public $tsl;
+    protected $tsl;
 
     public function __construct() {
         $this->active = new \SplObjectStorage();
         $this->paths = new \SplObjectStorage();
-        $this->tsl = new \SplQueue();
+        $this->tsl = array();
     }
 
     public function onBackEdge($vertex, \Closure $visit) {
@@ -36,23 +36,58 @@ class DepthFirstBasicVisitor implements DepthFirstVisitorInterface {
     }
 
     public function onInitializeVertex($vertex, $source, \SplQueue $queue) {
-        $this->paths[$vertex] = new \SplQueue();
+        $this->paths[$vertex] = array();
     }
 
     public function onStartVertex($vertex, \Closure $visit) {
         $this->active->attach($vertex);
         if (!isset($this->paths[$vertex])) {
-            $this->paths[$vertex] = new \SplQueue();
+            $this->paths[$vertex] = array();
         }
     }
 
     public function onExamineEdge($from, $to, \Closure $visit) {
         foreach ($this->active as $vertex) {
-           $this->paths[$vertex]->enqueue($to);
+            // TODO this check makes this much less efficient - find a better algo
+            if (!in_array($to, $this->paths[$vertex])) {
+                $path = $this->paths[$vertex];
+                $path[] = $to;
+                $this->paths[$vertex] = $path;
+            }
         }
     }
 
     public function onFinishVertex($vertex, \Closure $visit) {
-        $this->tsl->push($vertex);
+        $this->tsl[] = $vertex;
+    }
+
+    /**
+     * Returns valid topological sort of the visited graph as an array.
+     *
+     * @return array
+     */
+    public function getTsl() {
+        return $this->tsl;
+    }
+
+    /**
+     * Returns a queue of all vertices reachable from the given vertex.
+     *
+     * This should only be called after the visitor has been used in a
+     * depth-first traversal.
+     *
+     * @param object $vertex
+     *   A vertex present in the graph for
+     *
+     * @return array
+     *
+     * @throws \OutOfRangeException
+     */
+    public function getReachable($vertex) {
+        if (!isset($this->paths[$vertex])) {
+            throw new \OutOfRangeException('Unknown vertex provided.');
+        }
+
+        return $this->paths[$vertex];
     }
 }
