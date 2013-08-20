@@ -75,4 +75,13 @@ class DirectedAdjacencyGraphTest extends AdjacencyGraphTest {
         $this->assertEquals(array($this->v['a'], $this->v['c']), $found[1]);
     }
 
+    public function testTranspose() {
+        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
+        $this->g->addDirectedEdge($this->v['a'], $this->v['c']);
+
+        $transpose = $this->g->transpose();
+
+        $this->doCheckVertexCount(3, $transpose);
+        $this->doCheckVerticesEqual(array($this->v['b'], $this->v['a'], $this->v['c']), $transpose);
+    }
 }
