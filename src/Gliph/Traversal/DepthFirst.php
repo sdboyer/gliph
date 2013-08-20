@@ -43,13 +43,14 @@ class DepthFirst {
             if ($visiting->contains($vertex)) {
                 $visitor->onBackEdge($vertex, $visit);
             }
-            else if ($visited->contains($vertex)) {
+            else if (!$visited->contains($vertex)) {
                 $visiting->attach($vertex);
 
                 $visitor->onStartVertex($vertex, $visit);
 
                 $graph->eachAdjacent($vertex, function($to) use ($vertex, &$visit, $visitor) {
                     $visitor->onExamineEdge($vertex, $to, $visit);
+                    $visit($to);
                 });
 
                 $visitor->onFinishVertex($vertex, $visit);
