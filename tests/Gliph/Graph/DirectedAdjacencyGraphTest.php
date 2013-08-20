@@ -22,11 +22,19 @@ class DirectedAdjacencyGraphTest extends AdjacencyGraphTest {
     }
 
     public function testRemoveVertex() {
-        $this->g->addVertex($this->v['a']);
+        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
+        $this->doCheckVertexCount(2);
+
+        $this->g->removeVertex($this->v['b']);
         $this->doCheckVertexCount(1);
 
-        $this->g->removeVertex($this->v['a']);
-        $this->doCheckVertexCount(0);
+        // Ensure that b was correctly removed from a's outgoing edges
+        $found = array();
+        $this->g->eachAdjacent($this->v['a'], function($to) use (&$found) {
+            $found[] = $to;
+        });
+
+        $this->assertEquals(array(), $found);
     }
 
 
