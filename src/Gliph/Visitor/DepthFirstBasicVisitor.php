@@ -58,6 +58,7 @@ class DepthFirstBasicVisitor implements DepthFirstVisitorInterface {
     }
 
     public function onFinishVertex($vertex, \Closure $visit) {
+        $this->active->detach($vertex);
         $this->tsl[] = $vertex;
     }
 
