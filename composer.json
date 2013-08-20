@@ -2,7 +2,7 @@
     "name": "sdboyer/gliph",
     "description": "A graph library for PHP.",
     "license": "MIT",
-    "keywords": ["gliph", "library", "php", "spl"],
+    "keywords": ["gliph", "library", "php", "spl", "graph"],
     "homepage": "http://github.com/sdboyer/gliph",
     "type": "library",
     "authors": [
