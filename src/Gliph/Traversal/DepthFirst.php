@@ -32,9 +32,6 @@ class DepthFirst {
             $queue = new \SplDoublyLinkedList();
             $queue->push($start);
         }
-        else {
-            throw new \OutOfBoundsException('Vertices must be objects; non-object start vertex provided.');
-        }
 
         if ($queue->isEmpty()) {
             throw new \RuntimeException('No start vertex or vertices were provided, and no source vertices could be found in the provided graph.', E_WARNING);
