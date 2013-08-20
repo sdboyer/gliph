@@ -25,14 +25,14 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
             'f' => new TestVertex('f'),
             'g' => new TestVertex('g'),
         );
-    }
 
-    public function testBasicTopologicalSort() {
         $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
         $this->g->addDirectedEdge($this->v['b'], $this->v['c']);
         $this->g->addDirectedEdge($this->v['a'], $this->v['c']);
         $this->g->addDirectedEdge($this->v['b'], $this->v['d']);
+    }
 
+    public function testBasicAcyclicDepthFirstTraversal() {
         $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
         $visitor->expects($this->exactly(4))->method('onInitializeVertex');
         $visitor->expects($this->exactly(0))->method('onBackEdge');
