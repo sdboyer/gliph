@@ -32,3 +32,7 @@ Lots. But, to start with:
 ## Acknowledgements
 
 This library draws heavy inspiration from the [C++ Boost Graph Library](http://www.boost.org/libs/graph/doc).
+
+## License
+
+MIT
