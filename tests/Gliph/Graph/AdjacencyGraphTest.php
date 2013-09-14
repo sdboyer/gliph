@@ -54,7 +54,7 @@ abstract class AdjacencyGraphTest extends \PHPUnit_Framework_TestCase {
     /**
      * Tests that an exception is thrown if a string vertex is provided.
      *
-     * @expectedException OutOfBoundsException
+     * @expectedException \Gliph\Exception\InvalidVertexTypeException
      */
     public function testAddStringVertex() {
         $this->g->addVertex('a');
@@ -63,7 +63,7 @@ abstract class AdjacencyGraphTest extends \PHPUnit_Framework_TestCase {
     /**
      * Tests that an exception is thrown if an integer vertex is provided.
      *
-     * @expectedException OutOfBoundsException
+     * @expectedException \Gliph\Exception\InvalidVertexTypeException
      */
     public function testAddIntegerVertex() {
         $this->g->addVertex(1);
@@ -72,7 +72,7 @@ abstract class AdjacencyGraphTest extends \PHPUnit_Framework_TestCase {
     /**
      * Tests that an exception is thrown if a float vertex is provided.
      *
-     * @expectedException OutOfBoundsException
+     * @expectedException \Gliph\Exception\InvalidVertexTypeException
      */
     public function testAddFloatVertex() {
         $this->g->addVertex((float) 1);
@@ -81,7 +81,7 @@ abstract class AdjacencyGraphTest extends \PHPUnit_Framework_TestCase {
     /**
      * Tests that an exception is thrown if an array vertex is provided.
      *
-     * @expectedException OutOfBoundsException
+     * @expectedException \Gliph\Exception\InvalidVertexTypeException
      */
     public function testAddArrayVertex() {
         $this->g->addVertex(array());
@@ -90,7 +90,7 @@ abstract class AdjacencyGraphTest extends \PHPUnit_Framework_TestCase {
     /**
      * Tests that an exception is thrown if a resource vertex is provided.
      *
-     * @expectedException OutOfBoundsException
+     * @expectedException \Gliph\Exception\InvalidVertexTypeException
      */
     public function testAddResourceVertex() {
         $this->g->addVertex(fopen(__FILE__, 'r'));

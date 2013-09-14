@@ -2,6 +2,8 @@
 
 namespace Gliph\Graph;
 
+use Gliph\Exception\InvalidVertexTypeException;
+
 abstract class AdjacencyGraph {
 
     protected $vertices;
@@ -12,7 +14,7 @@ abstract class AdjacencyGraph {
 
     public function addVertex($vertex) {
         if (!is_object($vertex)) {
-            throw new \OutOfBoundsException('Vertices must be objects; non-object provided.');
+            throw new InvalidVertexTypeException('Vertices must be objects; non-object provided.');
         }
 
         if (!$this->hasVertex($vertex)) {
