@@ -5,8 +5,14 @@ namespace Gliph\Graph;
 class UndirectedAdjacencyGraph extends AdjacencyGraph {
 
     public function addEdge($from, $to) {
-        $this->addVertex($from);
-        $this->addVertex($to);
+        if (!$this->hasVertex($from)) {
+            $this->addVertex(($from));
+        }
+
+        if (!$this->hasVertex($to)) {
+            $this->addVertex($to);
+        }
+
         $this->vertices[$from]->attach($to);
         $this->vertices[$to]->attach($from);
     }

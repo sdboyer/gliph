@@ -7,8 +7,14 @@ use Gliph\Tarjan;
 class DirectedAdjacencyGraph extends AdjacencyGraph {
 
     public function addDirectedEdge($from, $to) {
-        $this->addVertex($from);
-        $this->addVertex($to);
+        if (!$this->hasVertex($from)) {
+            $this->addVertex(($from));
+        }
+
+        if (!$this->hasVertex($to)) {
+            $this->addVertex($to);
+        }
+
         $this->vertices[$from]->attach($to);
     }
 
