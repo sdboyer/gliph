@@ -113,7 +113,7 @@ abstract class AdjacencyGraphTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException OutOfRangeException
+     * @expectedException OutOfBoundsException
      */
     public function testRemoveNonexistentVertex() {
         $this->g->removeVertex($this->v['a']);

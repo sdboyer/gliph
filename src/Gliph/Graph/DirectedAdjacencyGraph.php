@@ -20,7 +20,7 @@ class DirectedAdjacencyGraph extends AdjacencyGraph {
 
     public function removeVertex($vertex) {
         if (!$this->hasVertex($vertex)) {
-            throw new \OutOfRangeException('Vertex is not in the graph, it cannot be removed.', E_WARNING);
+            throw new \OutOfBoundsException('Vertex is not in the graph, it cannot be removed.', E_WARNING);
         }
 
         $this->eachVertex(function($v, $outgoing) use ($vertex) {
