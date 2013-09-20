@@ -2,8 +2,6 @@
 
 namespace Gliph\Graph;
 
-use Gliph\Tarjan;
-
 class DirectedAdjacencyGraph extends AdjacencyGraph {
 
     public function addDirectedEdge($from, $to) {
@@ -65,12 +63,6 @@ class DirectedAdjacencyGraph extends AdjacencyGraph {
         });
 
         return $graph;
-    }
-
-    public function getCycles() {
-        $tarjan = new Tarjan();
-        $scc = $tarjan->getCycles($this);
-        return $scc->count() > 0 ? $scc : FALSE;
     }
 }
 
