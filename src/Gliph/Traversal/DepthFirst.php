@@ -2,6 +2,7 @@
 
 namespace Gliph\Traversal;
 
+use Gliph\Exception\RuntimeException;
 use Gliph\Graph\DirectedAdjacencyList;
 use Gliph\Visitor\DepthFirstVisitorInterface;
 
@@ -34,7 +35,7 @@ class DepthFirst {
         }
 
         if ($queue->isEmpty()) {
-            throw new \RuntimeException('No start vertex or vertices were provided, and no source vertices could be found in the provided graph.', E_WARNING);
+            throw new RuntimeException('No start vertex or vertices were provided, and no source vertices could be found in the provided graph.', E_WARNING);
         }
 
         $visiting = new \SplObjectStorage();

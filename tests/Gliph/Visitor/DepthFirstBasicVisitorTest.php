@@ -64,7 +64,7 @@ class DepthFirstBasicVisitorTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException Gliph\Exception\RuntimeException
      * @covers Gliph\Visitor\DepthFirstBasicVisitor::onBackEdge
      * @covers Gliph\Visitor\DepthFirstBasicVisitor::onInitializeVertex
      */
@@ -74,7 +74,7 @@ class DepthFirstBasicVisitorTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException OutOfRangeException
+     * @expectedException Gliph\Exception\OutOfRangeException
      * @covers
      */
     public function testReachableExceptionOnUnknownVertex() {

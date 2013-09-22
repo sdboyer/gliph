@@ -65,7 +65,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @covers Gliph\Traversal\DepthFirst::traverse
-     * @expectedException RuntimeException
+     * @expectedException Gliph\Exception\RuntimeException
      */
     public function testExceptionOnEmptyTraversalQueue() {
         // Create a cycle that ensures there are no source vertices

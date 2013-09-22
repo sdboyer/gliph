@@ -2,6 +2,9 @@
 
 namespace Gliph\Visitor;
 
+use Gliph\Exception\OutOfRangeException;
+use Gliph\Exception\RuntimeException;
+
 /**
  * Basic depth-first visitor.
  *
@@ -32,7 +35,7 @@ class DepthFirstBasicVisitor implements DepthFirstVisitorInterface {
     }
 
     public function onBackEdge($vertex, \Closure $visit) {
-        throw new \RuntimeException(sprintf('Cycle detected in provided graph.'));
+        throw new RuntimeException(sprintf('Cycle detected in provided graph.'));
     }
 
     public function onInitializeVertex($vertex, $source, \SplQueue $queue) {
@@ -86,7 +89,7 @@ class DepthFirstBasicVisitor implements DepthFirstVisitorInterface {
      */
     public function getReachable($vertex) {
         if (!isset($this->paths[$vertex])) {
-            throw new \OutOfRangeException('Unknown vertex provided.');
+            throw new OutOfRangeException('Unknown vertex provided.');
         }
 
         return $this->paths[$vertex];
