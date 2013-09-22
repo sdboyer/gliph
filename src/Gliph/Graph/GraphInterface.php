@@ -28,6 +28,37 @@ interface GraphInterface {
     public function addVertex($vertex);
 
     /**
+     * Remove a vertex from the graph.
+     *
+     * This will also remove any edges that include the vertex.
+     *
+     * @param object $vertex
+     *   A vertex object to remove from the graph.
+     *
+     * @return GraphInterface
+     *   The current graph instance.
+     *
+     * @throws NonexistentVertexException
+     *   Thrown if the provided vertex is not present in the graph.
+     */
+    public function removeVertex($vertex);
+
+    /**
+     * Removes an edge from the graph.
+     *
+     * @param $a
+     *   The first vertex in the edge pair to remove. In a directed graph, this
+     *   is the tail vertex.
+     * @param $b
+     *   The second vertex in the edge pair to remove. In a directed graph, this
+     *   is the head vertex.
+     *
+     * @return GraphInterface
+     *   The current graph instance.
+     */
+    public function removeEdge($a, $b);
+
+    /**
      * Calls the callback with each vertex adjacent to the provided vertex.
      *
      * The meaning of "adjacency" depends on the type of graph. In a directed
@@ -51,7 +82,7 @@ interface GraphInterface {
     public function eachAdjacent($vertex, $callback);
 
     /**
-     * Calls the callback for each vertex in the graph.
+     * Calls the provided callback for each vertex in the graph.
      *
      * @param $callback
      *   The callback is called once for each vertex in the graph. Two
@@ -64,6 +95,21 @@ interface GraphInterface {
      *   The current graph instance.
      */
     public function eachVertex($callback);
+
+    /**
+     * Calls the provided callback for each edge in the graph.
+     *
+     * @param $callback
+     *   The callback is called once for each unique edge in the graph. A single
+     *   parameter is provided: a 2-tuple (indexed array with two elements),
+     *   where the first element is the first vertex (in a directed graph, the
+     *   tail) and the second element is the second vertex (in a directed graph,
+     *   the head).
+     *
+     * @return GraphInterface
+     *   The current graph instance.
+     */
+    public function eachEdge($callback);
 
     /**
      * Indicates whether or not the provided vertex is present in the graph.

@@ -4,20 +4,26 @@ namespace Gliph\Graph;
 
 use Gliph\Exception\NonexistentVertexException;
 
-class DirectedAdjacencyList extends AdjacencyList {
+class DirectedAdjacencyList extends AdjacencyList implements DirectedGraphInterface {
 
-    public function addDirectedEdge($from, $to) {
-        if (!$this->hasVertex($from)) {
-            $this->addVertex(($from));
+    /**
+     * {@inheritdoc}
+     */
+    public function addDirectedEdge($tail, $head) {
+        if (!$this->hasVertex($tail)) {
+            $this->addVertex(($tail));
         }
 
-        if (!$this->hasVertex($to)) {
-            $this->addVertex($to);
+        if (!$this->hasVertex($head)) {
+            $this->addVertex($head);
         }
 
-        $this->vertices[$from]->attach($to);
+        $this->vertices[$tail]->attach($head);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function removeVertex($vertex) {
         if (!$this->hasVertex($vertex)) {
             throw new NonexistentVertexException('Vertex is not in the graph, it cannot be removed.', E_WARNING);
@@ -31,10 +37,16 @@ class DirectedAdjacencyList extends AdjacencyList {
         unset($this->vertices[$vertex]);
     }
 
-    public function removeEdge($from, $to) {
-        $this->vertices[$from]->detach($to);
+    /**
+     * {@inheritdoc}
+     */
+    public function removeEdge($tail, $head) {
+        $this->vertices[$tail]->detach($head);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function eachEdge($callback) {
         $edges = array();
         $this->fev(function ($from, $outgoing) use (&$edges) {
@@ -49,14 +61,7 @@ class DirectedAdjacencyList extends AdjacencyList {
     }
 
     /**
-     * Returns the transpose of this graph.
-     *
-     * A transpose is identical to the current graph, except that
-     * its edges have had their directionality reversed.
-     *
-     * Also sometimes known as the 'reverse' or 'converse'.
-     *
-     * @return \Gliph\Graph\DirectedAdjacencyList
+     * {@inheritdoc}
      */
     public function transpose() {
         $graph = new self();

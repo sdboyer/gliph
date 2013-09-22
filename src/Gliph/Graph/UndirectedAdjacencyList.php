@@ -4,8 +4,11 @@ namespace Gliph\Graph;
 
 use Gliph\Exception\NonexistentVertexException;
 
-class UndirectedAdjacencyList extends AdjacencyList {
+class UndirectedAdjacencyList extends AdjacencyList implements UndirectedGraphInterface {
 
+    /**
+     * {@inheritdoc}
+     */
     public function addEdge($from, $to) {
         if (!$this->hasVertex($from)) {
             $this->addVertex(($from));
@@ -19,6 +22,9 @@ class UndirectedAdjacencyList extends AdjacencyList {
         $this->vertices[$to]->attach($from);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function removeVertex($vertex) {
         if (!$this->hasVertex($vertex)) {
             throw new NonexistentVertexException('Vertex is not in the graph, it cannot be removed.', E_WARNING);
@@ -30,11 +36,17 @@ class UndirectedAdjacencyList extends AdjacencyList {
         unset($this->vertices[$vertex]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function removeEdge($from, $to) {
         $this->vertices[$from]->detach($to);
         $this->vertices[$to]->detach($from);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function eachEdge($callback) {
         $edges = array();
         $complete = new \SplObjectStorage();
