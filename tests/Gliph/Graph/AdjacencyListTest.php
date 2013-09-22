@@ -76,5 +76,4 @@ class AdjacencyListTest extends AdjacencyListBase {
         $this->assertTrue($this->g->hasVertex($this->v['a']));
         $this->doCheckVertexCount(1, $this->g);
     }
-
 }

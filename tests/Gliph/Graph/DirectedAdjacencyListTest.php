@@ -86,7 +86,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
     }
 
     /**
-     * @expectedException OutOfBoundsException
+     * @expectedException Gliph\Exception\NonexistentVertexException
      */
     public function testRemoveNonexistentVertex() {
         $this->g->removeVertex($this->v['a']);

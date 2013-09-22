@@ -3,6 +3,7 @@
 namespace Gliph\Graph;
 
 use Gliph\Exception\InvalidVertexTypeException;
+use Gliph\Exception\NonexistentVertexException;
 
 abstract class AdjacencyList {
 
@@ -23,6 +24,10 @@ abstract class AdjacencyList {
     }
 
     public function eachAdjacent($vertex, $callback) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
+        }
+
         foreach ($this->vertices[$vertex] as $e) {
             call_user_func($callback, $e);
         }

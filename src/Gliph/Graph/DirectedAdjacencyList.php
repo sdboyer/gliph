@@ -2,6 +2,8 @@
 
 namespace Gliph\Graph;
 
+use Gliph\Exception\NonexistentVertexException;
+
 class DirectedAdjacencyList extends AdjacencyList {
 
     public function addDirectedEdge($from, $to) {
@@ -18,7 +20,7 @@ class DirectedAdjacencyList extends AdjacencyList {
 
     public function removeVertex($vertex) {
         if (!$this->hasVertex($vertex)) {
-            throw new \OutOfBoundsException('Vertex is not in the graph, it cannot be removed.', E_WARNING);
+            throw new NonexistentVertexException('Vertex is not in the graph, it cannot be removed.', E_WARNING);
         }
 
         $this->eachVertex(function($v, $outgoing) use ($vertex) {
