@@ -94,4 +94,20 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
 
         DepthFirst::traverse($this->g, new DepthFirstNoOpVisitor(), $queue);
     }
+
+    /**
+     * Cheats a bit - tests both the toposort visitor and the toposort method.
+     * But they're tightly coupled in code, anyway.
+     *
+     * @expectedException Gliph\Exception\RuntimeException
+     *   Thrown by the visitor after adding a cycle to the graph.
+     */
+    public function testToposort() {
+        extract($this->v);
+
+        $this->assertEquals(array($c, $d, $b, $a), DepthFirst::toposort($this->g, $a));
+
+        $this->g->addDirectedEdge($d, $a);
+        DepthFirst::toposort($this->g, $a);
+    }
 }

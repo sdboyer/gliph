@@ -4,6 +4,7 @@ namespace Gliph\Traversal;
 
 use Gliph\Exception\RuntimeException;
 use Gliph\Graph\DirectedAdjacencyList;
+use Gliph\Visitor\DepthFirstToposortVisitor;
 use Gliph\Visitor\DepthFirstVisitorInterface;
 
 class DepthFirst {
@@ -15,11 +16,21 @@ class DepthFirst {
      *   The graph on which to perform the depth-first search.
      * @param DepthFirstVisitorInterface $visitor
      *   The visitor object to use during the traversal.
-     * @param mixed $start
-     *   A queue of vertices to ensure are visited. The traversal will deque
-     *   them in order and visit them.
+     * @param object|\SplDoublyLinkedList $start
+     *   A vertex, or vertices, to use as start points for the traversal. There
+     *   are a few sub-behaviors here:
+     *     - If an SplDoublyLinkedList, SplQueue, or SplStack is provided, the
+     *       traversal will deque and visit vertices contained therein.
+     *     - If a single vertex object is provided, it will be the sole
+     *       originating point for the traversal.
+     *     - If no value is provided, DepthFirst::find_sources() is called to
+     *       search the graph for source vertices. These are place into an
+     *       SplQueue in the order in which they are discovered, and traversal
+     *       is then run over that queue in the same manner as if calling code
+     *       had provided a queue directly. This method *guarantees* that all
+     *       vertices in the graph will be visited.
      *
-     * @throws \OutOfBoundsException
+     * @throws RuntimeException
      *   Thrown if an invalid $start parameter is provided.
      */
     public static function traverse(DirectedAdjacencyList $graph, DepthFirstVisitorInterface $visitor, $start = NULL) {
@@ -100,5 +111,22 @@ class DepthFirst {
         });
 
         return $queue;
+    }
+
+    /**
+     * Performs a topological sort on the provided graph.
+     *
+     * @param DirectedAdjacencyList $graph
+     * @param object|\SplDoublyLinkedList $start
+     *   The starting point(s) for the toposort. @see DepthFirst::traverse()
+     *
+     * @return array
+     *   A valid topologically sorted list for the provided graph.
+     */
+    public static function toposort(DirectedAdjacencyList $graph, $start = NULL) {
+        $visitor = new DepthFirstToposortVisitor();
+        self::traverse($graph, $visitor, $start);
+
+        return $visitor->getTsl();
     }
 }
