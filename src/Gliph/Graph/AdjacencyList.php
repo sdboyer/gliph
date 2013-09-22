@@ -5,7 +5,7 @@ namespace Gliph\Graph;
 use Gliph\Exception\InvalidVertexTypeException;
 use Gliph\Exception\NonexistentVertexException;
 
-abstract class AdjacencyList implements GraphInterface {
+abstract class AdjacencyList implements Graph {
 
     protected $vertices;
 

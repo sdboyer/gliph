@@ -4,7 +4,7 @@ namespace Gliph\Graph;
 
 use Gliph\Exception\NonexistentVertexException;
 
-class UndirectedAdjacencyList extends AdjacencyList implements UndirectedGraphInterface {
+class UndirectedAdjacencyList extends AdjacencyList implements UndirectedGraph {
 
     /**
      * {@inheritdoc}

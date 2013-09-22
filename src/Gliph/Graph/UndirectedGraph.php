@@ -5,7 +5,7 @@ namespace Gliph\Graph;
 /**
  * Interface for undirected graph datastructures.
  */
-interface UndirectedGraphInterface extends GraphInterface {
+interface UndirectedGraph extends Graph {
 
     /**
      * Adds an undirected edge to this graph.
@@ -17,7 +17,7 @@ interface UndirectedGraphInterface extends GraphInterface {
      *   The second object vertex in the edge pair. The vertex will be added to
      *   the graph if it is not already present.
      *
-     * @return UndirectedGraphInterface
+     * @return UndirectedGraph
      *   The current graph instance.
      */
     public function addEdge($a, $b);

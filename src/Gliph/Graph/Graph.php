@@ -8,7 +8,7 @@ use Gliph\Exception\NonexistentVertexException;
 /**
  * The most basic interface for graph datastructures.
  */
-interface GraphInterface {
+interface Graph {
 
     /**
      * Adds a vertex to the graph.
@@ -19,7 +19,7 @@ interface GraphInterface {
      * @param object $vertex
      *   An object to use as a vertex in the graph.
      *
-     * @return GraphInterface
+     * @return Graph
      *   The current graph instance.
      *
      * @throws InvalidVertexTypeException
@@ -35,7 +35,7 @@ interface GraphInterface {
      * @param object $vertex
      *   A vertex object to remove from the graph.
      *
-     * @return GraphInterface
+     * @return Graph
      *   The current graph instance.
      *
      * @throws NonexistentVertexException
@@ -53,7 +53,7 @@ interface GraphInterface {
      *   The second vertex in the edge pair to remove. In a directed graph, this
      *   is the head vertex.
      *
-     * @return GraphInterface
+     * @return Graph
      *   The current graph instance.
      */
     public function removeEdge($a, $b);
@@ -72,7 +72,7 @@ interface GraphInterface {
      *   The callback to fire. For each vertex found along an out-edge, this
      *   callback will be called with that vertex as the sole parameter.
      *
-     * @return GraphInterface
+     * @return Graph
      *   The current graph instance.
      *
      * @throws NonexistentVertexException
@@ -91,7 +91,7 @@ interface GraphInterface {
      *    - An SplObjectStorage containing a list of all the vertices adjacent
      *      to the vertex being inspected.
      *
-     * @return GraphInterface
+     * @return Graph
      *   The current graph instance.
      */
     public function eachVertex($callback);
@@ -106,7 +106,7 @@ interface GraphInterface {
      *   tail) and the second element is the second vertex (in a directed graph,
      *   the head).
      *
-     * @return GraphInterface
+     * @return Graph
      *   The current graph instance.
      */
     public function eachEdge($callback);

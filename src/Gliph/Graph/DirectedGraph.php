@@ -5,7 +5,7 @@ namespace Gliph\Graph;
 /**
  * Interface for directed graph datastructures.
  */
-interface DirectedGraphInterface extends GraphInterface {
+interface DirectedGraph extends Graph {
 
     /**
      * Adds a directed edge to this graph.
@@ -19,7 +19,7 @@ interface DirectedGraphInterface extends GraphInterface {
      *   An object vertex to which the edge points. The vertex will be added to
      *   the graph if it is not already present.
      *
-     * @return DirectedGraphInterface
+     * @return DirectedGraph
      *   The current graph instance.
      */
     public function addDirectedEdge($tail, $head);
@@ -32,7 +32,7 @@ interface DirectedGraphInterface extends GraphInterface {
      *
      * Transposed graphs are sometimes called the 'reverse' or 'converse'.
      *
-     * @return DirectedGraphInterface
+     * @return DirectedGraph
      */
     public function transpose();
 }
