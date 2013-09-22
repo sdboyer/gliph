@@ -3,7 +3,7 @@
 namespace Gliph\Graph;
 
 
-class UndirectedAdjacencyListTest extends AdjacencyListTest {
+class UndirectedAdjacencyListTest extends AdjacencyListBase {
 
     /**
      * @var UndirectedAdjacencyList
@@ -66,5 +66,12 @@ class UndirectedAdjacencyListTest extends AdjacencyListTest {
         });
 
         $this->assertCount(2, $found);
+    }
+
+    /**
+     * @expectedException OutOfBoundsException
+     */
+    public function testRemoveNonexistentVertex() {
+        $this->g->removeVertex($this->v['a']);
     }
 }

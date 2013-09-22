@@ -2,7 +2,7 @@
 
 namespace Gliph\Graph;
 
-class DirectedAdjacencyListTest extends AdjacencyListTest {
+class DirectedAdjacencyListTest extends AdjacencyListBase {
 
     /**
      * @var DirectedAdjacencyList
@@ -83,5 +83,12 @@ class DirectedAdjacencyListTest extends AdjacencyListTest {
 
         $this->doCheckVertexCount(3, $transpose);
         $this->doCheckVerticesEqual(array($this->v['b'], $this->v['a'], $this->v['c']), $transpose);
+    }
+
+    /**
+     * @expectedException OutOfBoundsException
+     */
+    public function testRemoveNonexistentVertex() {
+        $this->g->removeVertex($this->v['a']);
     }
 }

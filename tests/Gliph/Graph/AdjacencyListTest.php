@@ -2,10 +2,7 @@
 
 namespace Gliph\Graph;
 
-
-use Gliph\TestVertex;
-
-abstract class AdjacencyListTest extends \PHPUnit_Framework_TestCase {
+class AdjacencyListTest extends AdjacencyListBase {
 
     protected $v = array();
 
@@ -14,41 +11,9 @@ abstract class AdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     protected $g;
 
-    /**
-     * Creates a set of vertices and an empty graph for testing.
-     */
     public function setUp() {
-        $this->v = array(
-            'a' => new TestVertex('a'),
-            'b' => new TestVertex('b'),
-            'c' => new TestVertex('c'),
-            'd' => new TestVertex('d'),
-            'e' => new TestVertex('e'),
-            'f' => new TestVertex('f'),
-            'g' => new TestVertex('g'),
-        );
-    }
-
-    public function doCheckVerticesEqual($vertices, AdjacencyList $graph = NULL) {
-        $found = array();
-        $graph = is_null($graph) ? $this->g : $graph;
-
-        $graph->eachVertex(function ($vertex) use (&$found) {
-            $found[] = $vertex;
-        });
-
-        $this->assertEquals($vertices, $found);
-    }
-
-    public function doCheckVertexCount($count, AdjacencyList $graph = NULL) {
-        $found = array();
-        $graph = is_null($graph) ? $this->g : $graph;
-
-        $graph->eachVertex(function ($vertex) use (&$found) {
-            $found[] = $vertex;
-        });
-
-        $this->assertCount($count, $found);
+        parent::setUp();
+        $this->g = $this->getMockForAbstractClass('\\Gliph\\Graph\\AdjacencyList');
     }
 
     /**
@@ -112,10 +77,4 @@ abstract class AdjacencyListTest extends \PHPUnit_Framework_TestCase {
         $this->doCheckVertexCount(1, $this->g);
     }
 
-    /**
-     * @expectedException OutOfBoundsException
-     */
-    public function testRemoveNonexistentVertex() {
-        $this->g->removeVertex($this->v['a']);
-    }
 }
