@@ -28,7 +28,6 @@ class DepthFirstBasicVisitorTest extends \PHPUnit_Framework_TestCase {
             'd' => new TestVertex('d'),
             'e' => new TestVertex('e'),
             'f' => new TestVertex('f'),
-            'g' => new TestVertex('g'),
         );
 
         $this->g = new DirectedAdjacencyList();

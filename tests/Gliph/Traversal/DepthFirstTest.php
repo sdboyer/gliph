@@ -25,13 +25,13 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
             'd' => new TestVertex('d'),
             'e' => new TestVertex('e'),
             'f' => new TestVertex('f'),
-            'g' => new TestVertex('g'),
         );
+        extract($this->v);
 
-        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
-        $this->g->addDirectedEdge($this->v['b'], $this->v['c']);
-        $this->g->addDirectedEdge($this->v['a'], $this->v['c']);
-        $this->g->addDirectedEdge($this->v['b'], $this->v['d']);
+        $this->g->addDirectedEdge($a, $b);
+        $this->g->addDirectedEdge($b, $c);
+        $this->g->addDirectedEdge($a, $c);
+        $this->g->addDirectedEdge($b, $d);
     }
 
     public function testBasicAcyclicDepthFirstTraversal() {
@@ -46,7 +46,9 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testDirectCycleDepthFirstTraversal() {
-        $this->g->addDirectedEdge($this->v['d'], $this->v['b']);
+        extract($this->v);
+
+        $this->g->addDirectedEdge($d, $b);
 
         $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
         $visitor->expects($this->exactly(1))->method('onBackEdge');
@@ -55,12 +57,14 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testIndirectCycleDepthFirstTraversal() {
-        $this->g->addDirectedEdge($this->v['d'], $this->v['a']);
+        extract($this->v);
+
+        $this->g->addDirectedEdge($d, $a);
 
         $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
         $visitor->expects($this->exactly(1))->method('onBackEdge');
 
-        DepthFirst::traverse($this->g, $visitor, $this->v['a']);
+        DepthFirst::traverse($this->g, $visitor, $a);
     }
 
     /**
@@ -68,8 +72,10 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Gliph\Exception\RuntimeException
      */
     public function testExceptionOnEmptyTraversalQueue() {
+        extract($this->v);
+
         // Create a cycle that ensures there are no source vertices
-        $this->g->addDirectedEdge($this->v['d'], $this->v['a']);
+        $this->g->addDirectedEdge($d, $a);
         DepthFirst::traverse($this->g, new DepthFirstNoOpVisitor());
     }
 
@@ -77,12 +83,14 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
      * @covers Gliph\Traversal\DepthFirst::traverse
      */
     public function testProvideQueueAsStartPoint() {
-        $queue = new \SplQueue();
-        $queue->push($this->v['a']);
-        $queue->push($this->v['e']);
+        extract($this->v);
 
-        $this->g->addVertex($this->v['a']);
-        $this->g->addVertex($this->v['e']);
+        $queue = new \SplQueue();
+        $queue->push($a);
+        $queue->push($e);
+
+        $this->g->addVertex($a);
+        $this->g->addVertex($e);
 
         DepthFirst::traverse($this->g, new DepthFirstNoOpVisitor(), $queue);
     }
