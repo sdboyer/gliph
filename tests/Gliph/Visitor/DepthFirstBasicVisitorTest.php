@@ -2,7 +2,7 @@
 
 namespace Gliph\Visitor;
 
-use Gliph\Graph\DirectedAdjacencyGraph;
+use Gliph\Graph\DirectedAdjacencyList;
 use Gliph\TestVertex;
 use Gliph\Traversal\DepthFirst;
 
@@ -16,7 +16,7 @@ class DepthFirstBasicVisitorTest extends \PHPUnit_Framework_TestCase {
     protected $vis;
 
     /**
-     * @var DirectedAdjacencyGraph
+     * @var DirectedAdjacencyList
      */
     protected $g;
 
@@ -31,7 +31,7 @@ class DepthFirstBasicVisitorTest extends \PHPUnit_Framework_TestCase {
             'g' => new TestVertex('g'),
         );
 
-        $this->g = new DirectedAdjacencyGraph();
+        $this->g = new DirectedAdjacencyList();
         $this->vis = new DepthFirstBasicVisitor();
 
         $this->g->addDirectedEdge($this->v['a'], $this->v['b']);

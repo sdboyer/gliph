@@ -5,12 +5,12 @@ namespace Gliph\Graph;
 
 use Gliph\TestVertex;
 
-abstract class AdjacencyGraphTest extends \PHPUnit_Framework_TestCase {
+abstract class AdjacencyListTest extends \PHPUnit_Framework_TestCase {
 
     protected $v = array();
 
     /**
-     * @var AdjacencyGraph
+     * @var AdjacencyList
      */
     protected $g;
 
@@ -29,7 +29,7 @@ abstract class AdjacencyGraphTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function doCheckVerticesEqual($vertices, AdjacencyGraph $graph = NULL) {
+    public function doCheckVerticesEqual($vertices, AdjacencyList $graph = NULL) {
         $found = array();
         $graph = is_null($graph) ? $this->g : $graph;
 
@@ -40,7 +40,7 @@ abstract class AdjacencyGraphTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($vertices, $found);
     }
 
-    public function doCheckVertexCount($count, AdjacencyGraph $graph = NULL) {
+    public function doCheckVertexCount($count, AdjacencyList $graph = NULL) {
         $found = array();
         $graph = is_null($graph) ? $this->g : $graph;
 

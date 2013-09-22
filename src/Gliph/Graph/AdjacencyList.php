@@ -4,7 +4,7 @@ namespace Gliph\Graph;
 
 use Gliph\Exception\InvalidVertexTypeException;
 
-abstract class AdjacencyGraph {
+abstract class AdjacencyList {
 
     protected $vertices;
 

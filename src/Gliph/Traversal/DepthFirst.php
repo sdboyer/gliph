@@ -2,7 +2,7 @@
 
 namespace Gliph\Traversal;
 
-use Gliph\Graph\DirectedAdjacencyGraph;
+use Gliph\Graph\DirectedAdjacencyList;
 use Gliph\Visitor\DepthFirstVisitorInterface;
 
 class DepthFirst {
@@ -10,7 +10,7 @@ class DepthFirst {
     /**
      * Perform a depth-first traversal on the provided graph.
      *
-     * @param DirectedAdjacencyGraph $graph
+     * @param DirectedAdjacencyList $graph
      *   The graph on which to perform the depth-first search.
      * @param DepthFirstVisitorInterface $visitor
      *   The visitor object to use during the traversal.
@@ -21,7 +21,7 @@ class DepthFirst {
      * @throws \OutOfBoundsException
      *   Thrown if an invalid $start parameter is provided.
      */
-    public static function traverse(DirectedAdjacencyGraph $graph, DepthFirstVisitorInterface $visitor, $start = NULL) {
+    public static function traverse(DirectedAdjacencyList $graph, DepthFirstVisitorInterface $visitor, $start = NULL) {
         if ($start === NULL) {
             $queue = self::find_sources($graph, $visitor);
         }
@@ -68,14 +68,14 @@ class DepthFirst {
     }
 
     /**
-     * Finds source vertices in a DirectedAdjacencyGraph, then enqueues them.
+     * Finds source vertices in a DirectedAdjacencyList, then enqueues them.
      *
-     * @param DirectedAdjacencyGraph $graph
+     * @param DirectedAdjacencyList $graph
      * @param DepthFirstVisitorInterface $visitor
      *
      * @return \SplQueue
      */
-    public static function find_sources(DirectedAdjacencyGraph $graph, DepthFirstVisitorInterface $visitor) {
+    public static function find_sources(DirectedAdjacencyList $graph, DepthFirstVisitorInterface $visitor) {
         $incomings = new \SplObjectStorage();
         $queue = new \SplQueue();
 

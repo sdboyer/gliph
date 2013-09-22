@@ -3,10 +3,10 @@
 namespace Gliph\Graph;
 
 
-class UndirectedAdjacencyGraphTest extends AdjacencyGraphTest {
+class UndirectedAdjacencyListTest extends AdjacencyListTest {
 
     /**
-     * @var UndirectedAdjacencyGraph
+     * @var UndirectedAdjacencyList
      */
     protected $g;
 
@@ -15,7 +15,7 @@ class UndirectedAdjacencyGraphTest extends AdjacencyGraphTest {
      */
     public function setUp() {
         parent::setUp();
-        $this->g = new UndirectedAdjacencyGraph();
+        $this->g = new UndirectedAdjacencyList();
     }
 
     public function testAddUndirectedEdge() {

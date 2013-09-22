@@ -2,16 +2,16 @@
 
 namespace Gliph\Graph;
 
-class DirectedAdjacencyGraphTest extends AdjacencyGraphTest {
+class DirectedAdjacencyListTest extends AdjacencyListTest {
 
     /**
-     * @var DirectedAdjacencyGraph
+     * @var DirectedAdjacencyList
      */
     protected $g;
 
     public function setUp() {
         parent::setUp();
-        $this->g = new DirectedAdjacencyGraph();
+        $this->g = new DirectedAdjacencyList();
     }
 
 

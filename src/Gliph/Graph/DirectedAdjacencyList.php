@@ -2,7 +2,7 @@
 
 namespace Gliph\Graph;
 
-class DirectedAdjacencyGraph extends AdjacencyGraph {
+class DirectedAdjacencyList extends AdjacencyList {
 
     public function addDirectedEdge($from, $to) {
         if (!$this->hasVertex($from)) {
@@ -54,7 +54,7 @@ class DirectedAdjacencyGraph extends AdjacencyGraph {
      *
      * Also sometimes known as the 'reverse' or 'converse'.
      *
-     * @return \Gliph\Graph\DirectedAdjacencyGraph
+     * @return \Gliph\Graph\DirectedAdjacencyList
      */
     public function transpose() {
         $graph = new self();

@@ -3,20 +3,20 @@
 namespace Gliph\Traversal;
 
 
-use Gliph\Graph\DirectedAdjacencyGraph;
+use Gliph\Graph\DirectedAdjacencyList;
 use Gliph\TestVertex;
 use Gliph\Visitor\DepthFirstNoOpVisitor;
 
 class DepthFirstTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @var DirectedAdjacencyGraph
+     * @var DirectedAdjacencyList
      */
     protected $g;
     protected $v;
 
     public function setUp() {
-        $this->g = new DirectedAdjacencyGraph();
+        $this->g = new DirectedAdjacencyList();
         $this->v = array(
             'a' => new TestVertex('a'),
             'b' => new TestVertex('b'),

@@ -2,7 +2,7 @@
 
 namespace Gliph\Graph;
 
-class UndirectedAdjacencyGraph extends AdjacencyGraph {
+class UndirectedAdjacencyList extends AdjacencyList {
 
     public function addEdge($from, $to) {
         if (!$this->hasVertex($from)) {
