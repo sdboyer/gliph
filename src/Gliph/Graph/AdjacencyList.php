@@ -5,7 +5,7 @@ namespace Gliph\Graph;
 use Gliph\Exception\InvalidVertexTypeException;
 use Gliph\Exception\NonexistentVertexException;
 
-abstract class AdjacencyList {
+abstract class AdjacencyList implements GraphInterface {
 
     protected $vertices;
 
@@ -13,6 +13,9 @@ abstract class AdjacencyList {
         $this->vertices = new \SplObjectStorage();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function addVertex($vertex) {
         if (!is_object($vertex)) {
             throw new InvalidVertexTypeException('Vertices must be objects; non-object provided.');
@@ -21,24 +24,39 @@ abstract class AdjacencyList {
         if (!$this->hasVertex($vertex)) {
             $this->vertices[$vertex] = new \SplObjectStorage();
         }
+
+        return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function eachAdjacent($vertex, $callback) {
         if (!$this->hasVertex($vertex)) {
             throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
         }
 
-        foreach ($this->vertices[$vertex] as $e) {
-            call_user_func($callback, $e);
+        foreach ($this->vertices[$vertex] as $adjacent_vertex) {
+            call_user_func($callback, $adjacent_vertex);
         }
+
+        return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function eachVertex($callback) {
-        $this->fev(function ($v, $outgoing) use ($callback) {
-            call_user_func($callback, $v, $outgoing);
+        $this->fev(function ($v, $adjacent) use ($callback) {
+            call_user_func($callback, $v, $adjacent);
         });
+
+        return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasVertex($vertex) {
         return $this->vertices->contains($vertex);
     }
@@ -48,5 +66,7 @@ abstract class AdjacencyList {
             $outgoing = $this->vertices->getInfo();
             $callback($vertex, $outgoing);
         }
+
+        return $this;
     }
 }
