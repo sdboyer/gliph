@@ -6,7 +6,7 @@ use Gliph\Graph\DirectedAdjacencyList;
 use Gliph\TestVertex;
 use Gliph\Traversal\DepthFirst;
 
-class DepthFirstBasicVisitorTest extends \PHPUnit_Framework_TestCase {
+class DepthFirstBasicVisitorTest extends DepthFirstToposortVisitorTest {
 
     protected $v;
 
@@ -39,12 +39,20 @@ class DepthFirstBasicVisitorTest extends \PHPUnit_Framework_TestCase {
         $this->g->addDirectedEdge($this->v['b'], $this->v['d']);
     }
 
+    public function stateSensitiveMethods() {
+        $methods = parent::stateSensitiveMethods();
+        $methods['completed'][] = array('getReachable', array(new \stdClass()));
+        return $methods;
+    }
+
     /**
      * @covers Gliph\Visitor\DepthFirstBasicVisitor::__construct
      * @covers Gliph\Visitor\DepthFirstBasicVisitor::onInitializeVertex
+     * @covers Gliph\Visitor\DepthFirstBasicVisitor::beginTraversal
      * @covers Gliph\Visitor\DepthFirstBasicVisitor::onStartVertex
      * @covers Gliph\Visitor\DepthFirstBasicVisitor::onExamineEdge
      * @covers Gliph\Visitor\DepthFirstBasicVisitor::onFinishVertex
+     * @covers Gliph\Visitor\DepthFirstBasicVisitor::endTraversal
      * @covers Gliph\Visitor\DepthFirstBasicVisitor::getReachable
      * @covers Gliph\Visitor\DepthFirstBasicVisitor::getTsl
      */
@@ -72,12 +80,8 @@ class DepthFirstBasicVisitorTest extends \PHPUnit_Framework_TestCase {
         DepthFirst::traverse($this->g, $this->vis);
     }
 
-    /**
-     * @expectedException Gliph\Exception\OutOfRangeException
-     * @covers
-     */
     public function testReachableExceptionOnUnknownVertex() {
         DepthFirst::traverse($this->g, $this->vis, $this->v['a']);
-        $this->vis->getReachable($this->v['e']);
+        $this->assertFalse($this->vis->getReachable($this->v['e']));
     }
 }

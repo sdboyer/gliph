@@ -52,6 +52,8 @@ class DepthFirst {
         $visiting = new \SplObjectStorage();
         $visited = new \SplObjectStorage();
 
+        $visitor->beginTraversal();
+
         $visit = function($vertex) use ($graph, $visitor, &$visit, $visiting, $visited) {
             if ($visiting->contains($vertex)) {
                 $visitor->onBackEdge($vertex, $visit);
@@ -77,6 +79,8 @@ class DepthFirst {
             $vertex = $queue->shift();
             $visit($vertex);
         }
+
+        $visitor->endTraversal();
     }
 
     /**

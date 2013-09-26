@@ -96,9 +96,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Cheats a bit - tests both the toposort visitor and the toposort method.
-     * But they're tightly coupled in code, anyway.
-     *
+     * @covers \Gliph\Traversal\DepthFirst::toposort
      * @expectedException Gliph\Exception\RuntimeException
      *   Thrown by the visitor after adding a cycle to the graph.
      */
