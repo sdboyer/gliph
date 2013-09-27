@@ -5,13 +5,13 @@
 
 Gliph is a **g**raph **li**brary for **PH**P. It provides graph building blocks and datastructures for use by other PHP applications. It is (currently) designed for use with in-memory graphs, not for interaction with a graph database like [Neo4J](http://neo4j.org/).
 
-Gliph is designed with performance in mind, but primarily to provide a sane interface. Graphs are hard enough without an arcane API making it worse.
+Gliph aims for both sane interfaces and performant implementation - at least, as performant as can be hoped for a PHP graph library. This does require knowing enough about graphs to know what type is appropriate for your use case, but we are aiming to provide helpers that simplify those choices.
 
 ## Core Concepts
 
 Gliph has several components that work together: graph classes, algorithms, and visitors. Generally speaking, Gliph is patterned after the [C++ Boost Graph Library](http://www.boost.org/libs/graph/doc); reading their documentation can yield a lot of insight into how Gliph is intended to work.
 
-Note that Gliph is currently written for compatibility with PHP 5.3, but it is intended to port the library to PHP 5.5. The availability of traits, non-scalar/object keys returnable from iterators, and generators will considerably change both the internal and public-facing implementations.
+Note that Gliph is currently written for compatibility with PHP 5.3, but it is intended to port the library to PHP 5.5. The availability of traits, non-scalar keys in iterators, and generators will considerably change and improve both the internal and public-facing implementations.
 
 ### Graphs
 
