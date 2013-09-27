@@ -35,4 +35,20 @@ interface DirectedGraph extends Graph {
      * @return DirectedGraph
      */
     public function transpose();
+
+    /**
+     * Indicates whether or not this graph is acyclic.
+     *
+     * @return bool
+     */
+    public function isAcyclic();
+
+    /**
+     * Returns the cycles in this graph, if any.
+     *
+     * @return array
+     *   An array of arrays, each subarray representing a full cycle in the
+     *   graph. If the array is empty, the graph is acyclic.
+     */
+    public function getCycles();
 }

@@ -2,7 +2,11 @@
 
 namespace Gliph\Graph;
 
+use Gliph\Algorithm\ConnectedComponent;
 use Gliph\Exception\NonexistentVertexException;
+use Gliph\Exception\RuntimeException;
+use Gliph\Traversal\DepthFirst;
+use Gliph\Visitor\DepthFirstToposortVisitor;
 
 class DirectedAdjacencyList extends AdjacencyList implements DirectedGraph {
 
@@ -70,6 +74,28 @@ class DirectedAdjacencyList extends AdjacencyList implements DirectedGraph {
         });
 
         return $graph;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAcyclic() {
+        // The DepthFirstToposortVisitor throws an exception on cycles.
+        try {
+            DepthFirst::traverse($this, new DepthFirstToposortVisitor());
+            return TRUE;
+        }
+        catch (RuntimeException $e) {
+            return FALSE;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCycles() {
+        $scc = ConnectedComponent::tarjan_scc($this);
+        return $scc->getConnectedComponents();
     }
 }
 

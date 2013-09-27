@@ -91,4 +91,27 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
     public function testRemoveNonexistentVertex() {
         $this->g->removeVertex($this->v['a']);
     }
+
+    /**
+     * @covers \Gliph\Graph\DirectedAdjacencyList::isAcyclic()
+     */
+    public function testIsAcyclic() {
+        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
+        $this->g->addDirectedEdge($this->v['b'], $this->v['c']);
+        $this->assertTrue($this->g->isAcyclic());
+
+        $this->g->addDirectedEdge($this->v['c'], $this->v['a']);
+        $this->assertFalse($this->g->isAcyclic());
+    }
+
+    /**
+     * @covers \Gliph\Graph\DirectedAdjacencyList::getCycles()
+     */
+    public function testGetCycles() {
+        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
+        $this->g->addDirectedEdge($this->v['b'], $this->v['c']);
+        $this->g->addDirectedEdge($this->v['c'], $this->v['a']);
+
+        $this->assertEquals(array(array($this->v['c'], $this->v['b'], $this->v['a'])), $this->g->getCycles());
+    }
 }
