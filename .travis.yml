@@ -1,3 +1,4 @@
+# .travis.yml
 language: php
 
 php:
@@ -8,4 +9,9 @@ php:
 before_script:
   - composer install --dev --prefer-source
 
-script: phpunit
+script:
+  - mkdir -p build/logs
+  - php vendor/bin/phpunit -c phpunit.xml.dist
+
+after_script:
+  - php vendor/bin/coveralls -v
