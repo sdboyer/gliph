@@ -34,6 +34,29 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
         $this->g->addDirectedEdge($b, $d);
     }
 
+    /**
+     * @covers \Gliph\Traversal\DepthFirst::find_sources
+     */
+    public function testFindSources() {
+        extract($this->v);
+
+        $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
+        $visitor->expects($this->exactly(4))->method('onInitializeVertex');
+
+        $expected = new \SplQueue();
+        $expected->push($a);
+        $expected->push($b);
+        $expected->push($c);
+        $expected->push($d);
+
+        $queue = DepthFirst::find_sources($this->g, $visitor);
+
+        $this->assertEquals($expected, $queue);
+    }
+
+    /**
+     * @covers \Gliph\Traversal\DepthFirst::traverse
+     */
     public function testBasicAcyclicDepthFirstTraversal() {
         $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
         $visitor->expects($this->exactly(4))->method('onInitializeVertex');
@@ -45,6 +68,11 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
         DepthFirst::traverse($this->g, $visitor);
     }
 
+
+
+    /**
+     * @covers \Gliph\Traversal\DepthFirst::traverse
+     */
     public function testDirectCycleDepthFirstTraversal() {
         extract($this->v);
 
@@ -56,6 +84,9 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
         DepthFirst::traverse($this->g, $visitor);
     }
 
+    /**
+     * @covers \Gliph\Traversal\DepthFirst::traverse
+     */
     public function testIndirectCycleDepthFirstTraversal() {
         extract($this->v);
 
@@ -68,8 +99,8 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Gliph\Traversal\DepthFirst::traverse
-     * @expectedException Gliph\Exception\RuntimeException
+     * @covers \Gliph\Traversal\DepthFirst::traverse
+     * @expectedException \Gliph\Exception\RuntimeException
      */
     public function testExceptionOnEmptyTraversalQueue() {
         extract($this->v);
@@ -80,7 +111,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Gliph\Traversal\DepthFirst::traverse
+     * @covers \Gliph\Traversal\DepthFirst::traverse
      */
     public function testProvideQueueAsStartPoint() {
         extract($this->v);
@@ -89,15 +120,20 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
         $queue->push($a);
         $queue->push($e);
 
-        $this->g->addVertex($a);
         $this->g->addVertex($e);
 
-        DepthFirst::traverse($this->g, new DepthFirstNoOpVisitor(), $queue);
+        $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
+        $visitor->expects($this->exactly(0))->method('onBackEdge');
+        $visitor->expects($this->exactly(5))->method('onStartVertex');
+        $visitor->expects($this->exactly(4))->method('onExamineEdge');
+        $visitor->expects($this->exactly(5))->method('onFinishVertex');
+
+        DepthFirst::traverse($this->g, $visitor, $queue);
     }
 
     /**
      * @covers \Gliph\Traversal\DepthFirst::toposort
-     * @expectedException Gliph\Exception\RuntimeException
+     * @expectedException \Gliph\Exception\RuntimeException
      *   Thrown by the visitor after adding a cycle to the graph.
      */
     public function testToposort() {
