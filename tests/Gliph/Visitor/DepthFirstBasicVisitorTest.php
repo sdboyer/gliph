@@ -6,6 +6,9 @@ use Gliph\Graph\DirectedAdjacencyList;
 use Gliph\TestVertex;
 use Gliph\Traversal\DepthFirst;
 
+/**
+ * @coversDefaultClass \Gliph\Visitor\DepthFirstBasicVisitor
+ */
 class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase {
 
     /**
@@ -75,15 +78,15 @@ class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase
     }
 
     /**
-     * @covers Gliph\Visitor\DepthFirstBasicVisitor::__construct
-     * @covers Gliph\Visitor\DepthFirstBasicVisitor::onInitializeVertex
-     * @covers Gliph\Visitor\DepthFirstBasicVisitor::beginTraversal
-     * @covers Gliph\Visitor\DepthFirstBasicVisitor::onStartVertex
-     * @covers Gliph\Visitor\DepthFirstBasicVisitor::onExamineEdge
-     * @covers Gliph\Visitor\DepthFirstBasicVisitor::onFinishVertex
-     * @covers Gliph\Visitor\DepthFirstBasicVisitor::endTraversal
-     * @covers Gliph\Visitor\DepthFirstBasicVisitor::getReachable
-     * @covers Gliph\Visitor\DepthFirstBasicVisitor::getTsl
+     * @covers ::__construct
+     * @covers ::onInitializeVertex
+     * @covers ::beginTraversal
+     * @covers ::onStartVertex
+     * @covers ::onExamineEdge
+     * @covers ::onFinishVertex
+     * @covers ::endTraversal
+     * @covers ::getReachable
+     * @covers ::getTsl
      */
     public function testTraversalWithStartPoint() {
         DepthFirst::traverse($this->g, $this->vis, $this->v['a']);
@@ -100,20 +103,26 @@ class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase
     }
 
     /**
-     * @expectedException Gliph\Exception\RuntimeException
-     * @covers Gliph\Visitor\DepthFirstBasicVisitor::onBackEdge
-     * @covers Gliph\Visitor\DepthFirstBasicVisitor::onInitializeVertex
+     * @expectedException \Gliph\Exception\RuntimeException
+     * @covers ::onBackEdge
+     * @covers ::onInitializeVertex
      */
     public function testErrorOnCycle() {
         $this->g->addDirectedEdge($this->v['d'], $this->v['b']);
         DepthFirst::traverse($this->g, $this->vis);
     }
 
+    /**
+     * @covers ::getReachable
+     */
     public function testReachableOnUnknownVertex() {
         DepthFirst::traverse($this->g, $this->vis, $this->v['a']);
         $this->assertFalse($this->vis->getReachable($this->v['e']));
     }
 
+    /**
+     * @covers ::getReachable
+     */
     public function testReachable() {
         extract($this->v);
 

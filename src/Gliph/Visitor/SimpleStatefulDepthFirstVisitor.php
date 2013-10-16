@@ -28,7 +28,7 @@ abstract class SimpleStatefulDepthFirstVisitor implements StatefulVisitorInterfa
     protected $state = self::IN_PROGRESS;
 
     /**
-     * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function beginTraversal() {}
 

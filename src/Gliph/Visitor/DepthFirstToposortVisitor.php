@@ -20,8 +20,19 @@ class DepthFirstToposortVisitor extends SimpleStatefulDepthFirstVisitor implemen
      */
     protected $tsl = array();
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function onInitializeVertex($vertex, $source, \SplQueue $queue) {}
+
+    /**
+     * @codeCoverageIgnore
+     */
     public function onStartVertex($vertex, \Closure $visit) {}
+
+    /**
+     * @codeCoverageIgnore
+     */
     public function onExamineEdge($from, $to, \Closure $visit) {}
 
     public function onBackEdge($vertex, \Closure $visit) {
