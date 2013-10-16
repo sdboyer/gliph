@@ -109,8 +109,18 @@ class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase
         DepthFirst::traverse($this->g, $this->vis);
     }
 
-    public function testReachableExceptionOnUnknownVertex() {
+    public function testReachableOnUnknownVertex() {
         DepthFirst::traverse($this->g, $this->vis, $this->v['a']);
         $this->assertFalse($this->vis->getReachable($this->v['e']));
+    }
+
+    public function testReachable() {
+        extract($this->v);
+
+        DepthFirst::traverse($this->g, $this->vis);
+        $this->assertSame(array($b, $c, $d), $this->vis->getReachable($a));
+        $this->assertSame(array($c, $d), $this->vis->getReachable($b));
+        $this->assertSame(array(), $this->vis->getReachable($c));
+        $this->assertSame(array(), $this->vis->getReachable($d));
     }
 }
