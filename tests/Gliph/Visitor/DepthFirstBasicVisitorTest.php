@@ -6,8 +6,13 @@ use Gliph\Graph\DirectedAdjacencyList;
 use Gliph\TestVertex;
 use Gliph\Traversal\DepthFirst;
 
-class DepthFirstBasicVisitorTest extends DepthFirstToposortVisitorTest {
+class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase {
 
+    /**
+     * A map of pre-made test vertices.
+     *
+     * @var array
+     */
     protected $v;
 
     /**
@@ -39,10 +44,34 @@ class DepthFirstBasicVisitorTest extends DepthFirstToposortVisitorTest {
         $this->g->addDirectedEdge($this->v['b'], $this->v['d']);
     }
 
-    public function stateSensitiveMethods() {
-        $methods = parent::stateSensitiveMethods();
-        $methods['completed'][] = array('getReachable', array(new \stdClass()));
-        return $methods;
+    /**
+     * Creates a DepthFirstToposortVisitor in IN_PROGRESS state.
+     *
+     * @return DepthFirstBasicVisitor
+     */
+    public function createInProgressVisitor() {
+        return new DepthFirstBasicVisitor();
+    }
+
+    /**
+     * Creates a DepthFirstToposortVisitor in COMPLETED state.
+     *
+     * @return DepthFirstBasicVisitor
+     */
+    public function createCompletedVisitor() {
+        $stub = new DepthFirstBasicVisitor();
+
+        $prop = new \ReflectionProperty($stub, 'state');
+        $prop->setAccessible(TRUE);
+        $prop->setValue($stub, StatefulVisitorInterface::COMPLETE);
+
+        return $stub;
+    }
+
+    public function completionRequiredMethods() {
+        return array(
+            array('getReachable', array(new \stdClass())),
+        );
     }
 
     /**

@@ -4,16 +4,7 @@ namespace Gliph\Visitor;
 
 use Gliph\TestVertex;
 
-class DepthFirstToposortVisitorTest extends StatefulDepthFirstVisitorBase {
-
-    /**
-     * Creates a DepthFirstToposortVisitor in NOT_STARTED state.
-     *
-     * @return DepthFirstToposortVisitor
-     */
-    public function createNotStartedVisitor() {
-        return new DepthFirstToposortVisitor();
-    }
+class DepthFirstToposortVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase {
 
     /**
      * Creates a DepthFirstToposortVisitor in IN_PROGRESS state.
@@ -21,13 +12,7 @@ class DepthFirstToposortVisitorTest extends StatefulDepthFirstVisitorBase {
      * @return DepthFirstToposortVisitor
      */
     public function createInProgressVisitor() {
-        $stub = new DepthFirstToposortVisitor();
-
-        $prop = new \ReflectionProperty($stub, 'state');
-        $prop->setAccessible(TRUE);
-        $prop->setValue($stub, StatefulVisitorInterface::IN_PROGRESS);
-
-        return $stub;
+        return new DepthFirstToposortVisitor();
     }
 
     /**
@@ -45,15 +30,7 @@ class DepthFirstToposortVisitorTest extends StatefulDepthFirstVisitorBase {
         return $stub;
     }
 
-    public function inProgressMethods() {
-        return array(
-            array('onStartVertex', array(new \stdClass(), function() {})),
-            array('onExamineEdge', array(new \stdClass(), new \stdClass(), function() {})),
-            array('onFinishVertex', array(new \stdClass(), function() {})),
-        );
-    }
-
-    public function completedMethods() {
+    public function completionRequiredMethods() {
         return array(
             array('getTsl', array()),
         );
