@@ -43,15 +43,15 @@ abstract class AdjacencyList implements Graph {
         return $this;
     }
 
+
     /**
      * {@inheritdoc}
      */
-    public function eachVertex($callback) {
-        $this->fev(function ($v, $adjacent) use ($callback) {
-            call_user_func($callback, $v, $adjacent);
-        });
-
-        return $this;
+    public function eachVertex() {
+        foreach ($this->vertices as $vertex) {
+            $adjacent = $this->vertices->getInfo();
+            yield $vertex => $adjacent;
+        }
     }
 
     /**

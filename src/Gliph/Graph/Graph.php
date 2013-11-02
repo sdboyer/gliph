@@ -82,19 +82,14 @@ interface Graph {
     public function eachAdjacent($vertex, $callback);
 
     /**
-     * Calls the provided callback for each vertex in the graph.
+     * Returns a generator that loops through each vertex in the graph.
      *
-     * @param $callback
-     *   The callback is called once for each vertex in the graph. Two
-     *   parameters are provided:
-     *    - The vertex being inspected.
-     *    - An SplObjectStorage containing a list of all the vertices adjacent
-     *      to the vertex being inspected.
-     *
-     * @return Graph
-     *   The current graph instance.
+     * @return \Generator
+     *   A generator that yields the vertex as key and its connected edges as
+     *   value. The form of the connected edges may value from one graph
+     *   implementation to the next, but it is guaranteed to be Traversable.
      */
-    public function eachVertex($callback);
+    public function eachVertex();
 
     /**
      * Calls the provided callback for each edge in the graph.

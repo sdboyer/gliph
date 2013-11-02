@@ -25,11 +25,9 @@ class AdjacencyListBase extends \PHPUnit_Framework_TestCase {
         $found = array();
         $graph = is_null($graph) ? $this->g : $graph;
 
-        $graph->eachVertex(
-            function ($vertex) use (&$found) {
-                $found[] = $vertex;
-            }
-        );
+        foreach ($graph->eachVertex() as $vertex => $outgoing) {
+            $found[] = $vertex;
+        }
 
         $this->assertEquals($vertices, $found);
     }
@@ -38,11 +36,9 @@ class AdjacencyListBase extends \PHPUnit_Framework_TestCase {
         $found = array();
         $graph = is_null($graph) ? $this->g : $graph;
 
-        $graph->eachVertex(
-            function ($vertex) use (&$found) {
-                $found[] = $vertex;
-            }
-        );
+        foreach ($graph->eachVertex() as $vertex => $outgoing) {
+            $found[] = $vertex;
+        }
 
         $this->assertCount($count, $found);
     }

@@ -33,11 +33,11 @@ class DirectedAdjacencyList extends AdjacencyList implements DirectedGraph {
             throw new NonexistentVertexException('Vertex is not in the graph, it cannot be removed.', E_WARNING);
         }
 
-        $this->eachVertex(function($v, $outgoing) use ($vertex) {
+        foreach ($this->eachVertex() as $v => $outgoing) {
             if ($outgoing->contains($vertex)) {
                 $outgoing->detach($vertex);
             }
-        });
+        }
         unset($this->vertices[$vertex]);
     }
 

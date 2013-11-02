@@ -54,11 +54,11 @@ class ConnectedComponent {
             }
         };
 
-        $graph->eachVertex(function($vertex) use (&$visit, $indices) {
-            if (!$indices->contains($vertex)) {
-                $visit($vertex);
+        foreach ($graph->eachVertex() as $v => $outgoing) {
+            if (!$indices->contains($v)) {
+                $visit($v);
             }
-        });
+        }
 
         return $visitor;
     }
