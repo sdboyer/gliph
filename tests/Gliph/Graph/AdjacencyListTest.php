@@ -78,9 +78,11 @@ class AdjacencyListTest extends AdjacencyListBase {
     }
 
     /**
-     * @expectedException Gliph\Exception\NonexistentVertexException
+     * @expectedException \Gliph\Exception\NonexistentVertexException
      */
     public function testEachAdjacentMissingVertex() {
-        $this->g->eachAdjacent($this->v['a'], function() {});
+        foreach ($this->g->eachAdjacent($this->v['a']) as $adjacent) {
+            $this->fail();
+        }
     }
 }

@@ -39,9 +39,9 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
         $this->doCheckVertexCount(3);
 
         $found = array();
-        $this->g->eachAdjacent($this->v['a'], function($adjacent) use (&$found) {
+        foreach ($this->g->eachAdjacent($this->v['a']) as $edge => $adjacent) {
             $found[] = $adjacent;
-        });
+        }
 
         $this->assertEquals(array($this->v['b']), $found);
     }
@@ -61,9 +61,9 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
 
         // Ensure bidirectionality of created edges
         $found = array();
-        $this->g->eachAdjacent($this->v['b'], function($adjacent) use (&$found) {
+        foreach ($this->g->eachAdjacent($this->v['b']) as $edge => $adjacent) {
             $found[] = $adjacent;
-        });
+        }
 
         $this->assertCount(2, $found);
     }

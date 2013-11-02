@@ -54,9 +54,9 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
         $this->g->addDirectedEdge($this->v['a'], $this->v['c']);
 
         $found = array();
-        $this->g->eachAdjacent($this->v['a'], function($to) use (&$found) {
-            $found[] = $to;
-        });
+        foreach ($this->g->eachAdjacent($this->v['a']) as $edge => $head) {
+            $found[] = $head;
+        }
 
         $this->assertEquals(array($this->v['b'], $this->v['c']), $found);
     }

@@ -31,16 +31,14 @@ abstract class AdjacencyList implements Graph {
     /**
      * {@inheritdoc}
      */
-    public function eachAdjacent($vertex, $callback) {
+    public function eachAdjacent($vertex) {
         if (!$this->hasVertex($vertex)) {
             throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
         }
 
         foreach ($this->vertices[$vertex] as $adjacent_vertex) {
-            call_user_func($callback, $adjacent_vertex);
+            yield array($vertex, $adjacent_vertex) => $adjacent_vertex;
         }
-
-        return $this;
     }
 
 

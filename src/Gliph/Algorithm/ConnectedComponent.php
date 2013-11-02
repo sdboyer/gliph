@@ -35,15 +35,15 @@ class ConnectedComponent {
             $stack[] = $vertex;
             $counter++;
 
-            $graph->eachAdjacent($vertex, function ($to) use (&$visit, $vertex, $indices, $lowlimits, &$stack) {
-                if (!$indices->contains($to)) {
-                    $visit($to);
-                    $lowlimits[$vertex] = min($lowlimits[$vertex], $lowlimits[$to]);
+            foreach ($graph->eachAdjacent($vertex) as $edge => $head) {
+                if (!$indices->contains($head)) {
+                    $visit($head);
+                    $lowlimits[$vertex] = min($lowlimits[$vertex], $lowlimits[$head]);
                 }
-                else if (in_array($to, $stack)) {
-                    $lowlimits[$vertex] = min($lowlimits[$vertex], $indices[$to]);
+                else if (in_array($head, $stack)) {
+                    $lowlimits[$vertex] = min($lowlimits[$vertex], $indices[$head]);
                 }
-            });
+            }
 
             if ($lowlimits[$vertex] === $indices[$vertex]) {
                 $visitor->newComponent();

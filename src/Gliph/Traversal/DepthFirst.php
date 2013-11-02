@@ -63,10 +63,10 @@ class DepthFirst {
 
                 $visitor->onStartVertex($vertex, $visit);
 
-                $graph->eachAdjacent($vertex, function($to) use ($vertex, &$visit, $visitor) {
-                    $visitor->onExamineEdge($vertex, $to, $visit);
-                    $visit($to);
-                });
+                foreach ($graph->eachAdjacent($vertex) as $head) {
+                    $visitor->onExamineEdge($vertex, $head, $visit);
+                    $visit($head);
+                }
 
                 $visitor->onFinishVertex($vertex, $visit);
 
@@ -75,6 +75,7 @@ class DepthFirst {
             }
         };
 
+        // TODO experiment with adding a generator-producing visitor method that yields the queue here
         while (!$queue->isEmpty()) {
             $vertex = $queue->shift();
             $visit($vertex);

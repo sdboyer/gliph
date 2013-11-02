@@ -59,27 +59,31 @@ interface Graph {
     public function removeEdge($a, $b);
 
     /**
-     * Calls the callback with each vertex adjacent to the provided vertex.
+     * Loops over each vertex that is adjacent to the given vertex.
      *
      * The meaning of "adjacency" depends on the type of graph. In a directed
      * graph, it refers to all the out-edges of the provided vertex. In an
      * undirected graph, in-edges and out-edges are the same, so this method
      * will iterate over both.
      *
+     * The generator yields an edge as key and the adjacent vertex as value. The
+     * form by which the edge is represented may vary from one graph
+     * implementation to another, but the representation should be the same as
+     * produced by the graph's eachEdge() implementation.
+     *
+     * @see Graph::eachEdge()
+     *
      * @param object $vertex
      *   The vertex whose out-edges should be visited.
-     * @param callback $callback
-     *   The callback to fire. For each vertex found along an out-edge, this
-     *   callback will be called with that vertex as the sole parameter.
      *
-     * @return Graph
-     *   The current graph instance.
+     * @return \Generator
+     *   A generator that yields the edge as key and adjacent vertex as value.
      *
      * @throws NonexistentVertexException
      *   Thrown if the vertex provided in the first parameter is not present in
      *   the graph.
      */
-    public function eachAdjacent($vertex, $callback);
+    public function eachAdjacent($vertex);
 
     /**
      * Returns a generator that loops through each vertex in the graph.
