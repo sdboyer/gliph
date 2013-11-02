@@ -12,8 +12,6 @@ Gliph aims for both sane interfaces and performant implementation - at least, as
 
 Gliph has several components that work together: graph classes, algorithms, and visitors. Generally speaking, Gliph is patterned after the [C++ Boost Graph Library](http://www.boost.org/libs/graph/doc); reading their documentation can yield a lot of insight into how Gliph is intended to work.
 
-Note that Gliph is currently written for compatibility with PHP 5.3, but it is intended to port the library to PHP 5.5. The availability of traits, non-scalar keys in iterators, and generators will considerably change and improve both the internal and public-facing implementations.
-
 ### Graphs
 
 There are a number of different strategies for representing graphs; these strategies are more or less efficient depending on certain properties the graph, and what needs to be done to the graph. The approach taken in Gliph is to offer a roughly consistent 'Graph' interface that is common to all these different strategies. The strategies will have varying levels of efficiency at meeting this common interface, so it is the responsibility of the user to select a graph implementation that is appropriate for their use case. This approach draws heavily from the [taxonomy of graphs](http://www.boost.org/doc/libs/1_54_0/libs/graph/doc/graph_concepts.html) established by the BGL.
