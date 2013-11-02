@@ -51,9 +51,9 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
         $this->g->addEdge($this->v['b'], $this->v['c']);
 
         $found = array();
-        $this->g->eachEdge(function ($edge) use (&$found) {
+        foreach ($this->g->eachEdge() as $edge) {
             $found[] = $edge;
-        });
+        }
 
         $this->assertCount(2, $found);
         $this->assertEquals(array($this->v['a'], $this->v['b']), $found[0]);

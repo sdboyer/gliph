@@ -95,12 +95,12 @@ class DepthFirst {
         $incomings = new \SplObjectStorage();
         $queue = new \SplQueue();
 
-        $graph->eachEdge(function ($edge) use (&$incomings) {
+        foreach ($graph->eachEdge() as $edge) {
             if (!isset($incomings[$edge[1]])) {
                 $incomings[$edge[1]] = new \SplObjectStorage();
             }
             $incomings[$edge[1]]->attach($edge[0]);
-        });
+        }
 
         // Prime the queue with vertices that have no incoming edges.
         foreach ($graph->eachVertex() as $vertex => $outgoing) {

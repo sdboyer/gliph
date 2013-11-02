@@ -51,16 +51,11 @@ class DirectedAdjacencyList extends AdjacencyList implements DirectedGraph {
     /**
      * {@inheritdoc}
      */
-    public function eachEdge($callback) {
-        $edges = array();
-        $this->fev(function ($from, $outgoing) use (&$edges) {
-            foreach ($outgoing as $to) {
-                $edges[] = array($from, $to);
+    public function eachEdge() {
+        foreach ($this->eachVertex() as $tail => $outgoing) {
+            foreach ($outgoing as $head) {
+                yield array($tail, $head);
             }
-        });
-
-        foreach ($edges as $edge) {
-            call_user_func($callback, $edge);
         }
     }
 
@@ -69,9 +64,9 @@ class DirectedAdjacencyList extends AdjacencyList implements DirectedGraph {
      */
     public function transpose() {
         $graph = new self();
-        $this->eachEdge(function($edge) use (&$graph) {
+        foreach ($this->eachEdge() as $edge) {
             $graph->addDirectedEdge($edge[1], $edge[0]);
-        });
+        }
 
         return $graph;
     }

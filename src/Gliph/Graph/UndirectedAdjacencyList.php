@@ -47,20 +47,15 @@ class UndirectedAdjacencyList extends AdjacencyList implements UndirectedGraph {
     /**
      * {@inheritdoc}
      */
-    public function eachEdge($callback) {
-        $edges = array();
+    public function eachEdge() {
         $complete = new \SplObjectStorage();
-        $this->fev(function ($a, $adjacent) use (&$edges, &$complete) {
-            foreach ($adjacent as $b) {
-                if (!$complete->contains($b)) {
-                    $edges[] = array($a, $b);
+        foreach ($this->eachVertex() as $v => $adjacent) {
+            foreach ($adjacent as $a) {
+                if (!$complete->contains($a)) {
+                    yield array($v, $a);
                 }
             }
-            $complete->attach($a);
-        });
-
-        foreach ($edges as $edge) {
-            call_user_func($callback, $edge);
+            $complete->attach($v);
         }
     }
 }

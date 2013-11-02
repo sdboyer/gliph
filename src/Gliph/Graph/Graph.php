@@ -92,19 +92,20 @@ interface Graph {
     public function eachVertex();
 
     /**
-     * Calls the provided callback for each edge in the graph.
+     * Loops over each edge in the graph via a generator.
      *
-     * @param $callback
-     *   The callback is called once for each unique edge in the graph. A single
-     *   parameter is provided: a 2-tuple (indexed array with two elements),
-     *   where the first element is the first vertex (in a directed graph, the
-     *   tail) and the second element is the second vertex (in a directed graph,
-     *   the head).
+     * Different graphs may represent the edge in different ways. A graph with a
+     * simple edge concept - e.g., no edge weighting or typing, etc. - may
+     * represent the edge as a 2-tuple (an indexed array with two elements).
+     * More complex edges may be represented as an object. If no additional
+     * information is provided by the method implementation's phpdoc, a 2-tuple
+     * should be assumed.
      *
-     * @return Graph
-     *   The current graph instance.
+     * @return \Generator
+     *   A generator that produces a single value representing an edge on each
+     *   iteration.
      */
-    public function eachEdge($callback);
+    public function eachEdge();
 
     /**
      * Indicates whether or not the provided vertex is present in the graph.
