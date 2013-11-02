@@ -37,6 +37,7 @@ For example, a ```DepthFirst``` visitor might be used to calculate vertex reach,
 Lots. But, to start with:
 
 - Port to, or provide a parallel implementation in, PHP 5.5. Generators and non-scalar keys from iterators make this all SO much better. In doing that, also shift as much over to traits as possible.
+  (ONGOING in this branch)
 - Implement a generic breadth-first algorithm and its corresponding visitors.
 - Implement a generic iterative deepening depth-first algorithm, and its corresponding visitors.
 - Implement other popular connected components algorithms, as well as some shortest path algorithms (starting with Dijkstra)
