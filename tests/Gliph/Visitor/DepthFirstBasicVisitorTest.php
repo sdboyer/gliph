@@ -86,7 +86,6 @@ class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase
      * @covers ::onFinishVertex
      * @covers ::endTraversal
      * @covers ::getReachable
-     * @covers ::getTsl
      */
     public function testTraversalWithStartPoint() {
         DepthFirst::traverse($this->g, $this->vis, $this->v['a']);
@@ -94,30 +93,6 @@ class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase
         $this->assertCount(2, $this->vis->getReachable($this->v['b']));
         $this->assertCount(0, $this->vis->getReachable($this->v['c']));
         $this->assertCount(0, $this->vis->getReachable($this->v['d']));
-
-        // Not the greatest test since we're implicitly locking in to one of
-        // two valid TSL solutions - but that's linked to the determinism in
-        // the ordering of how the graph class stores vertices, which is a
-        // much bigger problem than can be solved right here. So, good enough.
-        $this->assertEquals(array($this->v['c'], $this->v['d'], $this->v['b'], $this->v['a']), $this->vis->getTsl());
-    }
-
-    /**
-     * @expectedException \Gliph\Exception\RuntimeException
-     * @covers ::onBackEdge
-     * @covers ::onInitializeVertex
-     */
-    public function testErrorOnCycle() {
-        $this->g->addDirectedEdge($this->v['d'], $this->v['b']);
-        DepthFirst::traverse($this->g, $this->vis);
-    }
-
-    /**
-     * @covers ::getReachable
-     */
-    public function testReachableOnUnknownVertex() {
-        DepthFirst::traverse($this->g, $this->vis, $this->v['a']);
-        $this->assertFalse($this->vis->getReachable($this->v['e']));
     }
 
     /**
@@ -131,5 +106,14 @@ class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase
         $this->assertSame(array($c, $d), $this->vis->getReachable($b));
         $this->assertSame(array(), $this->vis->getReachable($c));
         $this->assertSame(array(), $this->vis->getReachable($d));
+    }
+
+    /**
+     * @depends testReachable
+     * @covers ::getReachable
+     */
+    public function testReachableOnUnknownVertex() {
+        DepthFirst::traverse($this->g, $this->vis, $this->v['a']);
+        $this->assertFalse($this->vis->getReachable($this->v['e']));
     }
 }
