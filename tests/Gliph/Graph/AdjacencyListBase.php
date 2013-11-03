@@ -21,25 +21,14 @@ class AdjacencyListBase extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function doCheckVerticesEqual($vertices, AdjacencyList $graph = null) {
-        $found = array();
-        $graph = is_null($graph) ? $this->g : $graph;
-
-        foreach ($graph->eachVertex() as $vertex => $outgoing) {
-            $found[] = $vertex;
-        }
-
-        $this->assertEquals($vertices, $found);
-    }
-
-    public function doCheckVertexCount($count, AdjacencyList $graph = null) {
-        $found = array();
-        $graph = is_null($graph) ? $this->g : $graph;
-
-        foreach ($graph->eachVertex() as $vertex => $outgoing) {
-            $found[] = $vertex;
-        }
-
-        $this->assertCount($count, $found);
+    /**
+     * Asserts that an AdjacencyList contains the expected number of vertices.
+     *
+     * @param int $expectedCount
+     * @param AdjacencyList $graph
+     * @param string $message
+     */
+    public function assertVertexCount($expectedCount, AdjacencyList $graph, $message = '') {
+        $this->assertAttributeCount($expectedCount, 'vertices', $graph);
     }
 }

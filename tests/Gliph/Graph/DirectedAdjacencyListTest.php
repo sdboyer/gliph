@@ -2,6 +2,9 @@
 
 namespace Gliph\Graph;
 
+/**
+ * @coversDefaultClass \Gliph\Graph\DirectedAdjacencyList
+ */
 class DirectedAdjacencyListTest extends AdjacencyListBase {
 
     /**
@@ -14,56 +17,90 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
         $this->g = new DirectedAdjacencyList();
     }
 
-
+    /**
+     * Implicitly depends on AdjacencyList::addVertex.
+     *
+     * @covers ::addDirectedEdge
+     */
     public function testAddDirectedEdge() {
-        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
+        extract($this->v);
+        $this->g->addDirectedEdge($a, $b);
 
-        $this->doCheckVerticesEqual(array($this->v['a'], $this->v['b']), $this->g);
+        $this->assertAttributeContains($a, 'vertices', $this->g);
+        $this->assertAttributeContains($b, 'vertices', $this->g);
+        $this->assertVertexCount(2, $this->g);
     }
 
-    public function testRemoveVertex() {
-        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
-        $this->doCheckVertexCount(2);
+    /**
+     * @depends testAddDirectedEdge
+     * @covers ::eachAdjacent
+     */
+    public function testEachAdjacent() {
+        extract($this->v);
+        $this->g->addDirectedEdge($a, $b);
+        $this->g->addDirectedEdge($a, $c);
 
-        $this->g->removeVertex($this->v['b']);
-        $this->doCheckVertexCount(1);
+        $found = array();
+        foreach ($this->g->eachAdjacent($a) as $head) {
+            $found[] = $head;
+        }
+        $this->assertEquals(array($b, $c), $found);
+
+        $found = array();
+        foreach ($this->g->eachAdjacent($b) as $head) {
+            $found[] = $head;
+        }
+        $this->assertEmpty($found);
+
+        foreach ($this->g->eachAdjacent($c) as $head) {
+            $found[] = $head;
+        }
+        $this->assertEmpty($found);
+    }
+
+    /**
+     * @depends testAddDirectedEdge
+     * @depends testEachAdjacent
+     * @covers ::removeVertex
+     */
+    public function testRemoveVertex() {
+        extract($this->v);
+        $this->g->addDirectedEdge($a, $b);
+        $this->assertVertexCount(2, $this->g);
+
+        $this->g->removeVertex($b);
+        $this->assertVertexCount(1, $this->g);
 
         // Ensure that b was correctly removed from a's outgoing edges
         $found = array();
-        $this->g->eachAdjacent($this->v['a'], function($to) use (&$found) {
-            $found[] = $to;
-        });
-
-        $this->assertEquals(array(), $found);
-    }
-
-
-    public function testRemoveEdge() {
-        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
-        $this->doCheckVerticesEqual(array($this->v['a'], $this->v['b']), $this->g);
-
-        $this->g->removeEdge($this->v['a'], $this->v['b']);
-        $this->doCheckVertexCount(2);
-
-        $this->assertTrue($this->g->hasVertex($this->v['a']));
-        $this->assertTrue($this->g->hasVertex($this->v['b']));
-    }
-
-    public function testEachAdjacent() {
-        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
-        $this->g->addDirectedEdge($this->v['a'], $this->v['c']);
-
-        $found = array();
-        foreach ($this->g->eachAdjacent($this->v['a']) as $edge => $head) {
+        foreach ($this->g->eachAdjacent($a) as $edge => $head) {
             $found[] = $head;
         }
 
-        $this->assertEquals(array($this->v['b'], $this->v['c']), $found);
+        $this->assertEmpty($found);
     }
 
+    /**
+     * @depends testAddDirectedEdge
+     * @covers ::removeEdge
+     */
+    public function testRemoveEdge() {
+        extract($this->v);
+        $this->g->addDirectedEdge($a, $b);
+        $this->g->removeEdge($a, $b);
+
+        $this->assertVertexCount(2, $this->g);
+    }
+
+    /**
+     * @depends testAddDirectedEdge
+     * @depends testEachAdjacent
+     * @covers ::eachEdge
+     */
     public function testEachEdge() {
-        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
-        $this->g->addDirectedEdge($this->v['a'], $this->v['c']);
+        extract($this->v);
+        $this->g->addDirectedEdge($a, $b);
+        $this->g->addDirectedEdge($a, $c);
 
         $found = array();
         foreach ($this->g->eachEdge() as $edge) {
@@ -71,29 +108,44 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
         }
 
         $this->assertCount(2, $found);
-        $this->assertEquals(array($this->v['a'], $this->v['b']), $found[0]);
-        $this->assertEquals(array($this->v['a'], $this->v['c']), $found[1]);
-    }
-
-    public function testTranspose() {
-        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
-        $this->g->addDirectedEdge($this->v['a'], $this->v['c']);
-
-        $transpose = $this->g->transpose();
-
-        $this->doCheckVertexCount(3, $transpose);
-        $this->doCheckVerticesEqual(array($this->v['b'], $this->v['a'], $this->v['c']), $transpose);
+        $this->assertEquals(array($a, $b), $found[0]);
+        $this->assertEquals(array($a, $c), $found[1]);
     }
 
     /**
-     * @expectedException Gliph\Exception\NonexistentVertexException
+     * @depends testAddDirectedEdge
+     * @depends testEachEdge
+     * @covers ::transpose
+     */
+    public function testTranspose() {
+        extract($this->v);
+        $this->g->addDirectedEdge($a, $b);
+        $this->g->addDirectedEdge($a, $c);
+
+        $transpose = $this->g->transpose();
+
+        $this->assertVertexCount(3, $transpose);
+
+        $found = array();
+        foreach ($transpose->eachEdge() as $edge) {
+            $found[] = $edge;
+        }
+
+        $this->assertCount(2, $found);
+        $this->assertContains(array($b, $a), $found);
+        $this->assertContains(array($c, $a), $found);
+    }
+
+    /**
+     * @expectedException \Gliph\Exception\NonexistentVertexException
+     * @covers ::removeVertex
      */
     public function testRemoveNonexistentVertex() {
         $this->g->removeVertex($this->v['a']);
     }
 
     /**
-     * @covers \Gliph\Graph\DirectedAdjacencyList::isAcyclic()
+     * @covers ::isAcyclic()
      */
     public function testIsAcyclic() {
         $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
@@ -105,13 +157,20 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
     }
 
     /**
-     * @covers \Gliph\Graph\DirectedAdjacencyList::getCycles()
+     * This is primarily a test of the Tarjan SCC algo, but the coverage scoping
+     * ensures that we are only focused on the graph's method for returning
+     * correct outputs.
+     *
+     * @covers ::getCycles()
      */
     public function testGetCycles() {
-        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
-        $this->g->addDirectedEdge($this->v['b'], $this->v['c']);
-        $this->g->addDirectedEdge($this->v['c'], $this->v['a']);
+        extract($this->v);
+        $this->g->addDirectedEdge($a, $b);
+        $this->g->addDirectedEdge($b, $c);
 
+        $this->assertEmpty($this->g->getCycles());
+
+        $this->g->addDirectedEdge($c, $a);
         $this->assertEquals(array(array($this->v['c'], $this->v['b'], $this->v['a'])), $this->g->getCycles());
     }
 }

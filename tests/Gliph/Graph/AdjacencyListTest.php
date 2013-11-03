@@ -2,6 +2,9 @@
 
 namespace Gliph\Graph;
 
+/**
+ * @coversDefaultClass \Gliph\Graph\AdjacencyList
+ */
 class AdjacencyListTest extends AdjacencyListBase {
 
     protected $v = array();
@@ -13,68 +16,85 @@ class AdjacencyListTest extends AdjacencyListBase {
 
     public function setUp() {
         parent::setUp();
-        $this->g = $this->getMockForAbstractClass('\\Gliph\\Graph\\AdjacencyList');
+        $this->g = $this->getMockForAbstractClass('Gliph\Graph\AdjacencyList');
     }
 
     /**
-     * Tests that an exception is thrown if a string vertex is provided.
+     * Data provider of non-object types for invalidation.
      *
-     * @expectedException \Gliph\Exception\InvalidVertexTypeException
+     * @return array
      */
-    public function testAddStringVertex() {
-        $this->g->addVertex('a');
+    public function invalidVertexTypesProvider() {
+        return array(
+            array('a'),
+            array(1),
+            array((float) 1.1),
+            array(array()),
+            array(fopen(__FILE__, 'r')),
+            array(FALSE),
+            array(NULL),
+        );
     }
 
     /**
-     * Tests that an exception is thrown if an integer vertex is provided.
-     *
      * @expectedException \Gliph\Exception\InvalidVertexTypeException
+     * @dataProvider invalidVertexTypesProvider
      */
-    public function testAddIntegerVertex() {
-        $this->g->addVertex(1);
+    public function testInvalidVertexTypes($invalid_vertex) {
+        $this->g->addVertex($invalid_vertex);
     }
 
     /**
-     * Tests that an exception is thrown if a float vertex is provided.
-     *
-     * @expectedException \Gliph\Exception\InvalidVertexTypeException
+     * @covers ::addVertex
      */
-    public function testAddFloatVertex() {
-        $this->g->addVertex((float) 1);
-    }
-
-    /**
-     * Tests that an exception is thrown if an array vertex is provided.
-     *
-     * @expectedException \Gliph\Exception\InvalidVertexTypeException
-     */
-    public function testAddArrayVertex() {
-        $this->g->addVertex(array());
-    }
-
-    /**
-     * Tests that an exception is thrown if a resource vertex is provided.
-     *
-     * @expectedException \Gliph\Exception\InvalidVertexTypeException
-     */
-    public function testAddResourceVertex() {
-        $this->g->addVertex(fopen(__FILE__, 'r'));
-    }
-
     public function testAddVertex() {
-        $this->g->addVertex($this->v['a']);
+        extract($this->v);
+        $this->g->addVertex($a);
 
-        $this->assertTrue($this->g->hasVertex($this->v['a']));
-        $this->doCheckVertexCount(1, $this->g);
+        $this->assertAttributeContains($a, 'vertices', $this->g);
     }
 
+    /**
+     * @depends testAddVertex
+     * @covers ::eachVertex
+     * @covers ::fev
+     */
+    public function testEachVertex() {
+        extract($this->v);
+        $this->g->addVertex($a);
+        $this->g->addVertex($b);
+
+        $found = array();
+        foreach ($this->g->eachVertex() as $vertex => $adjacent) {
+            $found[] = $vertex;
+        }
+
+        $this->assertEquals(array($a, $b), $found);
+    }
+
+    /**
+     * @depends testAddVertex
+     * @covers ::hasVertex
+     */
+    public function testHasVertex() {
+        extract($this->v);
+        $this->assertFalse($this->g->hasVertex($a));
+
+        $this->g->addVertex($a);
+        $this->assertTrue($this->g->hasVertex($a));
+    }
+
+    /**
+     * @depends testHasVertex
+     * @covers ::addVertex
+     */
     public function testAddVertexTwice() {
         // Adding a vertex twice should be a no-op.
         $this->g->addVertex($this->v['a']);
         $this->g->addVertex($this->v['a']);
 
         $this->assertTrue($this->g->hasVertex($this->v['a']));
-        $this->doCheckVertexCount(1, $this->g);
+        $this->assertVertexCount(1, $this->g);
     }
 
     /**
