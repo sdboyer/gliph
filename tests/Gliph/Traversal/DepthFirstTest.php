@@ -2,12 +2,13 @@
 
 namespace Gliph\Traversal;
 
-
-use Gliph\Exception\NonexistentVertexException;
 use Gliph\Graph\DirectedAdjacencyList;
 use Gliph\TestVertex;
 use Gliph\Visitor\DepthFirstNoOpVisitor;
 
+/**
+ * @coversDefaultClass \Gliph\Traversal\DepthFirst
+ */
 class DepthFirstTest extends \PHPUnit_Framework_TestCase {
 
     /**
@@ -55,7 +56,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers \Gliph\Traversal\DepthFirst::traverse
+     * @covers ::traverse
      */
     public function testBasicAcyclicDepthFirstTraversal() {
         $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
@@ -68,10 +69,8 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
         DepthFirst::traverse($this->g, $visitor);
     }
 
-
-
     /**
-     * @covers \Gliph\Traversal\DepthFirst::traverse
+     * @covers ::traverse
      */
     public function testDirectCycleDepthFirstTraversal() {
         extract($this->v);
@@ -85,7 +84,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers \Gliph\Traversal\DepthFirst::traverse
+     * @covers ::traverse
      */
     public function testIndirectCycleDepthFirstTraversal() {
         extract($this->v);
@@ -99,7 +98,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers \Gliph\Traversal\DepthFirst::traverse
+     * @covers ::traverse
      * @expectedException \Gliph\Exception\RuntimeException
      */
     public function testExceptionOnEmptyTraversalQueue() {
@@ -111,7 +110,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers \Gliph\Traversal\DepthFirst::traverse
+     * @covers ::traverse
      */
     public function testProvideQueueAsStartPoint() {
         extract($this->v);
@@ -132,7 +131,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers \Gliph\Traversal\DepthFirst::toposort
+     * @covers ::toposort
      * @expectedException \Gliph\Exception\RuntimeException
      *   Thrown by the visitor after adding a cycle to the graph.
      */

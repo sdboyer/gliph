@@ -4,6 +4,9 @@ namespace Gliph\Visitor;
 
 use Gliph\TestVertex;
 
+/**
+ * @coversDefaultClass \Gliph\Visitor\DepthFirstToposortVisitor
+ */
 class DepthFirstToposortVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase {
 
     /**
@@ -38,11 +41,21 @@ class DepthFirstToposortVisitorTest extends SimpleStatefulDepthFirstVisitorTestB
 
     /**
      * @expectedException \Gliph\Exception\RuntimeException
+     * @covers ::onBackEdge
      */
     public function testOnBackEdge() {
         $this->createInProgressVisitor()->onBackEdge(new \stdClass(), function() {});
     }
 
+    /**
+     * @covers ::onInitializeVertex
+     * @covers ::beginTraversal
+     * @covers ::onStartVertex
+     * @covers ::onExamineEdge
+     * @covers ::onFinishVertex
+     * @covers ::endTraversal
+     * @covers ::getTsl
+     */
     public function testGetTsl() {
         $a = new TestVertex('a');
         $b = new TestVertex('b');

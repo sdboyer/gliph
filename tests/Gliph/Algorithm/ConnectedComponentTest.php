@@ -10,10 +10,13 @@ namespace Gliph\Algorithm;
 use Gliph\Graph\DirectedAdjacencyList;
 use Gliph\TestVertex;
 
+/**
+ * @coversDefaultClass \Gliph\Algorithm\ConnectedComponent
+ */
 class ConnectedComponentTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @covers \Gliph\Algorithm\ConnectedComponent::tarjan_scc()
+     * @covers ::tarjan_scc()
      */
     public function testTarjanScc() {
         $a = new TestVertex('a');
