@@ -2,7 +2,9 @@
 
 namespace Gliph\Graph;
 
-
+/**
+ * @coversDefaultClass \Gliph\Graph\UndirectedAdjacencyList
+ */
 class UndirectedAdjacencyListTest extends AdjacencyListBase {
 
     /**
@@ -18,50 +20,42 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
         $this->g = new UndirectedAdjacencyList();
     }
 
-    public function testAddUndirectedEdge() {
-        $this->g->addEdge($this->v['a'], $this->v['b']);
+    /**
+     * @covers ::addEdge
+     */
+    public function testAddEdge() {
+        extract($this->v);
+        $this->g->addEdge($a, $b);
 
-        $this->doCheckVerticesEqual(array($this->v['a'], $this->v['b']));
+        $this->assertAttributeContains($a, 'vertices', $this->g);
+        $this->assertAttributeContains($b, 'vertices', $this->g);
+        $this->assertVertexCount(2, $this->g);
     }
 
+    /**
+     * @depends testAddEdge
+     * @covers ::removeVertex
+     */
     public function testRemoveVertex() {
-        $this->g->addEdge($this->v['a'], $this->v['b']);
+        extract($this->v);
+        $this->g->addEdge($a, $b);
 
-        $this->g->removeVertex(($this->v['a']));
-        $this->doCheckVertexCount(1);
+        $this->g->removeVertex($a);
+        $this->assertVertexCount(1, $this->g);
     }
 
-    public function testRemoveEdge() {
-        $this->g->addEdge($this->v['a'], $this->v['b']);
-        $this->g->addEdge($this->v['b'], $this->v['c']);
-
-        $this->g->removeEdge($this->v['b'], $this->v['c']);
-        $this->doCheckVertexCount(3);
-
-        $found = array();
-        $this->g->eachAdjacent($this->v['a'], function($adjacent) use (&$found) {
-            $found[] = $adjacent;
-        });
-
-        $this->assertEquals(array($this->v['b']), $found);
-    }
-
-    public function testEachEdge() {
-        $this->g->addEdge($this->v['a'], $this->v['b']);
-        $this->g->addEdge($this->v['b'], $this->v['c']);
-
-        $found = array();
-        $this->g->eachEdge(function ($edge) use (&$found) {
-            $found[] = $edge;
-        });
-
-        $this->assertCount(2, $found);
-        $this->assertEquals(array($this->v['a'], $this->v['b']), $found[0]);
-        $this->assertEquals(array($this->v['b'], $this->v['c']), $found[1]);
+    /**
+     * @depends testAddEdge
+     * @covers ::eachAdjacent
+     */
+    public function testEachAdjacent() {
+        extract($this->v);
+        $this->g->addEdge($a, $b);
+        $this->g->addEdge($b, $c);
 
         // Ensure bidirectionality of created edges
         $found = array();
-        $this->g->eachAdjacent($this->v['b'], function($adjacent) use (&$found) {
+        $this->g->eachAdjacent($b, function($adjacent) use (&$found) {
             $found[] = $adjacent;
         });
 
@@ -69,7 +63,47 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
     }
 
     /**
-     * @expectedException Gliph\Exception\NonexistentVertexException
+     * @depends testAddEdge
+     * @depends testEachAdjacent
+     * @covers ::removeEdge
+     */
+    public function testRemoveEdge() {
+        extract($this->v);
+        $this->g->addEdge($a, $b);
+        $this->g->addEdge($b, $c);
+
+        $this->g->removeEdge($b, $c);
+        $this->assertVertexCount(3, $this->g);
+
+        $found = array();
+        $this->g->eachAdjacent($a, function($adjacent) use (&$found) {
+            $found[] = $adjacent;
+        });
+
+        $this->assertEquals(array($b), $found);
+    }
+
+    /**
+     * @depends testAddEdge
+     * @covers ::eachEdge
+     */
+    public function testEachEdge() {
+        extract($this->v);
+        $this->g->addEdge($a, $b);
+        $this->g->addEdge($b, $c);
+
+        $found = array();
+        $this->g->eachEdge(function ($edge) use (&$found) {
+            $found[] = $edge;
+        });
+
+        $this->assertCount(2, $found);
+        $this->assertEquals(array($a, $b), $found[0]);
+        $this->assertEquals(array($b, $c), $found[1]);
+    }
+
+    /**
+     * @expectedException \Gliph\Exception\NonexistentVertexException
      */
     public function testRemoveNonexistentVertex() {
         $this->g->removeVertex($this->v['a']);
