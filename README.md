@@ -1,8 +1,8 @@
 # Gliph
 
-[![Build Status](https://travis-ci.org/sdboyer/gliph.png?branch=php53)](https://travis-ci.org/sdboyer/gliph)
+[![Build Status](https://travis-ci.org/sdboyer/gliph.png?branch=master)](https://travis-ci.org/sdboyer/gliph)
 [![Latest Stable Version](https://poser.pugx.org/sdboyer/gliph/v/stable.png)](https://packagist.org/packages/sdboyer/gliph)
-[![Coverage Status](https://coveralls.io/repos/sdboyer/gliph/badge.png?branch=php53)](https://coveralls.io/r/sdboyer/gliph?branch=php53)
+[![Coverage Status](https://coveralls.io/repos/sdboyer/gliph/badge.png?branch=master)](https://coveralls.io/r/sdboyer/gliph?branch=php53)
 
 Gliph is a **g**raph **li**brary for **PH**P. It provides graph building blocks and datastructures for use by other PHP applications. It is (currently) designed for use with in-memory graphs, not for interaction with a graph database like [Neo4J](http://neo4j.org/).
 
