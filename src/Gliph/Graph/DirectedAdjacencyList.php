@@ -8,7 +8,7 @@ use Gliph\Exception\RuntimeException;
 use Gliph\Traversal\DepthFirst;
 use Gliph\Visitor\DepthFirstToposortVisitor;
 
-class DirectedAdjacencyList extends AdjacencyList implements DirectedGraph {
+class DirectedAdjacencyList extends AdjacencyList implements MutableDirectedGraph {
 
     /**
      * {@inheritdoc}
