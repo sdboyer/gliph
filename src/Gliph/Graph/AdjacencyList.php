@@ -5,7 +5,24 @@ namespace Gliph\Graph;
 use Gliph\Exception\InvalidVertexTypeException;
 use Gliph\Exception\NonexistentVertexException;
 
-abstract class AdjacencyList implements Graph {
+/**
+ * A graph, represented as an adjacency list.
+ *
+ * Adjacency lists store vertices directly, and edges relative to the vertices
+ * they connect. That means there is no overall list of edges in the graph; only
+ * a list of the graph's vertices. In this implementation, that list is keyed by
+ * vertex, with the value being a list of all the vertices to which that vertex
+ * is adjacent - hence, "adjacency list."
+ *
+ * Consequently, this structure offers highly efficient access to vertices, but
+ * less efficient access to edges.
+ *
+ * In an undirected graph, the edges are stored in both vertices' adjacency
+ * lists. In a directed graph, only the out-edges are stored in each vertex's
+ * adjacency list. This makes accessing in-edge information in a directed graph
+ * highly inefficient.
+ */
+abstract class AdjacencyList implements MutableGraph {
 
     protected $vertices;
 
