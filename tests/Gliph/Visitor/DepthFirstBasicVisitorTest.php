@@ -8,6 +8,8 @@ use Gliph\Traversal\DepthFirst;
 
 /**
  * @coversDefaultClass \Gliph\Visitor\DepthFirstBasicVisitor
+ *
+ * TODO these are all integration tests; refactor to unit tests, or at least something closer
  */
 class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase {
 
