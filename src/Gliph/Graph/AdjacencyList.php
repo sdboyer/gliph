@@ -75,13 +75,4 @@ abstract class AdjacencyList implements MutableGraph {
     public function hasVertex($vertex) {
         return $this->vertices->contains($vertex);
     }
-
-    protected function fev($callback) {
-        foreach ($this->vertices as $vertex) {
-            $outgoing = $this->vertices->getInfo();
-            $callback($vertex, $outgoing);
-        }
-
-        return $this;
-    }
 }
