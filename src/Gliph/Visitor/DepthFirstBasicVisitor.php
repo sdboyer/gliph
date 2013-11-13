@@ -47,7 +47,7 @@ class DepthFirstBasicVisitor extends DepthFirstToposortVisitor {
 
         foreach ($this->active as $vertex) {
             // TODO this check makes this less efficient - find a better algo
-            if (!in_array($to, $this->paths[$vertex])) {
+            if (!in_array($to, $this->paths[$vertex], TRUE)) {
                 $path = $this->paths[$vertex];
                 $path[] = $to;
                 $this->paths[$vertex] = $path;
