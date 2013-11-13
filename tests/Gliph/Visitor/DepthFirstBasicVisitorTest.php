@@ -88,7 +88,7 @@ class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase
      * @covers ::getReachable
      */
     public function testTraversalWithStartPoint() {
-        DepthFirst::traverse($this->g, $this->vis, $this->v['a']);
+        DepthFirst::traverse($this->g, $this->vis);
         $this->assertCount(3, $this->vis->getReachable($this->v['a']));
         $this->assertCount(2, $this->vis->getReachable($this->v['b']));
         $this->assertCount(0, $this->vis->getReachable($this->v['c']));
