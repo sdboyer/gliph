@@ -3,7 +3,7 @@ language: php
 
 php:
   - 5.5
-  - hhvm
+  #- hhvm
 
 before_script:
   - composer self-update
