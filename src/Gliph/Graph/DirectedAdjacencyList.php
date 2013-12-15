@@ -34,9 +34,7 @@ class DirectedAdjacencyList extends AdjacencyList implements MutableDirectedGrap
         }
 
         foreach ($this->eachVertex() as $v => $outgoing) {
-            if ($outgoing->contains($vertex)) {
-                $outgoing->detach($vertex);
-            }
+            $outgoing->detach($vertex);
         }
         unset($this->vertices[$vertex]);
     }
