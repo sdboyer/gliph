@@ -23,8 +23,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::addDirectedEdge
      */
     public function testAddDirectedEdge() {
-        //list($a, $b) = $this->v;
-        extract($this->v);
+        list($a, $b) = array_values($this->v);
         $this->g->addDirectedEdge($a, $b);
 
         $this->assertAttributeContains($a, 'vertices', $this->g);
@@ -37,7 +36,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::eachAdjacent
      */
     public function testEachAdjacent() {
-        extract($this->v);
+        list($a, $b, $c) = array_values($this->v);
         $this->g->addDirectedEdge($a, $b);
         $this->g->addDirectedEdge($a, $c);
 
@@ -65,7 +64,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::removeVertex
      */
     public function testRemoveVertex() {
-        extract($this->v);
+        list($a, $b) = array_values($this->v);
         $this->g->addDirectedEdge($a, $b);
         $this->assertVertexCount(2, $this->g);
 
@@ -86,7 +85,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::removeEdge
      */
     public function testRemoveEdge() {
-        extract($this->v);
+        list($a, $b) = array_values($this->v);
         $this->g->addDirectedEdge($a, $b);
         $this->g->removeEdge($a, $b);
 
@@ -99,7 +98,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::eachEdge
      */
     public function testEachEdge() {
-        extract($this->v);
+        list($a, $b, $c) = array_values($this->v);
         $this->g->addDirectedEdge($a, $b);
         $this->g->addDirectedEdge($a, $c);
 
@@ -119,7 +118,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::transpose
      */
     public function testTranspose() {
-        extract($this->v);
+        list($a, $b, $c) = array_values($this->v);
         $this->g->addDirectedEdge($a, $b);
         $this->g->addDirectedEdge($a, $c);
 
@@ -149,11 +148,12 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::isAcyclic()
      */
     public function testIsAcyclic() {
-        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
-        $this->g->addDirectedEdge($this->v['b'], $this->v['c']);
+        list($a, $b, $c) = array_values($this->v);
+        $this->g->addDirectedEdge($a, $b);
+        $this->g->addDirectedEdge($b, $c);
         $this->assertTrue($this->g->isAcyclic());
 
-        $this->g->addDirectedEdge($this->v['c'], $this->v['a']);
+        $this->g->addDirectedEdge($c, $a);
         $this->assertFalse($this->g->isAcyclic());
     }
 

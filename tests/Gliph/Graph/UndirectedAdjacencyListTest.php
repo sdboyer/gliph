@@ -24,7 +24,7 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::addEdge
      */
     public function testAddEdge() {
-        extract($this->v);
+        list($a, $b) = array_values($this->v);
         $this->g->addEdge($a, $b);
 
         $this->assertAttributeContains($a, 'vertices', $this->g);
@@ -37,7 +37,7 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::removeVertex
      */
     public function testRemoveVertex() {
-        extract($this->v);
+        list($a, $b) = array_values($this->v);
         $this->g->addEdge($a, $b);
 
         $this->g->removeVertex($a);
@@ -49,7 +49,7 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::eachAdjacent
      */
     public function testEachAdjacent() {
-        extract($this->v);
+        list($a, $b, $c) = array_values($this->v);
         $this->g->addEdge($a, $b);
         $this->g->addEdge($b, $c);
 
@@ -68,7 +68,7 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::removeEdge
      */
     public function testRemoveEdge() {
-        extract($this->v);
+        list($a, $b, $c) = array_values($this->v);
         $this->g->addEdge($a, $b);
         $this->g->addEdge($b, $c);
 
@@ -88,7 +88,7 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::eachEdge
      */
     public function testEachEdge() {
-        extract($this->v);
+        list($a, $b, $c) = array_values($this->v);
         $this->g->addEdge($a, $b);
         $this->g->addEdge($b, $c);
 
