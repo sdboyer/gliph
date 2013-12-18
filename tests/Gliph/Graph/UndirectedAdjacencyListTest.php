@@ -108,4 +108,39 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
     public function testRemoveNonexistentVertex() {
         $this->g->removeVertex($this->v['a']);
     }
+
+    /**
+     * @depends testAddEdge
+     * @covers ::inDegree
+     */
+    public function testInDegree() {
+        list($a, $b, $c) = array_values($this->v);
+        $this->g->addEdge($a, $b);
+        $this->g->addEdge($b, $c);
+
+        $this->assertSame(1, $this->g->inDegree($a));
+        $this->assertSame(2, $this->g->inDegree($b));
+        $this->assertSame(1, $this->g->inDegree($c));
+
+        $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
+        $this->g->inDegree(new \stdClass());
+    }
+
+
+    /**
+     * @depends testAddEdge
+     * @covers ::outDegree
+     */
+    public function testOutDegree() {
+        list($a, $b, $c) = array_values($this->v);
+        $this->g->addEdge($a, $b);
+        $this->g->addEdge($b, $c);
+
+        $this->assertSame(1, $this->g->outDegree($a));
+        $this->assertSame(2, $this->g->outDegree($b));
+        $this->assertSame(1, $this->g->outDegree($c));
+
+        $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
+        $this->g->outDegree(new \stdClass());
+    }
 }
