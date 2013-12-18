@@ -23,6 +23,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::addDirectedEdge
      */
     public function testAddDirectedEdge() {
+        //list($a, $b) = $this->v;
         extract($this->v);
         $this->g->addDirectedEdge($a, $b);
 
@@ -164,7 +165,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::getCycles()
      */
     public function testGetCycles() {
-        extract($this->v);
+        list($a, $b, $c) = array_values($this->v);
         $this->g->addDirectedEdge($a, $b);
         $this->g->addDirectedEdge($b, $c);
 
@@ -172,5 +173,40 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
 
         $this->g->addDirectedEdge($c, $a);
         $this->assertEquals(array(array($this->v['c'], $this->v['b'], $this->v['a'])), $this->g->getCycles());
+    }
+
+    /**
+     * @depends testAddDirectedEdge
+     * @covers ::inDegree
+     */
+    public function testInDegree() {
+        list($a, $b, $c) = array_values($this->v);
+        $this->g->addDirectedEdge($a, $b);
+        $this->g->addDirectedEdge($b, $c);
+
+        $this->assertSame(0, $this->g->inDegree($a));
+        $this->assertSame(1, $this->g->inDegree($b));
+        $this->assertSame(1, $this->g->inDegree($c));
+
+        $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
+        $this->g->inDegree(new \stdClass());
+    }
+
+
+    /**
+     * @depends testAddDirectedEdge
+     * @covers ::outDegree
+     */
+    public function testOutDegree() {
+        list($a, $b, $c) = array_values($this->v);
+        $this->g->addDirectedEdge($a, $b);
+        $this->g->addDirectedEdge($b, $c);
+
+        $this->assertSame(1, $this->g->outDegree($a));
+        $this->assertSame(1, $this->g->outDegree($b));
+        $this->assertSame(0, $this->g->outDegree($c));
+
+        $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
+        $this->g->outDegree(new \stdClass());
     }
 }

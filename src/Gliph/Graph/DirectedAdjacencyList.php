@@ -90,5 +90,34 @@ class DirectedAdjacencyList extends AdjacencyList implements MutableDirectedGrap
         $scc = ConnectedComponent::tarjan_scc($this);
         return $scc->getConnectedComponents();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function inDegree($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in the graph, in-degree information cannot be provided', E_WARNING);
+        }
+
+        $count = 0;
+        foreach ($this->eachVertex() as $adjacent) {
+            if ($adjacent->contains($vertex)) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function outDegree($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in the graph, out-degree information cannot be provided', E_WARNING);
+        }
+
+        return $this->vertices[$vertex]->count();
+    }
 }
 

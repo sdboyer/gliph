@@ -58,4 +58,26 @@ class UndirectedAdjacencyList extends AdjacencyList implements MutableUndirected
             $complete->attach($v);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function inDegree($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in the graph, in-degree information cannot be provided', E_WARNING);
+        }
+
+        return $this->vertices[$vertex]->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function outDegree($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in the graph, out-degree information cannot be provided', E_WARNING);
+        }
+
+        return $this->vertices[$vertex]->count();
+    }
 }
