@@ -46,9 +46,14 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
 
         $expected = new \SplQueue();
         $expected->push($a);
-        $expected->push($b);
-        $expected->push($c);
-        $expected->push($d);
+
+        /*
+        // TODO this is more proper, but not doable in phpunit without binding tightly to vertex iteration order, which should be arbitrary.
+        $visitor->expects($this->once())->method('onInitializeVertex')->with($a, TRUE, $expected);
+        $visitor->expects($this->once())->method('onInitializeVertex')->with($b, FALSE, $expected);
+        $visitor->expects($this->once())->method('onInitializeVertex')->with($c, FALSE, $expected);
+        $visitor->expects($this->once())->method('onInitializeVertex')->with($d, FALSE, $expected);
+        */
 
         $queue = DepthFirst::find_sources($this->g, $visitor);
 
