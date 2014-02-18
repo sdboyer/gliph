@@ -40,7 +40,7 @@ class ConnectedComponent {
                     $visit($head);
                     $lowlimits[$vertex] = min($lowlimits[$vertex], $lowlimits[$head]);
                 }
-                else if (in_array($head, $stack)) {
+                else if (in_array($head, $stack, TRUE)) {
                     $lowlimits[$vertex] = min($lowlimits[$vertex], $indices[$head]);
                 }
             }
