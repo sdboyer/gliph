@@ -26,6 +26,15 @@ abstract class AdjacencyList implements MutableGraph {
 
     protected $vertices;
 
+    /**
+     * Count of the number of edges in the graph.
+     *
+     * We keep track because calculating it on demand is expensive.
+     *
+     * @var int
+     */
+    protected $size = 0;
+
     public function __construct() {
         $this->vertices = new \SplObjectStorage();
     }
@@ -76,6 +85,20 @@ abstract class AdjacencyList implements MutableGraph {
      */
     public function hasVertex($vertex) {
         return $this->vertices->contains($vertex);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function order() {
+        return $this->vertices->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function size() {
+        return $this->size;
     }
 
     protected function fev($callback) {

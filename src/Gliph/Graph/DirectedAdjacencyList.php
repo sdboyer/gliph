@@ -22,6 +22,10 @@ class DirectedAdjacencyList extends AdjacencyList implements MutableDirectedGrap
             $this->addVertex($head);
         }
 
+        if (!$this->vertices[$tail]->contains($head)) {
+            $this->size++;
+        }
+
         $this->vertices[$tail]->attach($head);
     }
 

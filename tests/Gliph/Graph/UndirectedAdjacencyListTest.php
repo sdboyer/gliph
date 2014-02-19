@@ -143,4 +143,15 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
         $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
         $this->g->outDegree(new \stdClass());
     }
+
+    /**
+     * @depends testAddEdge
+     * @covers ::size
+     */
+    public function testSize() {
+        list($a, $b) = array_values($this->v);
+        $this->g->addEdge($a, $b);
+
+        $this->assertEquals(1, $this->g->size());
+    }
 }

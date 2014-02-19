@@ -105,4 +105,15 @@ class AdjacencyListTest extends AdjacencyListBase {
     public function testEachAdjacentMissingVertex() {
         $this->g->eachAdjacent($this->v['a'], function() {});
     }
+
+    /**
+     * @depends testAddVertex
+     * @covers ::order
+     */
+    public function testOrder() {
+        extract($this->v);
+        $this->g->addVertex($a);
+
+        $this->assertEquals(1, $this->g->order());
+    }
 }
