@@ -104,4 +104,15 @@ class AdjacencyListTest extends AdjacencyListBase {
             $this->fail();
         }
     }
+
+    /**
+     * @depends testAddVertex
+     * @covers ::order
+     */
+    public function testOrder() {
+        extract($this->v);
+        $this->g->addVertex($a);
+
+        $this->assertEquals(1, $this->g->order());
+    }
 }

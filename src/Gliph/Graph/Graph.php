@@ -107,4 +107,18 @@ interface Graph {
      *
      */
     public function outDegree($vertex);
+
+    /**
+     * Returns the number of edges in the graph.
+     *
+     * @return int
+     */
+    public function size();
+
+    /**
+     * Returns the number of vertices in the graph.
+     *
+     * @return int
+     */
+    public function order();
 }

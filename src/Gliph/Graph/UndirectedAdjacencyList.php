@@ -18,6 +18,10 @@ class UndirectedAdjacencyList extends AdjacencyList implements MutableUndirected
             $this->addVertex($to);
         }
 
+        if (!$this->vertices[$from]->contains($to)) {
+            $this->size++;
+        }
+
         $this->vertices[$from]->attach($to);
         $this->vertices[$to]->attach($from);
     }

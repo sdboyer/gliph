@@ -209,4 +209,15 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
         $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
         $this->g->outDegree(new \stdClass());
     }
+
+    /**
+     * @depends testAddDirectedEdge
+     * @covers ::size
+     */
+    public function testSize() {
+        list($a, $b) = array_values($this->v);
+        $this->g->addDirectedEdge($a, $b);
+
+        $this->assertEquals(1, $this->g->size());
+    }
 }
