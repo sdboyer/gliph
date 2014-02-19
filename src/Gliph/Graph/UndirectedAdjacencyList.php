@@ -10,14 +10,7 @@ class UndirectedAdjacencyList extends AdjacencyList implements MutableUndirected
      * {@inheritdoc}
      */
     public function addEdge($from, $to) {
-        if (!$this->hasVertex($from)) {
-            $this->addVertex(($from));
-        }
-
-        if (!$this->hasVertex($to)) {
-            $this->addVertex($to);
-        }
-
+        $this->addVertex($from)->addVertex($to);
         if (!$this->vertices[$from]->contains($to)) {
             $this->size++;
         }

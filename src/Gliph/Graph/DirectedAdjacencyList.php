@@ -14,14 +14,7 @@ class DirectedAdjacencyList extends AdjacencyList implements MutableDirectedGrap
      * {@inheritdoc}
      */
     public function addDirectedEdge($tail, $head) {
-        if (!$this->hasVertex($tail)) {
-            $this->addVertex(($tail));
-        }
-
-        if (!$this->hasVertex($head)) {
-            $this->addVertex($head);
-        }
-
+        $this->addVertex($tail)->addVertex($head);
         if (!$this->vertices[$tail]->contains($head)) {
             $this->size++;
         }
