@@ -22,6 +22,6 @@
         "psr-4": { "Gliph\\": "src/" }
     },
     "autoload": {
-        "psr-4": { "Gliph\\": "tests/"}
+        "psr-4": { "Gliph\\": "tests"}
     }
 }
