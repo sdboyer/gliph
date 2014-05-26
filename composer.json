@@ -19,6 +19,9 @@
       "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "psr-0": { "Gliph": "src/" }
+        "psr-4": { "Gliph\\": "src/" }
+    },
+    "autoload": {
+        "psr-4": { "Gliph\\": "tests/"}
     }
 }
