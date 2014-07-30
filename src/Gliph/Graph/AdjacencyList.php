@@ -86,8 +86,9 @@ abstract class AdjacencyList implements MutableGraph {
      * {@inheritdoc}
      */
     public function eachVertex() {
-        foreach ($this->walkSplos($this->vertices) as $vertex) {
-            $adjacent = $this->vertices->getInfo();
+        $set = $this->walkSplos($this->vertices);
+        foreach ($set as $vertex) {
+            $adjacent = $set->getInfo();
             yield $vertex => $adjacent;
         }
         $this->walking->detach($this->vertices);
