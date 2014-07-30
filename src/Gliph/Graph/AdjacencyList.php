@@ -24,7 +24,19 @@ use Gliph\Exception\NonexistentVertexException;
  */
 abstract class AdjacencyList implements MutableGraph {
 
+    /**
+     * Contains the adjacency list of vertices.
+     *
+     * @var \SplObjectStorage
+     */
     protected $vertices;
+
+    /**
+     * Bookkeeper for nested iteration.
+     *
+     * @var \SplObjectStorage
+     */
+    protected $walking;
 
     /**
      * Count of the number of edges in the graph.
@@ -37,6 +49,7 @@ abstract class AdjacencyList implements MutableGraph {
 
     public function __construct() {
         $this->vertices = new \SplObjectStorage();
+        $this->walking = new \SplObjectStorage();
     }
 
     /**
@@ -62,9 +75,10 @@ abstract class AdjacencyList implements MutableGraph {
             throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
         }
 
-        foreach ($this->vertices[$vertex] as $adjacent_vertex) {
+        foreach ($this->walkSplos($this->vertices[$vertex]) as $adjacent_vertex) {
             yield array($vertex, $adjacent_vertex) => $adjacent_vertex;
         }
+        $this->walking->detach($this->vertices[$vertex]);
     }
 
 
@@ -72,10 +86,11 @@ abstract class AdjacencyList implements MutableGraph {
      * {@inheritdoc}
      */
     public function eachVertex() {
-        foreach ($this->vertices as $vertex) {
+        foreach ($this->walkSplos($this->vertices) as $vertex) {
             $adjacent = $this->vertices->getInfo();
             yield $vertex => $adjacent;
         }
+        $this->walking->detach($this->vertices);
     }
 
     /**
@@ -97,5 +112,24 @@ abstract class AdjacencyList implements MutableGraph {
      */
     public function size() {
         return $this->size;
+    }
+
+    /**
+     * Helper function to ensure SPLOS traversal pointer is not overridden.
+     *
+     * This would otherwise occur if overlapping calls are made to nested
+     *
+     * @param \SplObjectStorage $splos
+     *
+     * @return \SplObjectStorage
+     */
+    protected function walkSplos(\SplObjectStorage $splos) {
+        if ($this->walking->contains($splos)) {
+            return clone $splos;
+        }
+        else {
+            $this->walking->attach($splos);
+            return $splos;
+        }
     }
 }
