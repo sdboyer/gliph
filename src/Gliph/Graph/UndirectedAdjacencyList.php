@@ -48,11 +48,12 @@ class UndirectedAdjacencyList extends AdjacencyList implements MutableUndirected
         $edges = array();
         $complete = new \SplObjectStorage();
         $this->fev(function ($a, $adjacent) use (&$edges, &$complete) {
-            foreach ($adjacent as $b) {
+            foreach ($this->walkSplos($adjacent) as $b) {
                 if (!$complete->contains($b)) {
                     $edges[] = array($a, $b);
                 }
             }
+            $this->walking->detach($adjacent);
             $complete->attach($a);
         });
 
