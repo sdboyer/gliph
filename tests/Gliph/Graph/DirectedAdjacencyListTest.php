@@ -127,7 +127,6 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
             foreach ($this->g->eachEdge() as $edge) {
                 $found[] = $edge;
             }
-            $i = 'break';
         }
 
         $expected = array(
