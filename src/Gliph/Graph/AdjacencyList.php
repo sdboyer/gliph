@@ -129,11 +129,20 @@ abstract class AdjacencyList implements MutableGraph {
     /**
      * Helper function to ensure SPLOS traversal pointer is not overridden.
      *
-     * This would otherwise occur if overlapping calls are made to nested
+     * This would otherwise occur if nested calls are made that traverse the
+     * same SPLOS. This keeps track of which SPLOSes are currently being
+     * traversed, and if it's in use, it returns a clone.
+     *
+     * It is incumbent on the calling code to release the semaphore directly
+     * by calling $this->walking->detach($splos) when the traversal in
+     * question is complete. (This is very important!)
      *
      * @param \SplObjectStorage $splos
+     *   The SPLOS to traverse.
      *
      * @return \SplObjectStorage
+     *   A SPLOS that is safe for traversal; may or may not be a clone of the
+     *   original.
      */
     protected function walkSplos(\SplObjectStorage $splos) {
         if ($this->walking->contains($splos)) {
