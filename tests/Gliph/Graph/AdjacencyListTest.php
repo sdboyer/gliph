@@ -57,6 +57,7 @@ class AdjacencyListTest extends AdjacencyListBase {
     /**
      * @depends testAddVertex
      * @covers ::eachVertex
+     * @covers ::walkSplos
      */
     public function testEachVertex() {
         extract($this->v);
@@ -69,6 +70,16 @@ class AdjacencyListTest extends AdjacencyListBase {
         }
 
         $this->assertEquals(array($a, $b), $found);
+
+        // Now, test nested iteration
+        $found = array();
+        foreach ($this->g->eachVertex() as $vertex => $adjacent) {
+            $found[] = $vertex;
+            foreach ($this->g->eachVertex() as $vertex => $adjacent) {
+                $found[] = $vertex;
+            }
+        }
+        $this->assertEquals(array($a, $a, $b, $b, $a, $b), $found);
     }
 
     /**

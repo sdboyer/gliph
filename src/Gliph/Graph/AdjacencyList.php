@@ -24,7 +24,19 @@ use Gliph\Exception\NonexistentVertexException;
  */
 abstract class AdjacencyList implements MutableGraph {
 
+    /**
+     * Contains the adjacency list of vertices.
+     *
+     * @var \SplObjectStorage
+     */
     protected $vertices;
+
+    /**
+     * Bookkeeper for nested iteration.
+     *
+     * @var \SplObjectStorage
+     */
+    protected $walking;
 
     /**
      * Count of the number of edges in the graph.
@@ -37,6 +49,7 @@ abstract class AdjacencyList implements MutableGraph {
 
     public function __construct() {
         $this->vertices = new \SplObjectStorage();
+        $this->walking = new \SplObjectStorage();
     }
 
     /**
@@ -62,9 +75,10 @@ abstract class AdjacencyList implements MutableGraph {
             throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
         }
 
-        foreach ($this->vertices[$vertex] as $adjacent_vertex) {
+        foreach ($this->walkSplos($this->vertices[$vertex]) as $adjacent_vertex) {
             yield array($vertex, $adjacent_vertex) => $adjacent_vertex;
         }
+        $this->walking->detach($this->vertices[$vertex]);
     }
 
 
@@ -72,10 +86,12 @@ abstract class AdjacencyList implements MutableGraph {
      * {@inheritdoc}
      */
     public function eachVertex() {
-        foreach ($this->vertices as $vertex) {
-            $adjacent = $this->vertices->getInfo();
+        $set = $this->walkSplos($this->vertices);
+        foreach ($set as $vertex) {
+            $adjacent = $set->getInfo();
             yield $vertex => $adjacent;
         }
+        $this->walking->detach($this->vertices);
     }
 
     /**
@@ -97,5 +113,33 @@ abstract class AdjacencyList implements MutableGraph {
      */
     public function size() {
         return $this->size;
+    }
+
+    /**
+     * Helper function to ensure SPLOS traversal pointer is not overridden.
+     *
+     * This would otherwise occur if nested calls are made that traverse the
+     * same SPLOS. This keeps track of which SPLOSes are currently being
+     * traversed, and if it's in use, it returns a clone.
+     *
+     * It is incumbent on the calling code to release the semaphore directly
+     * by calling $this->walking->detach($splos) when the traversal in
+     * question is complete. (This is very important!)
+     *
+     * @param \SplObjectStorage $splos
+     *   The SPLOS to traverse.
+     *
+     * @return \SplObjectStorage
+     *   A SPLOS that is safe for traversal; may or may not be a clone of the
+     *   original.
+     */
+    protected function walkSplos(\SplObjectStorage $splos) {
+        if ($this->walking->contains($splos)) {
+            return clone $splos;
+        }
+        else {
+            $this->walking->attach($splos);
+            return $splos;
+        }
     }
 }

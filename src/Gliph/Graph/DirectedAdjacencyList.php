@@ -48,9 +48,10 @@ class DirectedAdjacencyList extends AdjacencyList implements MutableDirectedGrap
      */
     public function eachEdge() {
         foreach ($this->eachVertex() as $tail => $outgoing) {
-            foreach ($outgoing as $head) {
+            foreach ($this->walkSplos($outgoing) as $head) {
                 yield array($tail, $head);
             }
+            $this->walking->detach($outgoing);
         }
     }
 
