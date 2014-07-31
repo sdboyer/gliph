@@ -134,7 +134,7 @@ abstract class AdjacencyList implements MutableGraph {
      * traversed, and if it's in use, it returns a clone.
      *
      * It is incumbent on the calling code to release the semaphore directly
-     * by calling $this->walking->detach($splos) when the traversal in
+     * by calling $this->_cleanupSplosTraversal() when the traversal in
      * question is complete. (This is very important!)
      *
      * Only public because it needs to be called from within closures.
@@ -154,5 +154,15 @@ abstract class AdjacencyList implements MutableGraph {
             $this->walking->attach($splos);
             return $splos;
         }
+    }
+
+    /**
+     * Helper function to clean up SPLOSes after finishing traversal.
+     *
+     * @param \SplObjectStorage $splos
+     *   The SPLOS to mark as safe for traversal again.
+     */
+    public function _cleanupSplosTraversal(\SplObjectStorage $splos) {
+        $this->walking->detach($splos);
     }
 }

@@ -55,6 +55,7 @@ class DirectedAdjacencyList extends AdjacencyList implements MutableDirectedGrap
             foreach ($that->_getTraversableSplos($outgoing) as $to) {
                 $edges[] = array($from, $to);
             }
+            $that->_cleanupSplosTraversal($outgoing);
         });
 
         foreach ($edges as $edge) {

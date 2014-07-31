@@ -54,7 +54,7 @@ class UndirectedAdjacencyList extends AdjacencyList implements MutableUndirected
                     $edges[] = array($a, $b);
                 }
             }
-            $that->walking->detach($adjacent);
+            $that->_cleanupSplosTraversal($adjacent);
             $complete->attach($a);
         });
 
