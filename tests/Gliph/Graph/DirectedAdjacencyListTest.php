@@ -126,7 +126,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
         $g = $this->g;
         $this->g->eachEdge(function($edge) use (&$found, $g) {
               $found[] = $edge;
-              $this->g->eachEdge(function($edge) use (&$found) {
+              $g->eachEdge(function($edge) use (&$found) {
                     $found[] = $edge;
                 });
           });
