@@ -76,10 +76,11 @@ class AdjacencyListTest extends AdjacencyListBase {
 
         // Now, test nested iteration
         $found = array();
+        $g = $this->g;
         $this->g->eachVertex(
-                function ($vertex) use (&$found) {
+                function ($vertex) use (&$found, $g) {
                     $found[] = $vertex;
-                    $this->g->eachVertex(
+                    $g->eachVertex(
                             function ($vertex) use (&$found) {
                                 $found[] = $vertex;
                             }
