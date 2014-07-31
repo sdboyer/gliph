@@ -50,8 +50,9 @@ class DirectedAdjacencyList extends AdjacencyList implements MutableDirectedGrap
      */
     public function eachEdge($callback) {
         $edges = array();
-        $this->fev(function ($from, $outgoing) use (&$edges) {
-            foreach ($this->walkSplos($outgoing) as $to) {
+        $that = $this;
+        $this->fev(function ($from, $outgoing) use (&$edges, $that) {
+            foreach ($that->_getTraversableSplos($outgoing) as $to) {
                 $edges[] = array($from, $to);
             }
         });

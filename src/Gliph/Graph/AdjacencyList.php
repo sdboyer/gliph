@@ -75,7 +75,7 @@ abstract class AdjacencyList implements MutableGraph {
             throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
         }
 
-        foreach ($this->walkSplos($this->vertices[$vertex]) as $adjacent_vertex) {
+        foreach ($this->_getTraversableSplos($this->vertices[$vertex]) as $adjacent_vertex) {
             call_user_func($callback, $adjacent_vertex);
         }
         $this->walking->detach($this->vertices[$vertex]);
@@ -116,7 +116,7 @@ abstract class AdjacencyList implements MutableGraph {
     }
 
     protected function fev($callback) {
-        $set = $this->walkSplos($this->vertices);
+        $set = $this->_getTraversableSplos($this->vertices);
         foreach ($set as $vertex) {
             $outgoing = $set->getInfo();
             $callback($vertex, $outgoing);
@@ -137,6 +137,8 @@ abstract class AdjacencyList implements MutableGraph {
      * by calling $this->walking->detach($splos) when the traversal in
      * question is complete. (This is very important!)
      *
+     * Only public because it needs to be called from within closures.
+     *
      * @param \SplObjectStorage $splos
      *   The SPLOS to traverse.
      *
@@ -144,7 +146,7 @@ abstract class AdjacencyList implements MutableGraph {
      *   A SPLOS that is safe for traversal; may or may not be a clone of the
      *   original.
      */
-    protected function walkSplos(\SplObjectStorage $splos) {
+    public function _getTraversableSplos(\SplObjectStorage $splos) {
         if ($this->walking->contains($splos)) {
             return clone $splos;
         }
