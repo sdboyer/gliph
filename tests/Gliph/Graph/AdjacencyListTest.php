@@ -57,7 +57,7 @@ class AdjacencyListTest extends AdjacencyListBase {
     /**
      * @depends testAddVertex
      * @covers ::eachVertex
-     * @covers ::walkSplos
+     * @covers ::getTraversableSplos
      */
     public function testEachVertex() {
         extract($this->v);
