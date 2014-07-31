@@ -59,9 +59,10 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
 
         // nested
         $found = array();
-        $this->g->eachAdjacent($a, function($to) use (&$found, $a) {
+        $g = $this->g;
+        $this->g->eachAdjacent($a, function($to) use (&$found, $a, $g) {
               $found[] = $to;
-              $this->g->eachAdjacent($a, function($to) use (&$found) {
+              $g->eachAdjacent($a, function($to) use (&$found) {
                     $found[] = $to;
                 });
           });
@@ -122,7 +123,8 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
         $this->assertEquals(array($a, $c), $found[1]);
 
         $found = array();
-        $this->g->eachEdge(function($edge) use (&$found) {
+        $g = $this->g;
+        $this->g->eachEdge(function($edge) use (&$found, $g) {
               $found[] = $edge;
               $this->g->eachEdge(function($edge) use (&$found) {
                     $found[] = $edge;

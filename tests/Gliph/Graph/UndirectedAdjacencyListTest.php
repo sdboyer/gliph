@@ -63,9 +63,10 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
 
         // test nesting
         $found = array();
-        $this->g->eachAdjacent($b, function($to) use (&$found, $b) {
+        $g = $this->g;
+        $this->g->eachAdjacent($b, function($to) use (&$found, $b, $g) {
               $found[] = $to;
-              $this->g->eachAdjacent($b, function($to) use (&$found) {
+              $g->eachAdjacent($b, function($to) use (&$found) {
                     $found[] = $to;
                 });
           });
@@ -113,9 +114,10 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
         $this->assertEquals(array($b, $c), $found[1]);
 
         $found = array();
-        $this->g->eachEdge(function($edge) use (&$found) {
+        $g = $this->g;
+        $this->g->eachEdge(function($edge) use (&$found, $g) {
               $found[] = $edge;
-              $this->g->eachEdge(function($edge) use (&$found) {
+              $g->eachEdge(function($edge) use (&$found) {
                     $found[] = $edge;
                 });
           });
