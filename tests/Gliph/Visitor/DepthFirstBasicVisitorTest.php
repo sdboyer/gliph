@@ -43,10 +43,11 @@ class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase
         $this->g = new DirectedAdjacencyList();
         $this->vis = new DepthFirstBasicVisitor();
 
-        $this->g->addDirectedEdge($this->v['a'], $this->v['b']);
-        $this->g->addDirectedEdge($this->v['b'], $this->v['c']);
-        $this->g->addDirectedEdge($this->v['a'], $this->v['c']);
-        $this->g->addDirectedEdge($this->v['b'], $this->v['d']);
+        list($a, $b, $c, $d) = array_values($this->v);
+        $this->g->addDirectedEdge($a, $b);
+        $this->g->addDirectedEdge($b, $c);
+        $this->g->addDirectedEdge($a, $c);
+        $this->g->addDirectedEdge($b, $d);
     }
 
     /**
@@ -90,18 +91,20 @@ class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase
      * @covers ::getReachable
      */
     public function testTraversalWithStartPoint() {
+        list($a, $b, $c, $d) = array_values($this->v);
+
         DepthFirst::traverse($this->g, $this->vis);
-        $this->assertCount(3, $this->vis->getReachable($this->v['a']));
-        $this->assertCount(2, $this->vis->getReachable($this->v['b']));
-        $this->assertCount(0, $this->vis->getReachable($this->v['c']));
-        $this->assertCount(0, $this->vis->getReachable($this->v['d']));
+        $this->assertCount(3, $this->vis->getReachable($a));
+        $this->assertCount(2, $this->vis->getReachable($b));
+        $this->assertCount(0, $this->vis->getReachable($c));
+        $this->assertCount(0, $this->vis->getReachable($d));
     }
 
     /**
      * @covers ::getReachable
      */
     public function testReachable() {
-        extract($this->v);
+        list($a, $b, $c, $d) = array_values($this->v);
 
         DepthFirst::traverse($this->g, $this->vis);
         $this->assertSame(array($b, $c, $d), $this->vis->getReachable($a));
@@ -115,7 +118,8 @@ class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase
      * @covers ::getReachable
      */
     public function testReachableOnUnknownVertex() {
-        DepthFirst::traverse($this->g, $this->vis, $this->v['a']);
-        $this->assertFalse($this->vis->getReachable($this->v['e']));
+        list($a, $b, $c, $d, $e) = array_values($this->v);
+        DepthFirst::traverse($this->g, $this->vis, $a);
+        $this->assertFalse($this->vis->getReachable($e));
     }
 }

@@ -135,7 +135,8 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
      * @expectedException \Gliph\Exception\NonexistentVertexException
      */
     public function testRemoveNonexistentVertex() {
-        $this->g->removeVertex($this->v['a']);
+        list($a) = array_values($this->v);
+        $this->g->removeVertex($a);
     }
 
     /**
