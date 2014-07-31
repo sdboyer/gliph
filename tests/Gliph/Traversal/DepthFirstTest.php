@@ -27,7 +27,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
             'e' => new TestVertex('e'),
             'f' => new TestVertex('f'),
         );
-        extract($this->v);
+        list($a, $b, $c, $d) = array_values($this->v);
 
         $this->g->addDirectedEdge($a, $b);
         $this->g->addDirectedEdge($b, $c);
@@ -39,7 +39,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
      * @covers \Gliph\Traversal\DepthFirst::find_sources
      */
     public function testFindSources() {
-        extract($this->v);
+        list($a) = array_values($this->v);
 
         $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
         $visitor->expects($this->exactly(4))->method('onInitializeVertex');
@@ -78,7 +78,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
      * @covers ::traverse
      */
     public function testDirectCycleDepthFirstTraversal() {
-        extract($this->v);
+        list($a, $b, $c, $d) = array_values($this->v);
 
         $this->g->addDirectedEdge($d, $b);
 
@@ -92,7 +92,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
      * @covers ::traverse
      */
     public function testIndirectCycleDepthFirstTraversal() {
-        extract($this->v);
+        list($a, $b, $c, $d) = array_values($this->v);
 
         $this->g->addDirectedEdge($d, $a);
 
@@ -107,7 +107,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
      * @expectedException \Gliph\Exception\RuntimeException
      */
     public function testExceptionOnEmptyTraversalQueue() {
-        extract($this->v);
+        list($a, $b, $c, $d) = array_values($this->v);
 
         // Create a cycle that ensures there are no source vertices
         $this->g->addDirectedEdge($d, $a);
@@ -118,7 +118,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
      * @covers ::traverse
      */
     public function testProvideQueueAsStartPoint() {
-        extract($this->v);
+        list($a, $b, $c, $d, $e) = array_values($this->v);
 
         $queue = new \SplQueue();
         $queue->push($a);
@@ -141,7 +141,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
      *   Thrown by the visitor after adding a cycle to the graph.
      */
     public function testToposort() {
-        extract($this->v);
+        list($a, $b, $c, $d) = array_values($this->v);
 
         $this->assertEquals(array($c, $d, $b, $a), DepthFirst::toposort($this->g, $a));
 

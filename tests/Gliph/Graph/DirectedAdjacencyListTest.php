@@ -169,7 +169,8 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
      * @covers ::removeVertex
      */
     public function testRemoveNonexistentVertex() {
-        $this->g->removeVertex($this->v['a']);
+        list($a) = array_values($this->v);
+        $this->g->removeVertex($a);
     }
 
     /**
@@ -200,7 +201,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
         $this->assertEmpty($this->g->getCycles());
 
         $this->g->addDirectedEdge($c, $a);
-        $this->assertEquals(array(array($this->v['c'], $this->v['b'], $this->v['a'])), $this->g->getCycles());
+        $this->assertEquals(array(array($c, $b, $a)), $this->g->getCycles());
     }
 
     /**

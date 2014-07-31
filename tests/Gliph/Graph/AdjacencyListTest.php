@@ -48,7 +48,7 @@ class AdjacencyListTest extends AdjacencyListBase {
      * @covers ::addVertex
      */
     public function testAddVertex() {
-        extract($this->v);
+        list($a) = array_values($this->v);
         $this->g->addVertex($a);
 
         $this->assertAttributeContains($a, 'vertices', $this->g);
@@ -60,7 +60,7 @@ class AdjacencyListTest extends AdjacencyListBase {
      * @covers ::getTraversableSplos
      */
     public function testEachVertex() {
-        extract($this->v);
+        list($a, $b) = array_values($this->v);
         $this->g->addVertex($a);
         $this->g->addVertex($b);
 
@@ -87,7 +87,7 @@ class AdjacencyListTest extends AdjacencyListBase {
      * @covers ::hasVertex
      */
     public function testHasVertex() {
-        extract($this->v);
+        list($a) = array_values($this->v);
         $this->assertFalse($this->g->hasVertex($a));
 
         $this->g->addVertex($a);
@@ -99,11 +99,12 @@ class AdjacencyListTest extends AdjacencyListBase {
      * @covers ::addVertex
      */
     public function testAddVertexTwice() {
+        list($a) = array_values($this->v);
         // Adding a vertex twice should be a no-op.
-        $this->g->addVertex($this->v['a']);
-        $this->g->addVertex($this->v['a']);
+        $this->g->addVertex($a);
+        $this->g->addVertex($a);
 
-        $this->assertTrue($this->g->hasVertex($this->v['a']));
+        $this->assertTrue($this->g->hasVertex($a));
         $this->assertVertexCount(1, $this->g);
     }
 
@@ -111,7 +112,8 @@ class AdjacencyListTest extends AdjacencyListBase {
      * @expectedException \Gliph\Exception\NonexistentVertexException
      */
     public function testEachAdjacentMissingVertex() {
-        foreach ($this->g->eachAdjacent($this->v['a']) as $adjacent) {
+        list($a) = array_values($this->v);
+        foreach ($this->g->eachAdjacent($a) as $adjacent) {
             $this->fail();
         }
     }
@@ -121,7 +123,7 @@ class AdjacencyListTest extends AdjacencyListBase {
      * @covers ::order
      */
     public function testOrder() {
-        extract($this->v);
+        list($a) = array_values($this->v);
         $this->g->addVertex($a);
 
         $this->assertEquals(1, $this->g->order());
