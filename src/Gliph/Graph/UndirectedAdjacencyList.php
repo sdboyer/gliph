@@ -47,13 +47,14 @@ class UndirectedAdjacencyList extends AdjacencyList implements MutableUndirected
     public function eachEdge() {
         $complete = new \SplObjectStorage();
         foreach ($this->eachVertex() as $v => $adjacent) {
-            foreach ($this->getTraversableSplos($adjacent) as $a) {
+            $set = $this->getTraversableSplos($adjacent);
+            foreach ($set as $a) {
                 if (!$complete->contains($a)) {
                     yield array($v, $a);
                 }
             }
             $complete->attach($v);
-            $this->walking->detach($adjacent);
+            $this->walking->detach($set);
         }
     }
 

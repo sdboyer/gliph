@@ -75,10 +75,11 @@ abstract class AdjacencyList implements MutableGraph {
             throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
         }
 
-        foreach ($this->getTraversableSplos($this->vertices[$vertex]) as $adjacent_vertex) {
+        $set = $this->getTraversableSplos($this->vertices[$vertex]);
+        foreach ($set as $adjacent_vertex) {
             yield array($vertex, $adjacent_vertex) => $adjacent_vertex;
         }
-        $this->walking->detach($this->vertices[$vertex]);
+        $this->walking->detach($set);
     }
 
 
@@ -91,7 +92,7 @@ abstract class AdjacencyList implements MutableGraph {
             $adjacent = $set->getInfo();
             yield $vertex => $adjacent;
         }
-        $this->walking->detach($this->vertices);
+        $this->walking->detach($set);
     }
 
     /**

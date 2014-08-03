@@ -68,9 +68,13 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
             foreach ($this->g->eachAdjacent($b) as $edge => $adjacent) {
                 $found[] = $adjacent;
             }
+            foreach ($this->g->eachAdjacent($b) as $edge => $adjacent) {
+                $found[] = $adjacent;
+            }
         }
 
-        $this->assertCount(6, $found);
+        $this->assertCount(10, $found);
+        $this->assertEquals(array($a, $a, $c, $a, $c, $c, $a, $c, $a, $c), $found);
     }
 
     /**
@@ -118,15 +122,25 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
             foreach ($this->g->eachEdge() as $edge) {
                 $found[] = $edge;
             }
+            foreach ($this->g->eachEdge() as $edge) {
+                $found[] = $edge;
+            }
         }
 
-        $this->assertCount(6, $found);
-        $this->assertEquals(array($a, $b), $found[0]);
-        $this->assertEquals(array($a, $b), $found[1]);
-        $this->assertEquals(array($b, $c), $found[2]);
-        $this->assertEquals(array($b, $c), $found[3]);
-        $this->assertEquals(array($a, $b), $found[4]);
-        $this->assertEquals(array($b, $c), $found[5]);
+        $this->assertCount(10, $found);
+        $expected = array(
+            array($a, $b),
+            array($a, $b),
+            array($b, $c),
+            array($a, $b),
+            array($b, $c),
+            array($b, $c),
+            array($a, $b),
+            array($b, $c),
+            array($a, $b),
+            array($b, $c),
+        );
+        $this->assertEquals($expected, $found);
     }
 
     /**
