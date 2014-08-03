@@ -65,8 +65,11 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
               $g->eachAdjacent($a, function($to) use (&$found) {
                     $found[] = $to;
                 });
+              $g->eachAdjacent($a, function($to) use (&$found) {
+                    $found[] = $to;
+                });
           });
-        $this->assertEquals(array($b, $b, $c, $c, $b, $c), $found);
+        $this->assertEquals(array($b, $b, $c, $b, $c, $c, $b, $c, $b, $c), $found);
     }
 
     /**
@@ -129,12 +132,19 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
               $g->eachEdge(function($edge) use (&$found) {
                     $found[] = $edge;
                 });
+              $g->eachEdge(function($edge) use (&$found) {
+                    $found[] = $edge;
+                });
           });
 
         $expected = array(
             array($a, $b),
             array($a, $b),
             array($a, $c),
+            array($a, $b),
+            array($a, $c),
+            array($a, $c),
+            array($a, $b),
             array($a, $c),
             array($a, $b),
             array($a, $c),

@@ -49,12 +49,13 @@ class UndirectedAdjacencyList extends AdjacencyList implements MutableUndirected
         $complete = new \SplObjectStorage();
         $that = $this;
         $this->fev(function ($a, $adjacent) use (&$edges, &$complete, $that) {
-            foreach ($that->_getTraversableSplos($adjacent) as $b) {
+            $set = $that->_getTraversableSplos($adjacent);
+            foreach ($set as $b) {
                 if (!$complete->contains($b)) {
                     $edges[] = array($a, $b);
                 }
             }
-            $that->_cleanupSplosTraversal($adjacent);
+            $that->_cleanupSplosTraversal($set);
             $complete->attach($a);
         });
 

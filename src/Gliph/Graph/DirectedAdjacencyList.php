@@ -52,10 +52,11 @@ class DirectedAdjacencyList extends AdjacencyList implements MutableDirectedGrap
         $edges = array();
         $that = $this;
         $this->fev(function ($from, $outgoing) use (&$edges, $that) {
-            foreach ($that->_getTraversableSplos($outgoing) as $to) {
+            $set = $that->_getTraversableSplos($outgoing);
+            foreach ($set as $to) {
                 $edges[] = array($from, $to);
             }
-            $that->_cleanupSplosTraversal($outgoing);
+            $that->_cleanupSplosTraversal($set);
         });
 
         foreach ($edges as $edge) {
