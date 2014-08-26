@@ -63,7 +63,7 @@ class DepthFirst {
 
                 $visitor->onStartVertex($vertex, $visit);
 
-                foreach ($graph->eachAdjacent($vertex) as $head) {
+                foreach ($graph->eachAdjacentTo($vertex) as $head) {
                     $visitor->onExamineEdge($vertex, $head, $visit);
                     $visit($head);
                 }

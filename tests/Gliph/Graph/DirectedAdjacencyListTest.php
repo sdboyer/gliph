@@ -33,38 +33,38 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
 
     /**
      * @depends testAddDirectedEdge
-     * @covers ::eachAdjacent
+     * @covers ::eachAdjacentTo
      */
-    public function testEachAdjacent() {
+    public function testEachAdjacentTo() {
         list($a, $b, $c) = array_values($this->v);
         $this->g->addDirectedEdge($a, $b);
         $this->g->addDirectedEdge($a, $c);
 
         $found = array();
-        foreach ($this->g->eachAdjacent($a) as $head) {
+        foreach ($this->g->eachAdjacentTo($a) as $head) {
             $found[] = $head;
         }
         $this->assertEquals(array($b, $c), $found);
 
         $found = array();
-        foreach ($this->g->eachAdjacent($b) as $head) {
+        foreach ($this->g->eachAdjacentTo($b) as $head) {
             $found[] = $head;
         }
         $this->assertEmpty($found);
 
-        foreach ($this->g->eachAdjacent($c) as $head) {
+        foreach ($this->g->eachAdjacentTo($c) as $head) {
             $found[] = $head;
         }
         $this->assertEmpty($found);
 
         // nested
         $found = array();
-        foreach ($this->g->eachAdjacent($a) as $head) {
+        foreach ($this->g->eachAdjacentTo($a) as $head) {
             $found[] = $head;
-            foreach ($this->g->eachAdjacent($a) as $head) {
+            foreach ($this->g->eachAdjacentTo($a) as $head) {
                 $found[] = $head;
             }
-            foreach ($this->g->eachAdjacent($a) as $head) {
+            foreach ($this->g->eachAdjacentTo($a) as $head) {
                 $found[] = $head;
             }
         }
@@ -86,7 +86,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
 
         // Ensure that b was correctly removed from a's outgoing edges
         $found = array();
-        foreach ($this->g->eachAdjacent($a) as $edge => $head) {
+        foreach ($this->g->eachAdjacentTo($a) as $edge => $head) {
             $found[] = $head;
         }
 

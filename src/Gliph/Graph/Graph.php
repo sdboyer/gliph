@@ -13,29 +13,21 @@ interface Graph {
     /**
      * Loops over each vertex that is adjacent to the given vertex.
      *
-     * The meaning of "adjacency" depends on the type of graph. In a directed
-     * graph, it refers to all the out-edges of the provided vertex. In an
-     * undirected graph, in-edges and out-edges are the same, so this method
-     * will iterate over both.
+     * A vertex is adjacent to another vertex if they share an edge. Edge
+     * direction, if any, does not matter.
      *
-     * The generator yields an edge as key and the adjacent vertex as value. The
-     * form by which the edge is represented may vary from one graph
-     * implementation to another, but the representation should be the same as
-     * produced by the graph's eachEdge() implementation.
-     *
-     * @see Graph::eachEdge()
+     * The generator yields only a value: the adjacent vertex. The
      *
      * @param object $vertex
-     *   The vertex whose out-edges should be visited.
+     *   The vertex whose adjacent vertices should be visited.
      *
      * @return \Generator
-     *   A generator that yields the edge as key and adjacent vertex as value.
+     *   A generator that yields adjacent vertices as values.
      *
      * @throws NonexistentVertexException
-     *   Thrown if the vertex provided in the first parameter is not present in
-     *   the graph.
+     *   Thrown if the vertex provided is not present in the graph.
      */
-    public function eachAdjacent($vertex);
+    public function eachAdjacentTo($vertex);
 
     /**
      * Returns a generator that loops through each vertex in the graph.

@@ -46,16 +46,16 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
 
     /**
      * @depends testAddEdge
-     * @covers ::eachAdjacent
+     * @covers ::eachAdjacentTo
      */
-    public function testEachAdjacent() {
+    public function testEachAdjacentTo() {
         list($a, $b, $c) = array_values($this->v);
         $this->g->addEdge($a, $b);
         $this->g->addEdge($b, $c);
 
         // Ensure bidirectionality of created edges
         $found = array();
-        foreach ($this->g->eachAdjacent($b) as $edge => $adjacent) {
+        foreach ($this->g->eachAdjacentTo($b) as $edge => $adjacent) {
             $found[] = $adjacent;
         }
 
@@ -63,12 +63,12 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
 
         // test nesting
         $found = array();
-        foreach ($this->g->eachAdjacent($b) as $edge => $adjacent) {
+        foreach ($this->g->eachAdjacentTo($b) as $edge => $adjacent) {
             $found[] = $adjacent;
-            foreach ($this->g->eachAdjacent($b) as $edge => $adjacent) {
+            foreach ($this->g->eachAdjacentTo($b) as $edge => $adjacent) {
                 $found[] = $adjacent;
             }
-            foreach ($this->g->eachAdjacent($b) as $edge => $adjacent) {
+            foreach ($this->g->eachAdjacentTo($b) as $edge => $adjacent) {
                 $found[] = $adjacent;
             }
         }
@@ -91,7 +91,7 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
         $this->assertVertexCount(3, $this->g);
 
         $found = array();
-        foreach ($this->g->eachAdjacent($a) as $edge => $adjacent) {
+        foreach ($this->g->eachAdjacentTo($a) as $edge => $adjacent) {
             $found[] = $adjacent;
         }
 

@@ -70,7 +70,7 @@ abstract class AdjacencyList implements MutableGraph {
     /**
      * {@inheritdoc}
      */
-    public function eachAdjacent($vertex) {
+    public function eachAdjacentTo($vertex) {
         if (!$this->hasVertex($vertex)) {
             throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
         }
