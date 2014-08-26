@@ -77,7 +77,7 @@ abstract class AdjacencyList implements MutableGraph {
 
         $set = $this->getTraversableSplos($this->vertices[$vertex]);
         foreach ($set as $adjacent_vertex) {
-            yield array($vertex, $adjacent_vertex) => $adjacent_vertex;
+            yield $adjacent_vertex;
         }
         $this->walking->detach($set);
     }
