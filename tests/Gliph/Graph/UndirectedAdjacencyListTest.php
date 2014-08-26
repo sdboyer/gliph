@@ -79,7 +79,7 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
 
     /**
      * @depends testAddEdge
-     * @depends testEachAdjacent
+     * @depends testEachAdjacentTo
      * @covers ::removeEdge
      */
     public function testRemoveEdge() {

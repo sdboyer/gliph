@@ -73,7 +73,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
 
     /**
      * @depends testAddDirectedEdge
-     * @depends testEachAdjacent
+     * @depends testEachAdjacentTo
      * @covers ::removeVertex
      */
     public function testRemoveVertex() {
@@ -107,7 +107,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
 
     /**
      * @depends testAddDirectedEdge
-     * @depends testEachAdjacent
+     * @depends testEachAdjacentTo
      * @covers ::eachEdge
      */
     public function testEachEdge() {
