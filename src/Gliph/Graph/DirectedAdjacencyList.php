@@ -115,7 +115,7 @@ class DirectedAdjacencyList implements MutableDigraph {
     /**
      * {@inheritdoc}
      */
-    public function inDegree($vertex) {
+    public function inDegreeOf($vertex) {
         if (!$this->hasVertex($vertex)) {
             throw new NonexistentVertexException('Vertex is not in the graph, in-degree information cannot be provided', E_WARNING);
         }
@@ -133,12 +133,19 @@ class DirectedAdjacencyList implements MutableDigraph {
     /**
      * {@inheritdoc}
      */
-    public function outDegree($vertex) {
+    public function outDegreeOf($vertex) {
         if (!$this->hasVertex($vertex)) {
             throw new NonexistentVertexException('Vertex is not in the graph, out-degree information cannot be provided', E_WARNING);
         }
 
         return $this->vertices[$vertex]->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function degreeOf($vertex) {
+        return $this->inDegreeOf($vertex) + $this->outDegreeOf($vertex);
     }
 }
 

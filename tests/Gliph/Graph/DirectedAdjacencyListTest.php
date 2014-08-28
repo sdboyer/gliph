@@ -240,7 +240,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @depends testEnsureArc
-     * @covers ::inDegree
+     * @covers ::inDegreeOf
      */
     public function testInDegree() {
         list($a, $b, $c) = array_values($this->getTestVertices());
@@ -249,18 +249,18 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
         $g->ensureArc($a, $b);
         $g->ensureArc($b, $c);
 
-        $this->assertSame(0, $g->inDegree($a));
-        $this->assertSame(1, $g->inDegree($b));
-        $this->assertSame(1, $g->inDegree($c));
+        $this->assertSame(0, $g->inDegreeOf($a));
+        $this->assertSame(1, $g->inDegreeOf($b));
+        $this->assertSame(1, $g->inDegreeOf($c));
 
         $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
-        $g->inDegree(new \stdClass());
+        $g->inDegreeOf(new \stdClass());
     }
 
 
     /**
      * @depends testEnsureArc
-     * @covers ::outDegree
+     * @covers ::outDegreeOf
      */
     public function testOutDegree() {
         list($a, $b, $c) = array_values($this->getTestVertices());
@@ -269,12 +269,12 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
         $g->ensureArc($a, $b);
         $g->ensureArc($b, $c);
 
-        $this->assertSame(1, $g->outDegree($a));
-        $this->assertSame(1, $g->outDegree($b));
-        $this->assertSame(0, $g->outDegree($c));
+        $this->assertSame(1, $g->outDegreeOf($a));
+        $this->assertSame(1, $g->outDegreeOf($b));
+        $this->assertSame(0, $g->outDegreeOf($c));
 
         $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
-        $g->outDegree(new \stdClass());
+        $g->outDegreeOf(new \stdClass());
     }
 
     /**

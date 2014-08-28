@@ -279,40 +279,21 @@ trait GraphSpec {
 
     /**
      * @depends testEnsureEdge
-     * @covers ::inDegree
+     * @covers ::degreeOf
      */
-    public function testInDegree() {
+    public function testDegreeOf() {
         list($a, $b, $c) = array_values($this->getTestVertices());
         $g = $this->g();
 
         Util::ensureEdge($g, $a, $b);
         Util::ensureEdge($g, $b, $c);
 
-        $this->assertSame(1, $g->inDegree($a));
-        $this->assertSame(2, $g->inDegree($b));
-        $this->assertSame(1, $g->inDegree($c));
+        $this->assertSame(1, $g->degreeOf($a));
+        $this->assertSame(2, $g->degreeOf($b));
+        $this->assertSame(1, $g->degreeOf($c));
 
         $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
-        $g->inDegree(new \stdClass());
-    }
-
-    /**
-     * @depends testEnsureEdge
-     * @covers ::outDegree
-     */
-    public function testOutDegree() {
-        list($a, $b, $c) = array_values($this->getTestVertices());
-        $g = $this->g();
-
-        Util::ensureEdge($g, $a, $b);
-        Util::ensureEdge($g, $b, $c);
-
-        $this->assertSame(1, $g->outDegree($a));
-        $this->assertSame(2, $g->outDegree($b));
-        $this->assertSame(1, $g->outDegree($c));
-
-        $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
-        $g->outDegree(new \stdClass());
+        $g->degreeOf(new \stdClass());
     }
 
     /**
