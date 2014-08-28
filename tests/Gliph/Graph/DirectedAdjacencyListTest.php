@@ -12,11 +12,6 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     use GraphSpec;
     use ObjectVertices;
 
-    /**
-     * @var DirectedAdjacencyList
-     */
-    protected $g;
-
     public function setUp() {
         $this->getTestVertices();
         $this->g = new DirectedAdjacencyList();
@@ -27,11 +22,10 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Implicitly depends on AdjacencyList::ensureVertex.
-     *
+     * @depends testEnsureVertex
      * @covers ::ensureArc
      */
-    public function testAddArc() {
+    public function testEnsureArc() {
         list($a, $b) = array_values($this->v);
         $this->g->ensureArc($a, $b);
 
@@ -41,7 +35,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddArc
+     * @depends testEnsureArc
      * @covers ::eachAdjacentTo
      */
     public function testEachAdjacentTo() {
@@ -81,7 +75,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddArc
+     * @depends testEnsureArc
      * @depends testEachAdjacentTo
      * @covers ::removeVertex
      */
@@ -103,7 +97,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddArc
+     * @depends testEnsureArc
      * @covers ::removeArc
      */
     public function testRemoveArc() {
@@ -115,7 +109,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddArc
+     * @depends testEnsureArc
      * @depends testEachAdjacentTo
      * @covers ::eachEdge
      */
@@ -160,7 +154,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddArc
+     * @depends testEnsureArc
      * @depends testEachEdge
      * @covers ::transpose
      */
@@ -223,7 +217,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddArc
+     * @depends testEnsureArc
      * @covers ::inDegree
      */
     public function testInDegree() {
@@ -241,7 +235,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
 
 
     /**
-     * @depends testAddArc
+     * @depends testEnsureArc
      * @covers ::outDegree
      */
     public function testOutDegree() {
@@ -258,7 +252,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddArc
+     * @depends testEnsureArc
      * @covers ::size
      */
     public function testSize() {

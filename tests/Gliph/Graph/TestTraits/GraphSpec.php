@@ -15,6 +15,11 @@ use Gliph\Util;
 trait GraphSpec {
 
     /**
+     * @var \Gliph\Graph\MutableGraph
+     */
+    protected $g;
+
+    /**
      * @expectedException \Gliph\Exception\InvalidVertexTypeException
      * @dataProvider invalidVertexTypesProvider
      */
@@ -28,7 +33,7 @@ trait GraphSpec {
      *
      * @covers ::ensureVertex
      */
-    public function testAddVertex() {
+    public function testEnsureVertex() {
         list($a) = array_values($this->v);
         $this->g->ensureVertex($a);
 
@@ -36,7 +41,7 @@ trait GraphSpec {
     }
 
     /**
-     * @depends testAddVertex
+     * @depends testEnsureVertex
      * @covers ::eachVertex
      */
     public function testEachVertex() {
@@ -63,7 +68,7 @@ trait GraphSpec {
     }
 
     /**
-     * @depends testAddVertex
+     * @depends testEnsureVertex
      * @covers ::hasVertex
      */
     public function testHasVertex() {
@@ -78,7 +83,7 @@ trait GraphSpec {
      * @depends testHasVertex
      * @covers ::ensureVertex
      */
-    public function testAddVertexTwice() {
+    public function testEnsureVertexTwice() {
         list($a) = array_values($this->v);
         // Adding a vertex twice should be a no-op.
         $this->g->ensureVertex($a);
@@ -120,7 +125,7 @@ trait GraphSpec {
         $this->assertEquals(array($a, $a, $c, $a, $c, $c, $a, $c, $a, $c), $found);
     }
 
-    public function testAddEdge() {
+    public function testEnsureEdge() {
         list($a, $b) = array_values($this->v);
         Util::ensureEdge($this->g, $a, $b);
 
@@ -130,7 +135,7 @@ trait GraphSpec {
     }
 
     /**
-     * @depends testAddEdge
+     * @depends testEnsureEdge
      * @covers ::removeVertex
      */
     public function testRemoveVertex() {
@@ -152,7 +157,7 @@ trait GraphSpec {
     }
 
     /**
-     * @depends testAddVertex
+     * @depends testEnsureVertex
      * @covers ::order
      */
     public function testOrder() {
@@ -163,7 +168,7 @@ trait GraphSpec {
     }
 
     /**
-     * @depends testAddEdge
+     * @depends testEnsureEdge
      * @depends testEachAdjacentTo
      */
     public function testRemoveEdge() {
@@ -183,7 +188,7 @@ trait GraphSpec {
     }
 
     /**
-     * @depends testAddEdge
+     * @depends testEnsureEdge
      * @covers ::eachEdge
      */
     public function testEachEdge() {
@@ -236,7 +241,7 @@ trait GraphSpec {
     }
 
     /**
-     * @depends testAddEdge
+     * @depends testEnsureEdge
      * @covers ::inDegree
      */
     public function testInDegree() {
@@ -253,7 +258,7 @@ trait GraphSpec {
     }
 
     /**
-     * @depends testAddEdge
+     * @depends testEnsureEdge
      * @covers ::outDegree
      */
     public function testOutDegree() {
@@ -270,7 +275,7 @@ trait GraphSpec {
     }
 
     /**
-     * @depends testAddEdge
+     * @depends testEnsureEdge
      * @covers ::size
      */
     public function testSize() {
