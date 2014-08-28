@@ -1,40 +1,16 @@
 <?php
 
-namespace Gliph\Graph;
+/**
+ * @file
+ * Contains \Gliph\Graph\GraphTest.
+ */
+
+namespace Gliph\Graph\TestTraits;
 
 /**
- * @coversDefaultClass \Gliph\Graph\AdjacencyList
+ * Provides a trait to test the methods of Graph and MutableGraph.
  */
-class AdjacencyListTest extends AdjacencyListBase {
-
-    protected $v = array();
-
-    /**
-     * @var AdjacencyList
-     */
-    protected $g;
-
-    public function setUp() {
-        parent::setUp();
-        $this->g = $this->getMockForAbstractClass('Gliph\Graph\AdjacencyList');
-    }
-
-    /**
-     * Data provider of non-object types for invalidation.
-     *
-     * @return array
-     */
-    public function invalidVertexTypesProvider() {
-        return array(
-            array('a'),
-            array(1),
-            array((float) 1.1),
-            array(array()),
-            array(fopen(__FILE__, 'r')),
-            array(FALSE),
-            array(NULL),
-        );
-    }
+trait GraphSpec {
 
     /**
      * @expectedException \Gliph\Exception\InvalidVertexTypeException
@@ -45,13 +21,16 @@ class AdjacencyListTest extends AdjacencyListBase {
     }
 
     /**
+     * Technically depends on order(), but that would create a cycle. We have no
+     * choice but to break that cycle somewhere, so we do it here.
+     *
      * @covers ::addVertex
      */
     public function testAddVertex() {
         list($a) = array_values($this->v);
         $this->g->addVertex($a);
 
-        $this->assertAttributeContains($a, 'vertices', $this->g);
+        $this->assertEquals(1, $this->g->order());
     }
 
     /**
@@ -105,7 +84,7 @@ class AdjacencyListTest extends AdjacencyListBase {
         $this->g->addVertex($a);
 
         $this->assertTrue($this->g->hasVertex($a));
-        $this->assertVertexCount(1, $this->g);
+        $this->assertEquals(1, $this->g->order());
     }
 
     /**

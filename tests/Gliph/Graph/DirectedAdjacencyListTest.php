@@ -2,10 +2,15 @@
 
 namespace Gliph\Graph;
 
+use Gliph\Graph\TestTraits\GraphSpec;
+use Gliph\Graph\TestTraits\ObjectVertices;
+
 /**
  * @coversDefaultClass \Gliph\Graph\DirectedAdjacencyList
  */
-class DirectedAdjacencyListTest extends AdjacencyListBase {
+class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
+    use GraphSpec;
+    use ObjectVertices;
 
     /**
      * @var DirectedAdjacencyList
@@ -13,7 +18,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
     protected $g;
 
     public function setUp() {
-        parent::setUp();
+        $this->getTestVertices();
         $this->g = new DirectedAdjacencyList();
     }
 
@@ -28,7 +33,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
 
         $this->assertAttributeContains($a, 'vertices', $this->g);
         $this->assertAttributeContains($b, 'vertices', $this->g);
-        $this->assertVertexCount(2, $this->g);
+        $this->assertEquals(2, $this->g->order());
     }
 
     /**
@@ -79,10 +84,10 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
     public function testRemoveVertex() {
         list($a, $b) = array_values($this->v);
         $this->g->addDirectedEdge($a, $b);
-        $this->assertVertexCount(2, $this->g);
+        $this->assertEquals(2, $this->g->order());
 
         $this->g->removeVertex($b);
-        $this->assertVertexCount(1, $this->g);
+        $this->assertEquals(1, $this->g->order());
 
         // Ensure that b was correctly removed from a's outgoing edges
         $found = array();
@@ -102,7 +107,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
         $this->g->addDirectedEdge($a, $b);
         $this->g->removeEdge($a, $b);
 
-        $this->assertVertexCount(2, $this->g);
+        $this->assertEquals(2, $this->g->order());
     }
 
     /**
@@ -161,8 +166,7 @@ class DirectedAdjacencyListTest extends AdjacencyListBase {
         $this->g->addDirectedEdge($a, $c);
 
         $transpose = $this->g->transpose();
-
-        $this->assertVertexCount(3, $transpose);
+        $this->assertEquals(3, $transpose->order());
 
         $found = array();
         foreach ($transpose->eachEdge() as $edge) {

@@ -2,10 +2,15 @@
 
 namespace Gliph\Graph;
 
+use Gliph\Graph\TestTraits\GraphSpec;
+use Gliph\Graph\TestTraits\ObjectVertices;
+
 /**
  * @coversDefaultClass \Gliph\Graph\UndirectedAdjacencyList
  */
-class UndirectedAdjacencyListTest extends AdjacencyListBase {
+class UndirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
+    use GraphSpec;
+    use ObjectVertices;
 
     /**
      * @var UndirectedAdjacencyList
@@ -16,7 +21,7 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
      * Creates a set of vertices and an empty graph for testing.
      */
     public function setUp() {
-        parent::setUp();
+        $this->getTestVertices();
         $this->g = new UndirectedAdjacencyList();
     }
 
@@ -29,7 +34,7 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
 
         $this->assertAttributeContains($a, 'vertices', $this->g);
         $this->assertAttributeContains($b, 'vertices', $this->g);
-        $this->assertVertexCount(2, $this->g);
+        $this->assertEquals(2, $this->g->order());
     }
 
     /**
@@ -41,7 +46,7 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
         $this->g->addEdge($a, $b);
 
         $this->g->removeVertex($a);
-        $this->assertVertexCount(1, $this->g);
+        $this->assertEquals(1, $this->g->order());
     }
 
     /**
@@ -88,7 +93,7 @@ class UndirectedAdjacencyListTest extends AdjacencyListBase {
         $this->g->addEdge($b, $c);
 
         $this->g->removeEdge($b, $c);
-        $this->assertVertexCount(3, $this->g);
+        $this->assertEquals(3, $this->g->order());
 
         $found = array();
         foreach ($this->g->eachAdjacentTo($a) as $edge => $adjacent) {

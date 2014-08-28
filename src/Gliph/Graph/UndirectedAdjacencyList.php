@@ -4,7 +4,23 @@ namespace Gliph\Graph;
 
 use Gliph\Exception\NonexistentVertexException;
 
-class UndirectedAdjacencyList extends AdjacencyList implements MutableUndirectedGraph {
+class UndirectedAdjacencyList implements MutableGraph, MutableUndirectedGraph {
+    use AdjacencyList;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function eachAdjacentTo($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
+        }
+
+        $set = $this->getTraversableSplos($this->vertices[$vertex]);
+        foreach ($set as $adjacent_vertex) {
+            yield $adjacent_vertex;
+        }
+        $this->walking->detach($set);
+    }
 
     /**
      * {@inheritdoc}

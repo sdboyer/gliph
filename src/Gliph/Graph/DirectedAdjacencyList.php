@@ -8,7 +8,29 @@ use Gliph\Exception\RuntimeException;
 use Gliph\Traversal\DepthFirst;
 use Gliph\Visitor\DepthFirstToposortVisitor;
 
-class DirectedAdjacencyList extends AdjacencyList implements MutableDirectedGraph {
+class DirectedAdjacencyList implements MutableGraph, MutableDirectedGraph {
+    use AdjacencyList;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function eachAdjacentTo($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
+        }
+
+        $set = $this->getTraversableSplos($this->vertices[$vertex]);
+        foreach ($set as $adjacent_vertex) {
+            yield $adjacent_vertex;
+        }
+        $this->walking->detach($set);
+
+//        foreach ($this->eachVertex() as $v2 => $adjacent) {
+//            if ($adjacent->contains($vertex)) {
+//                yield $v2;
+//            }
+//        }
+    }
 
     /**
      * {@inheritdoc}

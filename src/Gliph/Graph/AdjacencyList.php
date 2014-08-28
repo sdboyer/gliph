@@ -6,7 +6,7 @@ use Gliph\Exception\InvalidVertexTypeException;
 use Gliph\Exception\NonexistentVertexException;
 
 /**
- * A graph, represented as an adjacency list.
+ * Core logic for an adjacency list-based graph representation.
  *
  * Adjacency lists store vertices directly, and edges relative to the vertices
  * they connect. That means there is no overall list of edges in the graph; only
@@ -22,7 +22,7 @@ use Gliph\Exception\NonexistentVertexException;
  * adjacency list. This makes accessing in-edge information in a directed graph
  * highly inefficient.
  */
-abstract class AdjacencyList implements MutableGraph {
+trait AdjacencyList /* implements MutableGraph */ {
 
     /**
      * Contains the adjacency list of vertices.
@@ -66,22 +66,6 @@ abstract class AdjacencyList implements MutableGraph {
 
         return $this;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function eachAdjacentTo($vertex) {
-        if (!$this->hasVertex($vertex)) {
-            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
-        }
-
-        $set = $this->getTraversableSplos($this->vertices[$vertex]);
-        foreach ($set as $adjacent_vertex) {
-            yield $adjacent_vertex;
-        }
-        $this->walking->detach($set);
-    }
-
 
     /**
      * {@inheritdoc}
