@@ -4,7 +4,7 @@ namespace Gliph;
 
 use Gliph\Exception\IncompatibleGraphTypeException;
 use Gliph\Graph\Graph;
-use Gliph\Graph\MutableDirectedGraph;
+use Gliph\Graph\MutableDigraph;
 use Gliph\Graph\MutableUndirectedGraph;
 
 /**
@@ -31,14 +31,14 @@ class Util {
      *   Thrown if an unsupported graph type is provided.
      */
     public static function ensureEdge(Graph $g, $u, $v) {
-        if ($g instanceof MutableDirectedGraph) {
+        if ($g instanceof MutableDigraph) {
             $g->addDirectedEdge($u, $v);
         }
         else if ($g instanceof MutableUndirectedGraph) { // TODO better granulation here
             $g->addEdge($u, $v);
         }
         else {
-            throw new IncompatibleGraphTypeException('Can only ensureEdge on either a MutableDirectedGraph or MutableUndirectedGraph');
+            throw new IncompatibleGraphTypeException('Can only ensureEdge on either a MutableDigraph or MutableUndirectedGraph');
         }
     }
 }

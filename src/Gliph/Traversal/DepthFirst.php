@@ -3,7 +3,7 @@
 namespace Gliph\Traversal;
 
 use Gliph\Exception\RuntimeException;
-use Gliph\Graph\DirectedGraph;
+use Gliph\Graph\Digraph;
 use Gliph\Visitor\DepthFirstToposortVisitor;
 use Gliph\Visitor\DepthFirstVisitorInterface;
 
@@ -12,7 +12,7 @@ class DepthFirst {
     /**
      * Perform a depth-first traversal on the provided graph.
      *
-     * @param DirectedGraph $graph
+     * @param Digraph $graph
      *   The graph on which to perform the depth-first search.
      * @param DepthFirstVisitorInterface $visitor
      *   The visitor object to use during the traversal.
@@ -33,7 +33,7 @@ class DepthFirst {
      * @throws RuntimeException
      *   Thrown if an invalid $start parameter is provided.
      */
-    public static function traverse(DirectedGraph $graph, DepthFirstVisitorInterface $visitor, $start = NULL) {
+    public static function traverse(Digraph $graph, DepthFirstVisitorInterface $visitor, $start = NULL) {
         if ($start === NULL) {
             $queue = self::find_sources($graph, $visitor);
         }
@@ -85,14 +85,14 @@ class DepthFirst {
     }
 
     /**
-     * Finds source vertices in a DirectedGraph, then enqueues them.
+     * Finds source vertices in a Digraph, then enqueues them.
      *
-     * @param DirectedGraph $graph
+     * @param Digraph $graph
      * @param DepthFirstVisitorInterface $visitor
      *
      * @return \SplQueue
      */
-    public static function find_sources(DirectedGraph $graph, DepthFirstVisitorInterface $visitor) {
+    public static function find_sources(Digraph $graph, DepthFirstVisitorInterface $visitor) {
         $incomings = new \SplObjectStorage();
         $queue = new \SplQueue();
 
@@ -120,14 +120,14 @@ class DepthFirst {
     /**
      * Performs a topological sort on the provided graph.
      *
-     * @param DirectedGraph $graph
+     * @param Digraph $graph
      * @param object|\SplDoublyLinkedList $start
      *   The starting point(s) for the toposort. @see DepthFirst::traverse()
      *
      * @return array
      *   A valid topologically sorted list for the provided graph.
      */
-    public static function toposort(DirectedGraph $graph, $start = NULL) {
+    public static function toposort(Digraph $graph, $start = NULL) {
         $visitor = new DepthFirstToposortVisitor();
         self::traverse($graph, $visitor, $start);
 

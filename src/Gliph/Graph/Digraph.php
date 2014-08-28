@@ -5,7 +5,7 @@ namespace Gliph\Graph;
 /**
  * Interface for directed graph datastructures.
  */
-interface DirectedGraph extends Graph {
+interface Digraph extends Graph {
 
     /**
      * Returns the transpose of this graph.
@@ -15,7 +15,7 @@ interface DirectedGraph extends Graph {
      *
      * Transposed graphs are sometimes called the 'reverse' or 'converse'.
      *
-     * @return DirectedGraph
+     * @return Digraph
      */
     public function transpose();
 

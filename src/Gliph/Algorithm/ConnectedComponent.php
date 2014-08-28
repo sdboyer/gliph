@@ -2,7 +2,7 @@
 
 namespace Gliph\Algorithm;
 
-use Gliph\Graph\DirectedGraph;
+use Gliph\Graph\Digraph;
 use Gliph\Visitor\TarjanSCCVisitor;
 
 /**
@@ -13,8 +13,8 @@ class ConnectedComponent {
     /**
      * Finds connected components in the provided directed graph.
      *
-     * @param DirectedGraph $graph
-     *   The DirectedGraph to search for connected components.
+     * @param Digraph $graph
+     *   The Digraph to search for connected components.
      * @param TarjanSCCVisitor $visitor
      *   The visitor that will collect and store the connected components. One
      *   will be created if not provided.
@@ -22,7 +22,7 @@ class ConnectedComponent {
      * @return TarjanSCCVisitor
      *   The finalized visitor.
      */
-    public static function tarjan_scc(DirectedGraph $graph, TarjanSCCVisitor $visitor = NULL) {
+    public static function tarjan_scc(Digraph $graph, TarjanSCCVisitor $visitor = NULL) {
         $visitor = $visitor ?: new TarjanSCCVisitor();
         $counter = 0;
         $stack = array();
