@@ -37,6 +37,21 @@ class UndirectedAdjacencyList implements MutableGraph {
     /**
      * {@inheritdoc}
      */
+    public function incidentTo($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
+        }
+
+        $set = $this->getTraversableSplos($this->vertices[$vertex]);
+        foreach ($set as $adjacent_vertex) {
+            yield array($vertex, $adjacent_vertex);
+        }
+        $this->walking->detach($set);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function ensureEdge($from, $to) {
         $this->ensureVertex($from)->ensureVertex($to);
         if (!$this->vertices[$from]->contains($to)) {

@@ -10,7 +10,7 @@ use Gliph\Exception\NonexistentVertexException;
 interface Graph {
 
     /**
-     * Loops over each vertex that is adjacent to the given vertex.
+     * Enumerates each vertex adjacent to the provided vertex via a generator.
      *
      * A vertex is adjacent to another vertex if they share an edge. Edge
      * direction, if any, does not matter.
@@ -29,11 +29,36 @@ interface Graph {
     public function adjacentTo($vertex);
 
     /**
+     * Enumerates each edge incident to the provided vertex via a generator.
+     *
+     * A vertex is incident to an edge if that edge connects to it. Edge
+     * direction, if any, does not matter.
+     *
+     * Returns a generator that yields 2-tuple (array) where the first two values
+     * represent the vertex pair. Vertex order is neither guaranteed nor
+     * implied, as edges are an unordered pair. If the graph has additional edge
+     * data (e.g., weight), additional elements are appended to the edge array
+     * as needed. (See implementation-specific documentation for more detail).
+     *
+     * @see Graph::adjacentTo().
+     *
+     * @param $vertex
+     *  The vertex whose incident edges should be visited.
+     *
+     * @return \Generator
+     *  A generator that yields incident edges as values.
+     *
+     * @throws NonexistentVertexException
+     *   Thrown if the vertex provided is not present in the graph.
+     */
+    public function incidentTo($vertex);
+
+    /**
      * Returns a generator that loops through each vertex in the graph.
      *
      * @return \Generator
      *   A generator that yields the vertex as key and its connected edges as
-     *   value. The form of the connected edges may value from one graph
+     *   value. The form of the connected edges may vary from one graph
      *   implementation to the next, but it is guaranteed to be Traversable.
      */
     public function vertices();

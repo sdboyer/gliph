@@ -148,6 +148,65 @@ trait GraphSpec {
         $this->assertEquals(array($a, $a, $c, $a, $c, $c, $a, $c, $a, $c), $found);
     }
 
+    /**
+     * @expectedException \Gliph\Exception\NonexistentVertexException
+     */
+    public function testAdjacentToMissingVertex() {
+        list($a) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        foreach ($g->adjacentTo($a) as $adjacent) {
+            $this->fail();
+        }
+    }
+
+    /**
+     * @covers ::incidentTo
+     */
+    public function testIncidentTo() {
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        Util::ensureEdge($g, $a, $b);
+        Util::ensureEdge($g, $b, $c);
+
+        // Edge directionality is irrelevant to adjacency; for both directed and
+        // undirected, $b should have two adjacent vertices.
+        $found = array();
+        foreach ($g->incidentTo($b) as $edge) {
+            $found[] = $edge;
+        }
+
+        $this->assertCount(2, $found);
+
+        // test nesting
+        $found = array();
+        foreach ($g->incidentTo($b) as $edge) {
+            $found[] = $edge;
+            foreach ($g->incidentTo($b) as $edge) {
+                $found[] = $edge;
+            }
+            foreach ($g->incidentTo($b) as $edge) {
+                $found[] = $edge;
+            }
+        }
+
+        // TODO super lazy, but proper verification is SO EXHAUSTIVE. later...
+        $this->assertCount(10, $found);
+    }
+
+    /**
+     * @expectedException \Gliph\Exception\NonexistentVertexException
+     */
+    public function testIncidentToMissingVertex() {
+        list($a) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        foreach ($g->incidentTo($a) as $edge) {
+            $this->fail();
+        }
+    }
+
     public function testEnsureEdge() {
         list($a, $b) = array_values($this->getTestVertices());
         $g = $this->g();
@@ -171,18 +230,6 @@ trait GraphSpec {
 
         $g->removeVertex($a);
         $this->assertEquals(1, $g->order());
-    }
-
-    /**
-     * @expectedException \Gliph\Exception\NonexistentVertexException
-     */
-    public function testAdjacentToMissingVertex() {
-        list($a) = array_values($this->getTestVertices());
-        $g = $this->g();
-
-        foreach ($g->adjacentTo($a) as $adjacent) {
-            $this->fail();
-        }
     }
 
     /**

@@ -35,6 +35,27 @@ class DirectedAdjacencyList implements MutableDigraph {
     /**
      * {@inheritdoc}
      */
+    public function incidentTo($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
+        }
+
+        $set = $this->getTraversableSplos($this->vertices[$vertex]);
+        foreach ($set as $adjacent_vertex) {
+            yield array($vertex, $adjacent_vertex);
+        }
+        $this->walking->detach($set);
+
+        foreach ($this->vertices() as $v2 => $adjacent) {
+            if ($adjacent->contains($vertex)) {
+                yield array($v2, $vertex);
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function ensureArc($tail, $head) {
         $this->ensureVertex($tail)->ensureVertex($head);
         if (!$this->vertices[$tail]->contains($head)) {
