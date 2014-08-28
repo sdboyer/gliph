@@ -4,7 +4,7 @@ namespace Gliph\Graph;
 
 use Gliph\Exception\NonexistentVertexException;
 
-class UndirectedAdjacencyList implements MutableGraph, MutableUndirectedGraph {
+class UndirectedAdjacencyList implements MutableGraph {
     use AdjacencyList;
 
     /**

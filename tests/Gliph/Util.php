@@ -5,7 +5,7 @@ namespace Gliph;
 use Gliph\Exception\IncompatibleGraphTypeException;
 use Gliph\Graph\Graph;
 use Gliph\Graph\MutableDigraph;
-use Gliph\Graph\MutableUndirectedGraph;
+use Gliph\Graph\MutableGraph;
 
 /**
  * Utility methods for tests.
@@ -34,7 +34,7 @@ class Util {
         if ($g instanceof MutableDigraph) {
             $g->addArc($u, $v);
         }
-        else if ($g instanceof MutableUndirectedGraph) { // TODO better granulation here
+        else if ($g instanceof MutableGraph) {
             $g->addEdge($u, $v);
         }
         else {
