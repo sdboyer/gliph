@@ -32,10 +32,10 @@ class Util {
      */
     public static function ensureEdge(Graph $g, $u, $v) {
         if ($g instanceof MutableDigraph) {
-            $g->addArc($u, $v);
+            $g->ensureArc($u, $v);
         }
         else if ($g instanceof MutableGraph) {
-            $g->addEdge($u, $v);
+            $g->ensureEdge($u, $v);
         }
         else {
             throw new IncompatibleGraphTypeException('Can only ensureEdge on either a MutableDigraph or MutableUndirectedGraph');

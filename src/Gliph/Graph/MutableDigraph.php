@@ -7,9 +7,7 @@ namespace Gliph\Graph;
 interface MutableDigraph extends Digraph, MutableVertexSet {
 
     /**
-     * Adds a directed edge to this graph.
-     *
-     * Directed edges are also often referred to as 'arcs'.
+     * Ensures the provided arc (directed edge) is present in this graph.
      *
      * @param object $tail
      *   An object vertex from which the edge originates. The vertex will be
@@ -21,7 +19,7 @@ interface MutableDigraph extends Digraph, MutableVertexSet {
      * @return MutableDigraph
      *   The current graph instance.
      */
-    public function addArc($tail, $head);
+    public function ensureArc($tail, $head);
 
     /**
      * Removes an arc from the graph.

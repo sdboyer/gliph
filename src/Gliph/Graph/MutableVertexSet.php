@@ -10,7 +10,7 @@ namespace Gliph\Graph;
 interface MutableVertexSet {
 
     /**
-     * Adds a vertex to the graph.
+     * Ensures a vertex is present in the graph.
      *
      * Gliph requires that its graph vertices be objects; beyond that, it does
      * not care about vertex type.
@@ -24,7 +24,7 @@ interface MutableVertexSet {
      * @throws InvalidVertexTypeException
      *   Thrown if an invalid type of data is provided as a vertex.
      */
-    public function addVertex($vertex);
+    public function ensureVertex($vertex);
 
     /**
      * Remove a vertex from the graph.

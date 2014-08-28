@@ -35,8 +35,8 @@ class DirectedAdjacencyList implements MutableDigraph {
     /**
      * {@inheritdoc}
      */
-    public function addArc($tail, $head) {
-        $this->addVertex($tail)->addVertex($head);
+    public function ensureArc($tail, $head) {
+        $this->ensureVertex($tail)->ensureVertex($head);
         if (!$this->vertices[$tail]->contains($head)) {
             $this->size++;
         }
@@ -84,7 +84,7 @@ class DirectedAdjacencyList implements MutableDigraph {
     public function transpose() {
         $graph = new self();
         foreach ($this->eachEdge() as $edge) {
-            $graph->addArc($edge[1], $edge[0]);
+            $graph->ensureArc($edge[1], $edge[0]);
         }
 
         return $graph;

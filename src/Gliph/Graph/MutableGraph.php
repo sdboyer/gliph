@@ -7,19 +7,6 @@ namespace Gliph\Graph;
 interface MutableGraph extends Graph, MutableVertexSet {
 
     /**
-     * Removes an undirected edge from the graph.
-     *
-     * @param $u
-     *   One vertex in the edge pair to remove.
-     * @param $v
-     *   The other vertex in the edge pair to remove.
-     *
-     * @return MutableGraph
-     *   The current graph instance.
-     */
-    public function removeEdge($u, $v);
-
-    /**
      * Adds an undirected edge to this graph.
      *
      * @param object $u
@@ -32,5 +19,18 @@ interface MutableGraph extends Graph, MutableVertexSet {
      * @return MutableGraph
      *   The current graph instance.
      */
-    public function addEdge($u, $v);
+    public function ensureEdge($u, $v);
+
+    /**
+     * Removes an undirected edge from the graph.
+     *
+     * @param $u
+     *   One vertex in the edge pair to remove.
+     * @param $v
+     *   The other vertex in the edge pair to remove.
+     *
+     * @return MutableGraph
+     *   The current graph instance.
+     */
+    public function removeEdge($u, $v);
 }

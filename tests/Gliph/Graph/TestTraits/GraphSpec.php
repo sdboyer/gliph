@@ -19,18 +19,18 @@ trait GraphSpec {
      * @dataProvider invalidVertexTypesProvider
      */
     public function testInvalidVertexTypes($invalid_vertex) {
-        $this->g->addVertex($invalid_vertex);
+        $this->g->ensureVertex($invalid_vertex);
     }
 
     /**
      * Technically depends on order(), but that would create a cycle. We have no
      * choice but to break that cycle somewhere, so we do it here.
      *
-     * @covers ::addVertex
+     * @covers ::ensureVertex
      */
     public function testAddVertex() {
         list($a) = array_values($this->v);
-        $this->g->addVertex($a);
+        $this->g->ensureVertex($a);
 
         $this->assertEquals(1, $this->g->order());
     }
@@ -41,8 +41,8 @@ trait GraphSpec {
      */
     public function testEachVertex() {
         list($a, $b) = array_values($this->v);
-        $this->g->addVertex($a);
-        $this->g->addVertex($b);
+        $this->g->ensureVertex($a);
+        $this->g->ensureVertex($b);
 
         $found = array();
         foreach ($this->g->eachVertex() as $vertex => $adjacent) {
@@ -70,19 +70,19 @@ trait GraphSpec {
         list($a) = array_values($this->v);
         $this->assertFalse($this->g->hasVertex($a));
 
-        $this->g->addVertex($a);
+        $this->g->ensureVertex($a);
         $this->assertTrue($this->g->hasVertex($a));
     }
 
     /**
      * @depends testHasVertex
-     * @covers ::addVertex
+     * @covers ::ensureVertex
      */
     public function testAddVertexTwice() {
         list($a) = array_values($this->v);
         // Adding a vertex twice should be a no-op.
-        $this->g->addVertex($a);
-        $this->g->addVertex($a);
+        $this->g->ensureVertex($a);
+        $this->g->ensureVertex($a);
 
         $this->assertTrue($this->g->hasVertex($a));
         $this->assertEquals(1, $this->g->order());
@@ -157,7 +157,7 @@ trait GraphSpec {
      */
     public function testOrder() {
         list($a) = array_values($this->v);
-        $this->g->addVertex($a);
+        $this->g->ensureVertex($a);
 
         $this->assertEquals(1, $this->g->order());
     }

@@ -3,7 +3,6 @@
 namespace Gliph\Graph;
 
 use Gliph\Exception\InvalidVertexTypeException;
-use Gliph\Exception\NonexistentVertexException;
 
 /**
  * Core logic for an adjacency list-based graph representation.
@@ -22,7 +21,7 @@ use Gliph\Exception\NonexistentVertexException;
  * adjacency list. This makes accessing in-edge information in a directed graph
  * highly inefficient.
  */
-trait AdjacencyList /* implements MutableGraph */ {
+trait AdjacencyList {
 
     /**
      * Contains the adjacency list of vertices.
@@ -55,7 +54,7 @@ trait AdjacencyList /* implements MutableGraph */ {
     /**
      * {@inheritdoc}
      */
-    public function addVertex($vertex) {
+    public function ensureVertex($vertex) {
         if (!is_object($vertex)) {
             throw new InvalidVertexTypeException('Vertices must be objects; non-object provided.');
         }

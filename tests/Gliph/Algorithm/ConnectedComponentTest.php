@@ -30,15 +30,15 @@ class ConnectedComponentTest extends \PHPUnit_Framework_TestCase {
 
         $graph = new DirectedAdjacencyList();
 
-        $graph->addArc($a, $d);
-        $graph->addArc($a, $b);
-        $graph->addArc($b, $c);
-        $graph->addArc($c, $d);
-        $graph->addArc($d, $a);
-        $graph->addArc($e, $d);
-        $graph->addArc($f, $g);
-        $graph->addArc($g, $h);
-        $graph->addArc($h, $f);
+        $graph->ensureArc($a, $d);
+        $graph->ensureArc($a, $b);
+        $graph->ensureArc($b, $c);
+        $graph->ensureArc($c, $d);
+        $graph->ensureArc($d, $a);
+        $graph->ensureArc($e, $d);
+        $graph->ensureArc($f, $g);
+        $graph->ensureArc($g, $h);
+        $graph->ensureArc($h, $f);
 
         $visitor = ConnectedComponent::tarjan_scc($graph);
 

@@ -25,8 +25,8 @@ class UndirectedAdjacencyList implements MutableGraph {
     /**
      * {@inheritdoc}
      */
-    public function addEdge($from, $to) {
-        $this->addVertex($from)->addVertex($to);
+    public function ensureEdge($from, $to) {
+        $this->ensureVertex($from)->ensureVertex($to);
         if (!$this->vertices[$from]->contains($to)) {
             $this->size++;
         }

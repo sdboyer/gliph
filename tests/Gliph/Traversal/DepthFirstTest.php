@@ -29,10 +29,10 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
         );
         list($a, $b, $c, $d) = array_values($this->v);
 
-        $this->g->addArc($a, $b);
-        $this->g->addArc($b, $c);
-        $this->g->addArc($a, $c);
-        $this->g->addArc($b, $d);
+        $this->g->ensureArc($a, $b);
+        $this->g->ensureArc($b, $c);
+        $this->g->ensureArc($a, $c);
+        $this->g->ensureArc($b, $d);
     }
 
     /**
@@ -80,7 +80,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     public function testDirectCycleDepthFirstTraversal() {
         list($a, $b, $c, $d) = array_values($this->v);
 
-        $this->g->addArc($d, $b);
+        $this->g->ensureArc($d, $b);
 
         $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
         $visitor->expects($this->exactly(1))->method('onBackEdge');
@@ -94,7 +94,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     public function testIndirectCycleDepthFirstTraversal() {
         list($a, $b, $c, $d) = array_values($this->v);
 
-        $this->g->addArc($d, $a);
+        $this->g->ensureArc($d, $a);
 
         $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
         $visitor->expects($this->exactly(1))->method('onBackEdge');
@@ -110,7 +110,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
         list($a, $b, $c, $d) = array_values($this->v);
 
         // Create a cycle that ensures there are no source vertices
-        $this->g->addArc($d, $a);
+        $this->g->ensureArc($d, $a);
         DepthFirst::traverse($this->g, new DepthFirstNoOpVisitor());
     }
 
@@ -124,7 +124,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
         $queue->push($a);
         $queue->push($e);
 
-        $this->g->addVertex($e);
+        $this->g->ensureVertex($e);
 
         $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
         $visitor->expects($this->exactly(0))->method('onBackEdge');
@@ -145,7 +145,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals(array($c, $d, $b, $a), DepthFirst::toposort($this->g, $a));
 
-        $this->g->addArc($d, $a);
+        $this->g->ensureArc($d, $a);
         DepthFirst::toposort($this->g, $a);
     }
 }
