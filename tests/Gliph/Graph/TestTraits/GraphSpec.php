@@ -38,7 +38,6 @@ trait GraphSpec {
     /**
      * @depends testAddVertex
      * @covers ::eachVertex
-     * @covers ::getTraversableSplos
      */
     public function testEachVertex() {
         list($a, $b) = array_values($this->v);
@@ -166,14 +165,13 @@ trait GraphSpec {
     /**
      * @depends testAddEdge
      * @depends testEachAdjacentTo
-     * @covers ::removeEdge
      */
     public function testRemoveEdge() {
         list($a, $b, $c) = array_values($this->v);
         Util::ensureEdge($this->g, $a, $b);
         Util::ensureEdge($this->g, $b, $c);
 
-        $this->g->removeEdge($b, $c);
+        Util::removeEdge($this->g, $b, $c);
         $this->assertEquals(3, $this->g->order());
 
         $found = array();
@@ -253,7 +251,6 @@ trait GraphSpec {
         $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
         $this->g->inDegree(new \stdClass());
     }
-
 
     /**
      * @depends testAddEdge

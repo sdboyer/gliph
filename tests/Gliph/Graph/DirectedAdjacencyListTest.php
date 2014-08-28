@@ -31,7 +31,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers ::addArc
      */
-    public function testAddDirectedEdge() {
+    public function testAddArc() {
         list($a, $b) = array_values($this->v);
         $this->g->addArc($a, $b);
 
@@ -41,7 +41,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddDirectedEdge
+     * @depends testAddArc
      * @covers ::eachAdjacentTo
      */
     public function testEachAdjacentTo() {
@@ -81,7 +81,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddDirectedEdge
+     * @depends testAddArc
      * @depends testEachAdjacentTo
      * @covers ::removeVertex
      */
@@ -103,19 +103,19 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddDirectedEdge
-     * @covers ::removeEdge
+     * @depends testAddArc
+     * @covers ::removeArc
      */
-    public function testRemoveEdge() {
+    public function testRemoveArc() {
         list($a, $b) = array_values($this->v);
         $this->g->addArc($a, $b);
-        $this->g->removeEdge($a, $b);
+        $this->g->removeArc($a, $b);
 
         $this->assertEquals(2, $this->g->order());
     }
 
     /**
-     * @depends testAddDirectedEdge
+     * @depends testAddArc
      * @depends testEachAdjacentTo
      * @covers ::eachEdge
      */
@@ -160,7 +160,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddDirectedEdge
+     * @depends testAddArc
      * @depends testEachEdge
      * @covers ::transpose
      */
@@ -223,7 +223,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddDirectedEdge
+     * @depends testAddArc
      * @covers ::inDegree
      */
     public function testInDegree() {
@@ -241,7 +241,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
 
 
     /**
-     * @depends testAddDirectedEdge
+     * @depends testAddArc
      * @covers ::outDegree
      */
     public function testOutDegree() {
@@ -258,7 +258,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testAddDirectedEdge
+     * @depends testAddArc
      * @covers ::size
      */
     public function testSize() {

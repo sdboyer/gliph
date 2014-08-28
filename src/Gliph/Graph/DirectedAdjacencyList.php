@@ -61,7 +61,7 @@ class DirectedAdjacencyList implements MutableDigraph {
     /**
      * {@inheritdoc}
      */
-    public function removeEdge($tail, $head) {
+    public function removeArc($tail, $head) {
         $this->vertices[$tail]->detach($head);
     }
 

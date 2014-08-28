@@ -34,5 +34,5 @@ interface MutableDigraph extends Digraph, MutableVertexSet {
      * @return MutableDigraph
      *   The current graph instance.
      */
-    public function removeEdge($tail, $head);
+    public function removeArc($tail, $head);
 }
