@@ -22,6 +22,10 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
         $this->g = new DirectedAdjacencyList();
     }
 
+    protected function ensureEdge(MutableDirectedGraph $g, $tail, $head) {
+        $g->addDirectedEdge($tail, $head);
+    }
+
     /**
      * Implicitly depends on AdjacencyList::addVertex.
      *
