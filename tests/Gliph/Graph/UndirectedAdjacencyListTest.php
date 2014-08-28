@@ -22,6 +22,14 @@ class UndirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     public function setUp() {
         $this->getTestVertices();
-        $this->g = new UndirectedAdjacencyList();
+    }
+
+    /**
+     * Returns a new UndirectedAdjacencyList.
+     *
+     * @return UndirectedAdjacencyList
+     */
+    protected function g() {
+        return new UndirectedAdjacencyList();
     }
 }

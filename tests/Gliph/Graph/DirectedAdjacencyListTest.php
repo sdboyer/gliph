@@ -14,24 +14,30 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
 
     public function setUp() {
         $this->getTestVertices();
-        $this->g = new DirectedAdjacencyList();
-    }
-
-    protected function ensureEdge(MutableDigraph $g, $tail, $head) {
-        $g->ensureArc($tail, $head);
     }
 
     /**
-     * @depends testEnsureVertex
+     * Returns a new DirectedAdjacencyList.
+     *
+     * @return DirectedAdjacencyList
+     */
+    protected function g() {
+        return new DirectedAdjacencyList();
+    }
+
+    /**
+     * @depends!! testEnsureVertex (for some reason this suddenly stopped working)
      * @covers ::ensureArc
      */
     public function testEnsureArc() {
-        list($a, $b) = array_values($this->v);
-        $this->g->ensureArc($a, $b);
+        list($a, $b) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertAttributeContains($a, 'vertices', $this->g);
-        $this->assertAttributeContains($b, 'vertices', $this->g);
-        $this->assertEquals(2, $this->g->order());
+        $g->ensureArc($a, $b);
+
+        $this->assertAttributeContains($a, 'vertices', $g);
+        $this->assertAttributeContains($b, 'vertices', $g);
+        $this->assertEquals(2, $g->order());
     }
 
     /**
@@ -39,35 +45,37 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      * @covers ::eachAdjacentTo
      */
     public function testEachAdjacentTo() {
-        list($a, $b, $c) = array_values($this->v);
-        $this->g->ensureArc($a, $b);
-        $this->g->ensureArc($a, $c);
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        $g->ensureArc($a, $b);
+        $g->ensureArc($a, $c);
 
         $found = array();
-        foreach ($this->g->eachAdjacentTo($a) as $head) {
+        foreach ($g->eachAdjacentTo($a) as $head) {
             $found[] = $head;
         }
         $this->assertEquals(array($b, $c), $found);
 
         $found = array();
-        foreach ($this->g->eachAdjacentTo($b) as $head) {
+        foreach ($g->eachAdjacentTo($b) as $head) {
             $found[] = $head;
         }
         $this->assertEmpty($found);
 
-        foreach ($this->g->eachAdjacentTo($c) as $head) {
+        foreach ($g->eachAdjacentTo($c) as $head) {
             $found[] = $head;
         }
         $this->assertEmpty($found);
 
         // nested
         $found = array();
-        foreach ($this->g->eachAdjacentTo($a) as $head) {
+        foreach ($g->eachAdjacentTo($a) as $head) {
             $found[] = $head;
-            foreach ($this->g->eachAdjacentTo($a) as $head) {
+            foreach ($g->eachAdjacentTo($a) as $head) {
                 $found[] = $head;
             }
-            foreach ($this->g->eachAdjacentTo($a) as $head) {
+            foreach ($g->eachAdjacentTo($a) as $head) {
                 $found[] = $head;
             }
         }
@@ -80,16 +88,18 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      * @covers ::removeVertex
      */
     public function testRemoveVertex() {
-        list($a, $b) = array_values($this->v);
-        $this->g->ensureArc($a, $b);
-        $this->assertEquals(2, $this->g->order());
+        list($a, $b) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->g->removeVertex($b);
-        $this->assertEquals(1, $this->g->order());
+        $g->ensureArc($a, $b);
+        $this->assertEquals(2, $g->order());
+
+        $g->removeVertex($b);
+        $this->assertEquals(1, $g->order());
 
         // Ensure that b was correctly removed from a's outgoing edges
         $found = array();
-        foreach ($this->g->eachAdjacentTo($a) as $edge => $head) {
+        foreach ($g->eachAdjacentTo($a) as $edge => $head) {
             $found[] = $head;
         }
 
@@ -101,11 +111,13 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      * @covers ::removeArc
      */
     public function testRemoveArc() {
-        list($a, $b) = array_values($this->v);
-        $this->g->ensureArc($a, $b);
-        $this->g->removeArc($a, $b);
+        list($a, $b) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertEquals(2, $this->g->order());
+        $g->ensureArc($a, $b);
+        $g->removeArc($a, $b);
+
+        $this->assertEquals(2, $g->order());
     }
 
     /**
@@ -114,12 +126,14 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      * @covers ::eachEdge
      */
     public function testEachEdge() {
-        list($a, $b, $c) = array_values($this->v);
-        $this->g->ensureArc($a, $b);
-        $this->g->ensureArc($a, $c);
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        $g->ensureArc($a, $b);
+        $g->ensureArc($a, $c);
 
         $found = array();
-        foreach ($this->g->eachEdge() as $edge) {
+        foreach ($g->eachEdge() as $edge) {
             $found[] = $edge;
         }
 
@@ -128,12 +142,12 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(array($a, $c), $found[1]);
 
         $found = array();
-        foreach ($this->g->eachEdge() as $edge) {
+        foreach ($g->eachEdge() as $edge) {
             $found[] = $edge;
-            foreach ($this->g->eachEdge() as $edge) {
+            foreach ($g->eachEdge() as $edge) {
                 $found[] = $edge;
             }
-            foreach ($this->g->eachEdge() as $edge) {
+            foreach ($g->eachEdge() as $edge) {
                 $found[] = $edge;
             }
         }
@@ -159,11 +173,13 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      * @covers ::transpose
      */
     public function testTranspose() {
-        list($a, $b, $c) = array_values($this->v);
-        $this->g->ensureArc($a, $b);
-        $this->g->ensureArc($a, $c);
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $transpose = $this->g->transpose();
+        $g->ensureArc($a, $b);
+        $g->ensureArc($a, $c);
+
+        $transpose = $g->transpose();
         $this->assertEquals(3, $transpose->order());
 
         $found = array();
@@ -181,21 +197,25 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      * @covers ::removeVertex
      */
     public function testRemoveNonexistentVertex() {
-        list($a) = array_values($this->v);
-        $this->g->removeVertex($a);
+        list($a) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        $g->removeVertex($a);
     }
 
     /**
      * @covers ::isAcyclic()
      */
     public function testIsAcyclic() {
-        list($a, $b, $c) = array_values($this->v);
-        $this->g->ensureArc($a, $b);
-        $this->g->ensureArc($b, $c);
-        $this->assertTrue($this->g->isAcyclic());
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->g->ensureArc($c, $a);
-        $this->assertFalse($this->g->isAcyclic());
+        $g->ensureArc($a, $b);
+        $g->ensureArc($b, $c);
+        $this->assertTrue($g->isAcyclic());
+
+        $g->ensureArc($c, $a);
+        $this->assertFalse($g->isAcyclic());
     }
 
     /**
@@ -206,14 +226,16 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      * @covers ::getCycles()
      */
     public function testGetCycles() {
-        list($a, $b, $c) = array_values($this->v);
-        $this->g->ensureArc($a, $b);
-        $this->g->ensureArc($b, $c);
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertEmpty($this->g->getCycles());
+        $g->ensureArc($a, $b);
+        $g->ensureArc($b, $c);
 
-        $this->g->ensureArc($c, $a);
-        $this->assertEquals(array(array($c, $b, $a)), $this->g->getCycles());
+        $this->assertEmpty($g->getCycles());
+
+        $g->ensureArc($c, $a);
+        $this->assertEquals(array(array($c, $b, $a)), $g->getCycles());
     }
 
     /**
@@ -221,16 +243,18 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      * @covers ::inDegree
      */
     public function testInDegree() {
-        list($a, $b, $c) = array_values($this->v);
-        $this->g->ensureArc($a, $b);
-        $this->g->ensureArc($b, $c);
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertSame(0, $this->g->inDegree($a));
-        $this->assertSame(1, $this->g->inDegree($b));
-        $this->assertSame(1, $this->g->inDegree($c));
+        $g->ensureArc($a, $b);
+        $g->ensureArc($b, $c);
+
+        $this->assertSame(0, $g->inDegree($a));
+        $this->assertSame(1, $g->inDegree($b));
+        $this->assertSame(1, $g->inDegree($c));
 
         $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
-        $this->g->inDegree(new \stdClass());
+        $g->inDegree(new \stdClass());
     }
 
 
@@ -239,16 +263,18 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      * @covers ::outDegree
      */
     public function testOutDegree() {
-        list($a, $b, $c) = array_values($this->v);
-        $this->g->ensureArc($a, $b);
-        $this->g->ensureArc($b, $c);
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertSame(1, $this->g->outDegree($a));
-        $this->assertSame(1, $this->g->outDegree($b));
-        $this->assertSame(0, $this->g->outDegree($c));
+        $g->ensureArc($a, $b);
+        $g->ensureArc($b, $c);
+
+        $this->assertSame(1, $g->outDegree($a));
+        $this->assertSame(1, $g->outDegree($b));
+        $this->assertSame(0, $g->outDegree($c));
 
         $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
-        $this->g->outDegree(new \stdClass());
+        $g->outDegree(new \stdClass());
     }
 
     /**
@@ -256,9 +282,11 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      * @covers ::size
      */
     public function testSize() {
-        list($a, $b) = array_values($this->v);
-        $this->g->ensureArc($a, $b);
+        list($a, $b) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertEquals(1, $this->g->size());
+        $g->ensureArc($a, $b);
+
+        $this->assertEquals(1, $g->size());
     }
 }

@@ -8,6 +8,8 @@
 namespace Gliph\Graph\TestTraits;
 
 use Gliph\Util;
+use Gliph\Graph\Graph;
+use Gliph\Graph\MutableVertexSet;
 
 /**
  * Provides a trait to test the methods of Graph and MutableGraph.
@@ -15,16 +17,27 @@ use Gliph\Util;
 trait GraphSpec {
 
     /**
-     * @var \Gliph\Graph\MutableGraph
+     * Factory function to produce the graph object type under test.
+     *
+     * @return Graph|MutableVertexSet
      */
-    protected $g;
+    abstract protected function g();
+
+    /**
+     * Factory function to produce the vertex set for the current test.
+     *
+     * @return array
+     *   An array of vertices for the test.
+     */
+    abstract protected function getTestVertices();
 
     /**
      * @expectedException \Gliph\Exception\InvalidVertexTypeException
      * @dataProvider invalidVertexTypesProvider
      */
     public function testInvalidVertexTypes($invalid_vertex) {
-        $this->g->ensureVertex($invalid_vertex);
+        $g = $this->g();
+        $g->ensureVertex($invalid_vertex);
     }
 
     /**
@@ -34,10 +47,12 @@ trait GraphSpec {
      * @covers ::ensureVertex
      */
     public function testEnsureVertex() {
-        list($a) = array_values($this->v);
-        $this->g->ensureVertex($a);
+        list($a) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertEquals(1, $this->g->order());
+        $g->ensureVertex($a);
+
+        $this->assertEquals(1, $g->order());
     }
 
     /**
@@ -45,12 +60,14 @@ trait GraphSpec {
      * @covers ::eachVertex
      */
     public function testEachVertex() {
-        list($a, $b) = array_values($this->v);
-        $this->g->ensureVertex($a);
-        $this->g->ensureVertex($b);
+        list($a, $b) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        $g->ensureVertex($a);
+        $g->ensureVertex($b);
 
         $found = array();
-        foreach ($this->g->eachVertex() as $vertex => $adjacent) {
+        foreach ($g->eachVertex() as $vertex => $adjacent) {
             $found[] = $vertex;
         }
 
@@ -58,9 +75,9 @@ trait GraphSpec {
 
         // Now, test nested iteration
         $found = array();
-        foreach ($this->g->eachVertex() as $vertex => $adjacent) {
+        foreach ($g->eachVertex() as $vertex => $adjacent) {
             $found[] = $vertex;
-            foreach ($this->g->eachVertex() as $vertex => $adjacent) {
+            foreach ($g->eachVertex() as $vertex => $adjacent) {
                 $found[] = $vertex;
             }
         }
@@ -72,11 +89,13 @@ trait GraphSpec {
      * @covers ::hasVertex
      */
     public function testHasVertex() {
-        list($a) = array_values($this->v);
-        $this->assertFalse($this->g->hasVertex($a));
+        list($a) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->g->ensureVertex($a);
-        $this->assertTrue($this->g->hasVertex($a));
+        $this->assertFalse($g->hasVertex($a));
+
+        $g->ensureVertex($a);
+        $this->assertTrue($g->hasVertex($a));
     }
 
     /**
@@ -84,26 +103,30 @@ trait GraphSpec {
      * @covers ::ensureVertex
      */
     public function testEnsureVertexTwice() {
-        list($a) = array_values($this->v);
-        // Adding a vertex twice should be a no-op.
-        $this->g->ensureVertex($a);
-        $this->g->ensureVertex($a);
+        list($a) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertTrue($this->g->hasVertex($a));
-        $this->assertEquals(1, $this->g->order());
+        // Adding a vertex twice should be a no-op.
+        $g->ensureVertex($a);
+        $g->ensureVertex($a);
+
+        $this->assertTrue($g->hasVertex($a));
+        $this->assertEquals(1, $g->order());
     }
     /**
      * @covers ::eachAdjacentTo
      */
     public function testEachAdjacentTo() {
-        list($a, $b, $c) = array_values($this->v);
-        Util::ensureEdge($this->g, $a, $b);
-        Util::ensureEdge($this->g, $b, $c);
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        Util::ensureEdge($g, $a, $b);
+        Util::ensureEdge($g, $b, $c);
 
         // Edge directionality is irrelevant to adjacency; for both directed and
         // undirected, $b should have two adjacent vertices.
         $found = array();
-        foreach ($this->g->eachAdjacentTo($b) as $edge => $adjacent) {
+        foreach ($g->eachAdjacentTo($b) as $edge => $adjacent) {
             $found[] = $adjacent;
         }
 
@@ -111,12 +134,12 @@ trait GraphSpec {
 
         // test nesting
         $found = array();
-        foreach ($this->g->eachAdjacentTo($b) as $edge => $adjacent) {
+        foreach ($g->eachAdjacentTo($b) as $edge => $adjacent) {
             $found[] = $adjacent;
-            foreach ($this->g->eachAdjacentTo($b) as $edge => $adjacent) {
+            foreach ($g->eachAdjacentTo($b) as $edge => $adjacent) {
                 $found[] = $adjacent;
             }
-            foreach ($this->g->eachAdjacentTo($b) as $edge => $adjacent) {
+            foreach ($g->eachAdjacentTo($b) as $edge => $adjacent) {
                 $found[] = $adjacent;
             }
         }
@@ -126,12 +149,14 @@ trait GraphSpec {
     }
 
     public function testEnsureEdge() {
-        list($a, $b) = array_values($this->v);
-        Util::ensureEdge($this->g, $a, $b);
+        list($a, $b) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertAttributeContains($a, 'vertices', $this->g);
-        $this->assertAttributeContains($b, 'vertices', $this->g);
-        $this->assertEquals(2, $this->g->order());
+        Util::ensureEdge($g, $a, $b);
+
+        $this->assertAttributeContains($a, 'vertices', $g);
+        $this->assertAttributeContains($b, 'vertices', $g);
+        $this->assertEquals(2, $g->order());
     }
 
     /**
@@ -139,19 +164,23 @@ trait GraphSpec {
      * @covers ::removeVertex
      */
     public function testRemoveVertex() {
-        list($a, $b) = array_values($this->v);
-        Util::ensureEdge($this->g, $a, $b);
+        list($a, $b) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->g->removeVertex($a);
-        $this->assertEquals(1, $this->g->order());
+        Util::ensureEdge($g, $a, $b);
+
+        $g->removeVertex($a);
+        $this->assertEquals(1, $g->order());
     }
 
     /**
      * @expectedException \Gliph\Exception\NonexistentVertexException
      */
     public function testEachAdjacentToMissingVertex() {
-        list($a) = array_values($this->v);
-        foreach ($this->g->eachAdjacentTo($a) as $adjacent) {
+        list($a) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        foreach ($g->eachAdjacentTo($a) as $adjacent) {
             $this->fail();
         }
     }
@@ -161,10 +190,12 @@ trait GraphSpec {
      * @covers ::order
      */
     public function testOrder() {
-        list($a) = array_values($this->v);
-        $this->g->ensureVertex($a);
+        list($a) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertEquals(1, $this->g->order());
+        $g->ensureVertex($a);
+
+        $this->assertEquals(1, $g->order());
     }
 
     /**
@@ -172,15 +203,17 @@ trait GraphSpec {
      * @depends testEachAdjacentTo
      */
     public function testRemoveEdge() {
-        list($a, $b, $c) = array_values($this->v);
-        Util::ensureEdge($this->g, $a, $b);
-        Util::ensureEdge($this->g, $b, $c);
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        Util::removeEdge($this->g, $b, $c);
-        $this->assertEquals(3, $this->g->order());
+        Util::ensureEdge($g, $a, $b);
+        Util::ensureEdge($g, $b, $c);
+
+        Util::removeEdge($g, $b, $c);
+        $this->assertEquals(3, $g->order());
 
         $found = array();
-        foreach ($this->g->eachAdjacentTo($a) as $edge => $adjacent) {
+        foreach ($g->eachAdjacentTo($a) as $edge => $adjacent) {
             $found[] = $adjacent;
         }
 
@@ -192,12 +225,14 @@ trait GraphSpec {
      * @covers ::eachEdge
      */
     public function testEachEdge() {
-        list($a, $b, $c) = array_values($this->v);
-        Util::ensureEdge($this->g, $a, $b);
-        Util::ensureEdge($this->g, $b, $c);
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        Util::ensureEdge($g, $a, $b);
+        Util::ensureEdge($g, $b, $c);
 
         $found = array();
-        foreach ($this->g->eachEdge() as $edge) {
+        foreach ($g->eachEdge() as $edge) {
             $found[] = $edge;
         }
 
@@ -206,12 +241,12 @@ trait GraphSpec {
         $this->assertEquals(array($b, $c), $found[1]);
 
         $found = array();
-        foreach ($this->g->eachEdge() as $edge) {
+        foreach ($g->eachEdge() as $edge) {
             $found[] = $edge;
-            foreach ($this->g->eachEdge() as $edge) {
+            foreach ($g->eachEdge() as $edge) {
                 $found[] = $edge;
             }
-            foreach ($this->g->eachEdge() as $edge) {
+            foreach ($g->eachEdge() as $edge) {
                 $found[] = $edge;
             }
         }
@@ -236,8 +271,10 @@ trait GraphSpec {
      * @expectedException \Gliph\Exception\NonexistentVertexException
      */
     public function testRemoveNonexistentVertex() {
-        list($a) = array_values($this->v);
-        $this->g->removeVertex($a);
+        list($a) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        $g->removeVertex($a);
     }
 
     /**
@@ -245,16 +282,18 @@ trait GraphSpec {
      * @covers ::inDegree
      */
     public function testInDegree() {
-        list($a, $b, $c) = array_values($this->v);
-        Util::ensureEdge($this->g, $a, $b);
-        Util::ensureEdge($this->g, $b, $c);
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertSame(1, $this->g->inDegree($a));
-        $this->assertSame(2, $this->g->inDegree($b));
-        $this->assertSame(1, $this->g->inDegree($c));
+        Util::ensureEdge($g, $a, $b);
+        Util::ensureEdge($g, $b, $c);
+
+        $this->assertSame(1, $g->inDegree($a));
+        $this->assertSame(2, $g->inDegree($b));
+        $this->assertSame(1, $g->inDegree($c));
 
         $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
-        $this->g->inDegree(new \stdClass());
+        $g->inDegree(new \stdClass());
     }
 
     /**
@@ -262,16 +301,18 @@ trait GraphSpec {
      * @covers ::outDegree
      */
     public function testOutDegree() {
-        list($a, $b, $c) = array_values($this->v);
-        Util::ensureEdge($this->g, $a, $b);
-        Util::ensureEdge($this->g, $b, $c);
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertSame(1, $this->g->outDegree($a));
-        $this->assertSame(2, $this->g->outDegree($b));
-        $this->assertSame(1, $this->g->outDegree($c));
+        Util::ensureEdge($g, $a, $b);
+        Util::ensureEdge($g, $b, $c);
+
+        $this->assertSame(1, $g->outDegree($a));
+        $this->assertSame(2, $g->outDegree($b));
+        $this->assertSame(1, $g->outDegree($c));
 
         $this->setExpectedException('\\Gliph\\Exception\\NonexistentVertexException');
-        $this->g->outDegree(new \stdClass());
+        $g->outDegree(new \stdClass());
     }
 
     /**
@@ -279,9 +320,11 @@ trait GraphSpec {
      * @covers ::size
      */
     public function testSize() {
-        list($a, $b) = array_values($this->v);
-        Util::ensureEdge($this->g, $a, $b);
+        list($a, $b) = array_values($this->getTestVertices());
+        $g = $this->g();
 
-        $this->assertEquals(1, $this->g->size());
+        Util::ensureEdge($g, $a, $b);
+
+        $this->assertEquals(1, $g->size());
     }
 }
