@@ -14,7 +14,7 @@ class DirectedAdjacencyList implements MutableDigraph {
     /**
      * {@inheritdoc}
      */
-    public function eachAdjacentTo($vertex) {
+    public function adjacentTo($vertex) {
         if (!$this->hasVertex($vertex)) {
             throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
         }
@@ -25,7 +25,7 @@ class DirectedAdjacencyList implements MutableDigraph {
         }
         $this->walking->detach($set);
 
-//        foreach ($this->eachVertex() as $v2 => $adjacent) {
+//        foreach ($this->vertices() as $v2 => $adjacent) {
 //            if ($adjacent->contains($vertex)) {
 //                yield $v2;
 //            }
@@ -52,7 +52,7 @@ class DirectedAdjacencyList implements MutableDigraph {
             throw new NonexistentVertexException('Vertex is not in the graph, it cannot be removed.', E_WARNING);
         }
 
-        foreach ($this->eachVertex() as $v => $outgoing) {
+        foreach ($this->vertices() as $v => $outgoing) {
             $outgoing->detach($vertex);
         }
         unset($this->vertices[$vertex]);
@@ -68,8 +68,8 @@ class DirectedAdjacencyList implements MutableDigraph {
     /**
      * {@inheritdoc}
      */
-    public function eachEdge() {
-        foreach ($this->eachVertex() as $tail => $outgoing) {
+    public function edges() {
+        foreach ($this->vertices() as $tail => $outgoing) {
             $set = $this->getTraversableSplos($outgoing);
             foreach ($set as $head) {
                 yield array($tail, $head);
@@ -83,7 +83,7 @@ class DirectedAdjacencyList implements MutableDigraph {
      */
     public function transpose() {
         $graph = new self();
-        foreach ($this->eachEdge() as $edge) {
+        foreach ($this->edges() as $edge) {
             $graph->ensureArc($edge[1], $edge[0]);
         }
 
@@ -121,7 +121,7 @@ class DirectedAdjacencyList implements MutableDigraph {
         }
 
         $count = 0;
-        foreach ($this->eachVertex() as $adjacent) {
+        foreach ($this->vertices() as $adjacent) {
             if ($adjacent->contains($vertex)) {
                 $count++;
             }

@@ -69,7 +69,7 @@ trait AdjacencyList {
     /**
      * {@inheritdoc}
      */
-    public function eachVertex() {
+    public function vertices() {
         $set = $this->getTraversableSplos($this->vertices);
         foreach ($set as $vertex) {
             $adjacent = $set->getInfo();

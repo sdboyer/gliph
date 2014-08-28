@@ -2,7 +2,6 @@
 
 namespace Gliph\Graph;
 
-use Gliph\Exception\InvalidVertexTypeException;
 use Gliph\Exception\NonexistentVertexException;
 
 /**
@@ -27,7 +26,7 @@ interface Graph {
      * @throws NonexistentVertexException
      *   Thrown if the vertex provided is not present in the graph.
      */
-    public function eachAdjacentTo($vertex);
+    public function adjacentTo($vertex);
 
     /**
      * Returns a generator that loops through each vertex in the graph.
@@ -37,7 +36,7 @@ interface Graph {
      *   value. The form of the connected edges may value from one graph
      *   implementation to the next, but it is guaranteed to be Traversable.
      */
-    public function eachVertex();
+    public function vertices();
 
     /**
      * Loops over each edge in the graph via a generator.
@@ -53,7 +52,7 @@ interface Graph {
      *   A generator that produces a single value representing an edge on each
      *   iteration.
      */
-    public function eachEdge();
+    public function edges();
 
     /**
      * Indicates whether or not the provided vertex is present in the graph.

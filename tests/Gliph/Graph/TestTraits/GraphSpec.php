@@ -57,9 +57,9 @@ trait GraphSpec {
 
     /**
      * @depends testEnsureVertex
-     * @covers ::eachVertex
+     * @covers ::vertices
      */
-    public function testEachVertex() {
+    public function testVertices() {
         list($a, $b) = array_values($this->getTestVertices());
         $g = $this->g();
 
@@ -67,7 +67,7 @@ trait GraphSpec {
         $g->ensureVertex($b);
 
         $found = array();
-        foreach ($g->eachVertex() as $vertex => $adjacent) {
+        foreach ($g->vertices() as $vertex => $adjacent) {
             $found[] = $vertex;
         }
 
@@ -75,9 +75,9 @@ trait GraphSpec {
 
         // Now, test nested iteration
         $found = array();
-        foreach ($g->eachVertex() as $vertex => $adjacent) {
+        foreach ($g->vertices() as $vertex => $adjacent) {
             $found[] = $vertex;
-            foreach ($g->eachVertex() as $vertex => $adjacent) {
+            foreach ($g->vertices() as $vertex => $adjacent) {
                 $found[] = $vertex;
             }
         }
@@ -114,9 +114,9 @@ trait GraphSpec {
         $this->assertEquals(1, $g->order());
     }
     /**
-     * @covers ::eachAdjacentTo
+     * @covers ::adjacentTo
      */
-    public function testEachAdjacentTo() {
+    public function testAdjacentTo() {
         list($a, $b, $c) = array_values($this->getTestVertices());
         $g = $this->g();
 
@@ -126,7 +126,7 @@ trait GraphSpec {
         // Edge directionality is irrelevant to adjacency; for both directed and
         // undirected, $b should have two adjacent vertices.
         $found = array();
-        foreach ($g->eachAdjacentTo($b) as $edge => $adjacent) {
+        foreach ($g->adjacentTo($b) as $edge => $adjacent) {
             $found[] = $adjacent;
         }
 
@@ -134,12 +134,12 @@ trait GraphSpec {
 
         // test nesting
         $found = array();
-        foreach ($g->eachAdjacentTo($b) as $edge => $adjacent) {
+        foreach ($g->adjacentTo($b) as $edge => $adjacent) {
             $found[] = $adjacent;
-            foreach ($g->eachAdjacentTo($b) as $edge => $adjacent) {
+            foreach ($g->adjacentTo($b) as $edge => $adjacent) {
                 $found[] = $adjacent;
             }
-            foreach ($g->eachAdjacentTo($b) as $edge => $adjacent) {
+            foreach ($g->adjacentTo($b) as $edge => $adjacent) {
                 $found[] = $adjacent;
             }
         }
@@ -176,11 +176,11 @@ trait GraphSpec {
     /**
      * @expectedException \Gliph\Exception\NonexistentVertexException
      */
-    public function testEachAdjacentToMissingVertex() {
+    public function testAdjacentToMissingVertex() {
         list($a) = array_values($this->getTestVertices());
         $g = $this->g();
 
-        foreach ($g->eachAdjacentTo($a) as $adjacent) {
+        foreach ($g->adjacentTo($a) as $adjacent) {
             $this->fail();
         }
     }
@@ -200,7 +200,7 @@ trait GraphSpec {
 
     /**
      * @depends testEnsureEdge
-     * @depends testEachAdjacentTo
+     * @depends testAdjacentTo
      */
     public function testRemoveEdge() {
         list($a, $b, $c) = array_values($this->getTestVertices());
@@ -213,7 +213,7 @@ trait GraphSpec {
         $this->assertEquals(3, $g->order());
 
         $found = array();
-        foreach ($g->eachAdjacentTo($a) as $edge => $adjacent) {
+        foreach ($g->adjacentTo($a) as $edge => $adjacent) {
             $found[] = $adjacent;
         }
 
@@ -222,9 +222,9 @@ trait GraphSpec {
 
     /**
      * @depends testEnsureEdge
-     * @covers ::eachEdge
+     * @covers ::edges
      */
-    public function testEachEdge() {
+    public function testEdges() {
         list($a, $b, $c) = array_values($this->getTestVertices());
         $g = $this->g();
 
@@ -232,7 +232,7 @@ trait GraphSpec {
         Util::ensureEdge($g, $b, $c);
 
         $found = array();
-        foreach ($g->eachEdge() as $edge) {
+        foreach ($g->edges() as $edge) {
             $found[] = $edge;
         }
 
@@ -241,12 +241,12 @@ trait GraphSpec {
         $this->assertEquals(array($b, $c), $found[1]);
 
         $found = array();
-        foreach ($g->eachEdge() as $edge) {
+        foreach ($g->edges() as $edge) {
             $found[] = $edge;
-            foreach ($g->eachEdge() as $edge) {
+            foreach ($g->edges() as $edge) {
                 $found[] = $edge;
             }
-            foreach ($g->eachEdge() as $edge) {
+            foreach ($g->edges() as $edge) {
                 $found[] = $edge;
             }
         }

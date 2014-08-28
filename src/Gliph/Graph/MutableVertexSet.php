@@ -2,6 +2,8 @@
 
 namespace Gliph\Graph;
 
+use Gliph\Exception\InvalidVertexTypeException;
+
 /**
  * Interface describing a mutable vertex set.
  *

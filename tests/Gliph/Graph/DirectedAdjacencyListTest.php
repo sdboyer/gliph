@@ -42,9 +42,9 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @depends testEnsureArc
-     * @covers ::eachAdjacentTo
+     * @covers ::adjacentTo
      */
-    public function testEachAdjacentTo() {
+    public function testAdjacentTo() {
         list($a, $b, $c) = array_values($this->getTestVertices());
         $g = $this->g();
 
@@ -52,30 +52,30 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
         $g->ensureArc($a, $c);
 
         $found = array();
-        foreach ($g->eachAdjacentTo($a) as $head) {
+        foreach ($g->adjacentTo($a) as $head) {
             $found[] = $head;
         }
         $this->assertEquals(array($b, $c), $found);
 
         $found = array();
-        foreach ($g->eachAdjacentTo($b) as $head) {
+        foreach ($g->adjacentTo($b) as $head) {
             $found[] = $head;
         }
         $this->assertEmpty($found);
 
-        foreach ($g->eachAdjacentTo($c) as $head) {
+        foreach ($g->adjacentTo($c) as $head) {
             $found[] = $head;
         }
         $this->assertEmpty($found);
 
         // nested
         $found = array();
-        foreach ($g->eachAdjacentTo($a) as $head) {
+        foreach ($g->adjacentTo($a) as $head) {
             $found[] = $head;
-            foreach ($g->eachAdjacentTo($a) as $head) {
+            foreach ($g->adjacentTo($a) as $head) {
                 $found[] = $head;
             }
-            foreach ($g->eachAdjacentTo($a) as $head) {
+            foreach ($g->adjacentTo($a) as $head) {
                 $found[] = $head;
             }
         }
@@ -84,7 +84,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @depends testEnsureArc
-     * @depends testEachAdjacentTo
+     * @depends testAdjacentTo
      * @covers ::removeVertex
      */
     public function testRemoveVertex() {
@@ -99,7 +99,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
 
         // Ensure that b was correctly removed from a's outgoing edges
         $found = array();
-        foreach ($g->eachAdjacentTo($a) as $edge => $head) {
+        foreach ($g->adjacentTo($a) as $edge => $head) {
             $found[] = $head;
         }
 
@@ -122,10 +122,10 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @depends testEnsureArc
-     * @depends testEachAdjacentTo
-     * @covers ::eachEdge
+     * @depends testAdjacentTo
+     * @covers ::edges
      */
-    public function testEachEdge() {
+    public function testEdges() {
         list($a, $b, $c) = array_values($this->getTestVertices());
         $g = $this->g();
 
@@ -133,7 +133,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
         $g->ensureArc($a, $c);
 
         $found = array();
-        foreach ($g->eachEdge() as $edge) {
+        foreach ($g->edges() as $edge) {
             $found[] = $edge;
         }
 
@@ -142,12 +142,12 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(array($a, $c), $found[1]);
 
         $found = array();
-        foreach ($g->eachEdge() as $edge) {
+        foreach ($g->edges() as $edge) {
             $found[] = $edge;
-            foreach ($g->eachEdge() as $edge) {
+            foreach ($g->edges() as $edge) {
                 $found[] = $edge;
             }
-            foreach ($g->eachEdge() as $edge) {
+            foreach ($g->edges() as $edge) {
                 $found[] = $edge;
             }
         }
@@ -169,7 +169,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @depends testEnsureArc
-     * @depends testEachEdge
+     * @depends testEdges
      * @covers ::transpose
      */
     public function testTranspose() {
@@ -183,7 +183,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(3, $transpose->order());
 
         $found = array();
-        foreach ($transpose->eachEdge() as $edge) {
+        foreach ($transpose->edges() as $edge) {
             $found[] = $edge;
         }
 

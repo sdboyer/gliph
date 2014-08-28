@@ -10,7 +10,19 @@ class UndirectedAdjacencyList implements MutableGraph {
     /**
      * {@inheritdoc}
      */
-    public function eachAdjacentTo($vertex) {
+    public function vertices() {
+        $set = $this->getTraversableSplos($this->vertices);
+        foreach ($set as $vertex) {
+            $adjacent = $set->getInfo();
+            yield $vertex => $adjacent;
+        }
+        $this->walking->detach($set);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function adjacentTo($vertex) {
         if (!$this->hasVertex($vertex)) {
             throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
         }
@@ -60,9 +72,9 @@ class UndirectedAdjacencyList implements MutableGraph {
     /**
      * {@inheritdoc}
      */
-    public function eachEdge() {
+    public function edges() {
         $complete = new \SplObjectStorage();
-        foreach ($this->eachVertex() as $v => $adjacent) {
+        foreach ($this->vertices() as $v => $adjacent) {
             $set = $this->getTraversableSplos($adjacent);
             foreach ($set as $a) {
                 if (!$complete->contains($a)) {

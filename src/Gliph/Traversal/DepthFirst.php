@@ -63,7 +63,7 @@ class DepthFirst {
 
                 $visitor->onStartVertex($vertex, $visit);
 
-                foreach ($graph->eachAdjacentTo($vertex) as $head) {
+                foreach ($graph->adjacentTo($vertex) as $head) {
                     $visitor->onExamineEdge($vertex, $head, $visit);
                     $visit($head);
                 }
@@ -96,7 +96,7 @@ class DepthFirst {
         $incomings = new \SplObjectStorage();
         $queue = new \SplQueue();
 
-        foreach ($graph->eachEdge() as $edge) {
+        foreach ($graph->edges() as $edge) {
             if (!isset($incomings[$edge[1]])) {
                 $incomings[$edge[1]] = new \SplObjectStorage();
             }
@@ -104,7 +104,7 @@ class DepthFirst {
         }
 
         // Prime the queue with vertices that have no incoming edges.
-        foreach ($graph->eachVertex() as $vertex => $outgoing) {
+        foreach ($graph->vertices() as $vertex => $outgoing) {
             if (!$incomings->contains($vertex)) {
                 $queue->push($vertex);
                 $visitor->onInitializeVertex($vertex, TRUE, $queue);
