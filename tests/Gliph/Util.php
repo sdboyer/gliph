@@ -32,7 +32,7 @@ class Util {
      */
     public static function ensureEdge(Graph $g, $u, $v) {
         if ($g instanceof MutableDigraph) {
-            $g->addDirectedEdge($u, $v);
+            $g->addArc($u, $v);
         }
         else if ($g instanceof MutableUndirectedGraph) { // TODO better granulation here
             $g->addEdge($u, $v);

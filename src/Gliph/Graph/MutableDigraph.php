@@ -21,5 +21,5 @@ interface MutableDigraph extends MutableGraph, Digraph {
      * @return Digraph
      *   The current graph instance.
      */
-    public function addDirectedEdge($tail, $head);
+    public function addArc($tail, $head);
 }

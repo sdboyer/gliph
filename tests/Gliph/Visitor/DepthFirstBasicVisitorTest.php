@@ -44,10 +44,10 @@ class DepthFirstBasicVisitorTest extends SimpleStatefulDepthFirstVisitorTestBase
         $this->vis = new DepthFirstBasicVisitor();
 
         list($a, $b, $c, $d) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
-        $this->g->addDirectedEdge($b, $c);
-        $this->g->addDirectedEdge($a, $c);
-        $this->g->addDirectedEdge($b, $d);
+        $this->g->addArc($a, $b);
+        $this->g->addArc($b, $c);
+        $this->g->addArc($a, $c);
+        $this->g->addArc($b, $d);
     }
 
     /**

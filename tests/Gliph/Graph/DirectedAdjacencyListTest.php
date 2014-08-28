@@ -23,17 +23,17 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     }
 
     protected function ensureEdge(MutableDigraph $g, $tail, $head) {
-        $g->addDirectedEdge($tail, $head);
+        $g->addArc($tail, $head);
     }
 
     /**
      * Implicitly depends on AdjacencyList::addVertex.
      *
-     * @covers ::addDirectedEdge
+     * @covers ::addArc
      */
     public function testAddDirectedEdge() {
         list($a, $b) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
+        $this->g->addArc($a, $b);
 
         $this->assertAttributeContains($a, 'vertices', $this->g);
         $this->assertAttributeContains($b, 'vertices', $this->g);
@@ -46,8 +46,8 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     public function testEachAdjacentTo() {
         list($a, $b, $c) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
-        $this->g->addDirectedEdge($a, $c);
+        $this->g->addArc($a, $b);
+        $this->g->addArc($a, $c);
 
         $found = array();
         foreach ($this->g->eachAdjacentTo($a) as $head) {
@@ -87,7 +87,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     public function testRemoveVertex() {
         list($a, $b) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
+        $this->g->addArc($a, $b);
         $this->assertEquals(2, $this->g->order());
 
         $this->g->removeVertex($b);
@@ -108,7 +108,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     public function testRemoveEdge() {
         list($a, $b) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
+        $this->g->addArc($a, $b);
         $this->g->removeEdge($a, $b);
 
         $this->assertEquals(2, $this->g->order());
@@ -121,8 +121,8 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     public function testEachEdge() {
         list($a, $b, $c) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
-        $this->g->addDirectedEdge($a, $c);
+        $this->g->addArc($a, $b);
+        $this->g->addArc($a, $c);
 
         $found = array();
         foreach ($this->g->eachEdge() as $edge) {
@@ -166,8 +166,8 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     public function testTranspose() {
         list($a, $b, $c) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
-        $this->g->addDirectedEdge($a, $c);
+        $this->g->addArc($a, $b);
+        $this->g->addArc($a, $c);
 
         $transpose = $this->g->transpose();
         $this->assertEquals(3, $transpose->order());
@@ -196,11 +196,11 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     public function testIsAcyclic() {
         list($a, $b, $c) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
-        $this->g->addDirectedEdge($b, $c);
+        $this->g->addArc($a, $b);
+        $this->g->addArc($b, $c);
         $this->assertTrue($this->g->isAcyclic());
 
-        $this->g->addDirectedEdge($c, $a);
+        $this->g->addArc($c, $a);
         $this->assertFalse($this->g->isAcyclic());
     }
 
@@ -213,12 +213,12 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGetCycles() {
         list($a, $b, $c) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
-        $this->g->addDirectedEdge($b, $c);
+        $this->g->addArc($a, $b);
+        $this->g->addArc($b, $c);
 
         $this->assertEmpty($this->g->getCycles());
 
-        $this->g->addDirectedEdge($c, $a);
+        $this->g->addArc($c, $a);
         $this->assertEquals(array(array($c, $b, $a)), $this->g->getCycles());
     }
 
@@ -228,8 +228,8 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     public function testInDegree() {
         list($a, $b, $c) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
-        $this->g->addDirectedEdge($b, $c);
+        $this->g->addArc($a, $b);
+        $this->g->addArc($b, $c);
 
         $this->assertSame(0, $this->g->inDegree($a));
         $this->assertSame(1, $this->g->inDegree($b));
@@ -246,8 +246,8 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     public function testOutDegree() {
         list($a, $b, $c) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
-        $this->g->addDirectedEdge($b, $c);
+        $this->g->addArc($a, $b);
+        $this->g->addArc($b, $c);
 
         $this->assertSame(1, $this->g->outDegree($a));
         $this->assertSame(1, $this->g->outDegree($b));
@@ -263,7 +263,7 @@ class DirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSize() {
         list($a, $b) = array_values($this->v);
-        $this->g->addDirectedEdge($a, $b);
+        $this->g->addArc($a, $b);
 
         $this->assertEquals(1, $this->g->size());
     }

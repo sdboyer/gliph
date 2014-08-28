@@ -29,10 +29,10 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
         );
         list($a, $b, $c, $d) = array_values($this->v);
 
-        $this->g->addDirectedEdge($a, $b);
-        $this->g->addDirectedEdge($b, $c);
-        $this->g->addDirectedEdge($a, $c);
-        $this->g->addDirectedEdge($b, $d);
+        $this->g->addArc($a, $b);
+        $this->g->addArc($b, $c);
+        $this->g->addArc($a, $c);
+        $this->g->addArc($b, $d);
     }
 
     /**
@@ -80,7 +80,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     public function testDirectCycleDepthFirstTraversal() {
         list($a, $b, $c, $d) = array_values($this->v);
 
-        $this->g->addDirectedEdge($d, $b);
+        $this->g->addArc($d, $b);
 
         $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
         $visitor->expects($this->exactly(1))->method('onBackEdge');
@@ -94,7 +94,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
     public function testIndirectCycleDepthFirstTraversal() {
         list($a, $b, $c, $d) = array_values($this->v);
 
-        $this->g->addDirectedEdge($d, $a);
+        $this->g->addArc($d, $a);
 
         $visitor = $this->getMock('Gliph\\Visitor\\DepthFirstNoOpVisitor');
         $visitor->expects($this->exactly(1))->method('onBackEdge');
@@ -110,7 +110,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
         list($a, $b, $c, $d) = array_values($this->v);
 
         // Create a cycle that ensures there are no source vertices
-        $this->g->addDirectedEdge($d, $a);
+        $this->g->addArc($d, $a);
         DepthFirst::traverse($this->g, new DepthFirstNoOpVisitor());
     }
 
@@ -145,7 +145,7 @@ class DepthFirstTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals(array($c, $d, $b, $a), DepthFirst::toposort($this->g, $a));
 
-        $this->g->addDirectedEdge($d, $a);
+        $this->g->addArc($d, $a);
         DepthFirst::toposort($this->g, $a);
     }
 }
