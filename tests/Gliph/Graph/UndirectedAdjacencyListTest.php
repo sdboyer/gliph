@@ -13,18 +13,6 @@ class UndirectedAdjacencyListTest extends \PHPUnit_Framework_TestCase {
     use ObjectVertices;
 
     /**
-     * @var UndirectedAdjacencyList
-     */
-    protected $g;
-
-    /**
-     * Creates a set of vertices and an empty graph for testing.
-     */
-    public function setUp() {
-        $this->getTestVertices();
-    }
-
-    /**
      * Returns a new UndirectedAdjacencyList.
      *
      * @return UndirectedAdjacencyList

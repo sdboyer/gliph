@@ -39,7 +39,7 @@ class UndirectedAdjacencyList implements MutableGraph {
      */
     public function incidentTo($vertex) {
         if (!$this->hasVertex($vertex)) {
-            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
+            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its incident edges.');
         }
 
         $set = $this->getTraversableSplos($this->vertices[$vertex]);

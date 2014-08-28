@@ -35,7 +35,7 @@ class ConnectedComponent {
             $stack[] = $vertex;
             $counter++;
 
-            foreach ($graph->adjacentTo($vertex) as $edge => $head) {
+            foreach ($graph->successorsOf($vertex) as $head) {
                 if (!$indices->contains($head)) {
                     $visit($head);
                     $lowlimits[$vertex] = min($lowlimits[$vertex], $lowlimits[$head]);

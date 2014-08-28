@@ -125,12 +125,12 @@ trait GraphSpec {
 
         // Edge directionality is irrelevant to adjacency; for both directed and
         // undirected, $b should have two adjacent vertices.
-        $found = array();
-        foreach ($g->adjacentTo($b) as $edge => $adjacent) {
-            $found[] = $adjacent;
+        $f1 = array();
+        foreach ($g->adjacentTo($b) as $adjacent) {
+            $f1[] = $adjacent;
         }
 
-        $this->assertCount(2, $found);
+        $this->assertCount(2, $f1);
 
         // test nesting
         $found = array();
@@ -145,7 +145,24 @@ trait GraphSpec {
         }
 
         $this->assertCount(10, $found);
-        $this->assertEquals(array($a, $a, $c, $a, $c, $c, $a, $c, $a, $c), $found);
+
+        // This is a tough test. We can't require a particular ordering of the
+        // output, but it's fair to assume that the ordering will be consistent
+        // across nested iterations. So, work backwards from what we found in
+        // the non-nested test.
+        $expected = array(
+            $f1[0],
+            $f1[0],
+            $f1[1],
+            $f1[0],
+            $f1[1],
+            $f1[1],
+            $f1[0],
+            $f1[1],
+            $f1[0],
+            $f1[1],
+        );
+        $this->assertEquals($expected, $found);
     }
 
     /**

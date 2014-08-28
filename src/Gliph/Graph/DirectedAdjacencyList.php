@@ -25,19 +25,48 @@ class DirectedAdjacencyList implements MutableDigraph {
         }
         $this->walking->detach($set);
 
-//        foreach ($this->vertices() as $v2 => $adjacent) {
-//            if ($adjacent->contains($vertex)) {
-//                yield $v2;
-//            }
-//        }
+        foreach ($this->vertices() as $v2 => $adjacent) {
+            if ($adjacent->contains($vertex)) {
+                yield $v2;
+            }
+        }
     }
 
     /**
      * {@inheritdoc}
      */
+    public function successorsOf($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its successor vertices.');
+        }
+
+        $set = $this->getTraversableSplos($this->vertices[$vertex]);
+        foreach ($set as $successor) {
+            yield $successor;
+        }
+        $this->walking->detach($set);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function predecessorsOf($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its predecessor vertices.');
+        }
+
+        foreach ($this->vertices() as $v2 => $adjacent) {
+            if ($adjacent->contains($vertex)) {
+                yield $v2;
+            }
+        }
+    }
+    /**
+     * {@inheritdoc}
+     */
     public function incidentTo($vertex) {
         if (!$this->hasVertex($vertex)) {
-            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
+            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its incident edges.');
         }
 
         $set = $this->getTraversableSplos($this->vertices[$vertex]);
