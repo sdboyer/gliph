@@ -8,6 +8,8 @@ Gliph is a **g**raph **li**brary for **PH**P. It provides graph building blocks 
 
 Gliph aims for both sane interfaces and performant implementation - at least, as performant as can be hoped for a PHP graph library. This does require knowing enough about graphs to know what type is appropriate for your use case, but we are aiming to provide helpers that simplify those choices.
 
+NOTE - the API is being actively refactored, in preparation for a 1.0 release. This includes a big overhaul (and improvement) of this documentation. Like, with real examples. Follow it here: https://github.com/sdboyer/gliph/pull/14
+
 ## Core Concepts
 
 Gliph has several components that work together: graph classes, algorithms, and visitors. Generally speaking, Gliph is patterned after the [C++ Boost Graph Library](http://www.boost.org/libs/graph/doc); reading their documentation can yield a lot of insight into how Gliph is intended to work.
