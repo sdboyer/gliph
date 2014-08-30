@@ -198,4 +198,3 @@ class DirectedAdjacencyList implements MutableDigraph {
         return $this->inDegreeOf($vertex) + $this->outDegreeOf($vertex);
     }
 }
-

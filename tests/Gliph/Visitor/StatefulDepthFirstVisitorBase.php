@@ -173,4 +173,3 @@ abstract class StatefulDepthFirstVisitorBase extends \PHPUnit_Framework_TestCase
         call_user_func_array(array($this->createCompletedVisitor(), $method), $args);
     }
 }
-
