@@ -18,6 +18,9 @@ interface Digraph extends Graph {
      *
      *      A -> B
      *
+     * Note that, in set terms,
+     *      g.adjacentTo(x) == g.successorsOf(x) ∪ g.predecessorsOf(x)
+     *
      * @param object $vertex
      *   The vertex whose successor vertices should be enumerated.
      *
@@ -38,6 +41,9 @@ interface Digraph extends Graph {
      *
      *      B -> A
      *
+     * Note that, in set terms,
+     *      g.adjacentTo(x) == g.successorsOf(x) ∪ g.predecessorsOf(x)
+     *
      * @param object $vertex
      *   The vertex whose predecessor vertices should be enumerated.
      *
@@ -48,6 +54,68 @@ interface Digraph extends Graph {
      *   Thrown if the vertex provided is not present in the graph.
      */
     public function predecessorsOf($vertex);
+
+    /**
+     * Enumerates each out-arc from the provided vertex via a generator.
+     *
+     * An arc is outbound from a vertex if that vertex is the 'tail' of the arc.
+     *
+     * Returns a generator that yields 2-tuple (array) where the first two values
+     * represent the vertex pair. Vertex order is guaranteed: the first vertex
+     * is the tail, and the second vertex is the head.
+     *
+     * If the graph has additional edge data (e.g., weight), additional elements
+     * are appended to the edge array as needed. (See implementation-specific
+     * documentation for more detail).
+     *
+     * @see Digraph::arcsTo()
+     * @see Digraph::successorsOf()
+     * @see Graph::incidentTo()
+     *
+     * Note that, in set terms,
+     *      g.incidentTo(x) == g.arcsFrom(x) ∪ g.arcsTo(x)
+     *
+     * @param $vertex
+     *  The vertex whose out-arcs should be visited.
+     *
+     * @return \Generator
+     *  A generator that yields out-arcs as values.
+     *
+     * @throws NonexistentVertexException
+     *   Thrown if the vertex provided is not present in the graph.
+     */
+    public function arcsFrom($vertex);
+
+    /**
+     * Enumerates each in-arc from the provided vertex via a generator.
+     *
+     * An arc is inbound to a vertex if that vertex is the 'head' of the arc.
+     *
+     * Returns a generator that yields 2-tuple (array) where the first two values
+     * represent the vertex pair. Vertex order is guaranteed: the first vertex
+     * is the tail, and the second vertex is the head.
+     *
+     * If the graph has additional edge data (e.g., weight), additional elements
+     * are appended to the edge array as needed. (See implementation-specific
+     * documentation for more detail).
+     *
+     * @see Digraph::arcsFrom()
+     * @see Digraph::predecessorsOf()
+     * @see Graph::incidentTo()
+     *
+     * Note that, in set terms,
+     *      g.incidentTo(x) == g.arcsFrom(x) ∪ g.arcsTo(x)
+     *
+     * @param $vertex
+     *  The vertex whose in-arcs should be visited.
+     *
+     * @return \Generator
+     *  A generator that yields in-arcs as values.
+     *
+     * @throws NonexistentVertexException
+     *   Thrown if the vertex provided is not present in the graph.
+     */
+    public function arcsTo($vertex);
 
     /**
      * Returns the in-degree (number of incoming edges) for the provided vertex.

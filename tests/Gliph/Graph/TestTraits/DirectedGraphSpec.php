@@ -147,6 +147,115 @@ trait DirectedGraphSpec {
 
     /**
      * @depends testEnsureArc
+     * @covers ::arcsFrom
+     */
+    public function testArcsFrom() {
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        $g->ensureArc($a, $b);
+        $g->ensureArc($a, $c);
+
+        $found = array();
+        foreach ($g->arcsFrom($a) as $head) {
+            $this->assertEquals($a, $head[0]);
+            $found[] = $head;
+        }
+        $this->assertEquals(array(array($a, $b), array($a, $c)), $found);
+
+        $found = array();
+        foreach ($g->arcsFrom($b) as $head) {
+            $found[] = $head;
+        }
+        $this->assertEmpty($found);
+
+        foreach ($g->arcsFrom($c) as $head) {
+            $found[] = $head;
+        }
+        $this->assertEmpty($found);
+
+        // nested
+        $found = array();
+        foreach ($g->arcsFrom($a) as $head) {
+            $found[] = $head[1];
+            foreach ($g->arcsFrom($a) as $head) {
+                $found[] = $head[1];
+            }
+            foreach ($g->arcsFrom($a) as $head) {
+                $found[] = $head[1];
+            }
+        }
+        $this->assertEquals(array($b, $b, $c, $b, $c, $c, $b, $c, $b, $c), $found);
+    }
+
+    /**
+     * @expectedException \Gliph\Exception\NonexistentVertexException
+     */
+    public function testArcsFromMissingVertex() {
+        list($a) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        foreach ($g->arcsFrom($a) as $edge) {
+            $this->fail();
+        }
+    }
+
+    /**
+     * @depends testEnsureArc
+     * @covers ::arcsTo
+     */
+    public function testArcsTo() {
+        list($a, $b, $c) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        $g->ensureArc($b, $a);
+        $g->ensureArc($c, $a);
+
+        $found = array();
+        foreach ($g->arcsTo($a) as $head) {
+            $found[] = $head;
+        }
+        $this->assertEquals(array(array($b, $a), array($c, $a)), $found);
+
+        $found = array();
+        foreach ($g->arcsTo($b) as $head) {
+            $found[] = $head;
+        }
+        $this->assertEmpty($found);
+
+        foreach ($g->arcsTo($c) as $head) {
+            $found[] = $head;
+        }
+        $this->assertEmpty($found);
+
+        // nested
+        $found = array();
+        foreach ($g->arcsTo($a) as $head) {
+            $found[] = $head[0];
+            foreach ($g->arcsTo($a) as $head) {
+                $found[] = $head[0];
+            }
+            foreach ($g->arcsTo($a) as $head) {
+                $found[] = $head[0];
+            }
+        }
+        $this->assertEquals(array($b, $b, $c, $b, $c, $c, $b, $c, $b, $c), $found);
+    }
+
+    /**
+     * @expectedException \Gliph\Exception\NonexistentVertexException
+     */
+    public function testArcsToMissingVertex() {
+        list($a) = array_values($this->getTestVertices());
+        $g = $this->g();
+
+        foreach ($g->arcsTo($a) as $edge) {
+            $this->fail();
+        }
+    }
+
+    /**
+     * @depends testEnsureArc
      * @covers ::removeArc
      */
     public function testRemoveArc() {
