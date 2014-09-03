@@ -4,11 +4,9 @@
 [![Latest Stable Version](https://poser.pugx.org/sdboyer/gliph/v/stable.png)](https://packagist.org/packages/sdboyer/gliph)
 [![Coverage Status](https://coveralls.io/repos/sdboyer/gliph/badge.png?branch=master)](https://coveralls.io/r/sdboyer/gliph?branch=master)
 
-Gliph is a **g**raph **li**brary for **PH**P. It provides graph building blocks and datastructures for use by other PHP applications. It is (currently) designed for use with in-memory graphs, not for interaction with a graph database like [Neo4J](http://neo4j.org/).
+Gliph is a graph library for PHP. It provides graph building blocks and datastructures for use by other PHP applications. It is (currently) designed for use with in-memory graphs, not for interaction with a graph database like [Neo4J](http://neo4j.org/).
 
 Gliph aims for both sane interfaces and performant implementation - at least, as performant as can be hoped for a PHP graph library. This does require knowing enough about graphs to know what type is appropriate for your use case, but we are aiming to provide helpers that simplify those choices.
-
-NOTE - the API is being actively refactored, in preparation for a 1.0 release. This includes a big overhaul (and improvement) of this documentation. Like, with real examples. Follow it here: https://github.com/sdboyer/gliph/pull/14
 
 ## Core Concepts
 
