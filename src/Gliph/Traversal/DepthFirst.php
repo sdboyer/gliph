@@ -104,7 +104,7 @@ class DepthFirst {
         }
 
         // Prime the queue with vertices that have no incoming edges.
-        foreach ($graph->vertices() as $vertex => $outgoing) {
+        foreach ($graph->vertices() as $vertex) {
             if (!$incomings->contains($vertex)) {
                 $queue->push($vertex);
                 $visitor->onInitializeVertex($vertex, TRUE, $queue);

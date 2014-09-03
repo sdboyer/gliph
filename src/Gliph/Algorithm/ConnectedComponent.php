@@ -54,7 +54,7 @@ class ConnectedComponent {
             }
         };
 
-        foreach ($graph->vertices() as $v => $outgoing) {
+        foreach ($graph->vertices() as $v) {
             if (!$indices->contains($v)) {
                 $visit($v);
             }

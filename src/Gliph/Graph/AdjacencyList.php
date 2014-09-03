@@ -72,8 +72,7 @@ trait AdjacencyList {
     public function vertices() {
         $set = $this->getTraversableSplos($this->vertices);
         foreach ($set as $vertex) {
-            $adjacent = $set->getInfo();
-            yield $vertex => $adjacent;
+            yield $vertex;
         }
         $this->walking->detach($set);
     }

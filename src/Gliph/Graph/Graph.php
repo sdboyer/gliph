@@ -15,7 +15,7 @@ interface Graph {
      * A vertex is adjacent to another vertex if they share an edge. Edge
      * direction, if any, does not matter.
      *
-     * The generator yields only a value: the adjacent vertex. The
+     * The generator yields only a value: the adjacent vertex.
      *
      * @param object $vertex
      *   The vertex whose adjacent vertices should be visited.
@@ -57,9 +57,7 @@ interface Graph {
      * Returns a generator that loops through each vertex in the graph.
      *
      * @return \Generator
-     *   A generator that yields the vertex as key and its connected edges as
-     *   value. The form of the connected edges may vary from one graph
-     *   implementation to the next, but it is guaranteed to be Traversable.
+     *   A generator that yields vertices as values.
      */
     public function vertices();
 

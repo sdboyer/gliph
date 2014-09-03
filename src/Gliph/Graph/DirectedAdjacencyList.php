@@ -23,13 +23,16 @@ class DirectedAdjacencyList implements MutableDigraph {
         foreach ($set as $adjacent_vertex) {
             yield $adjacent_vertex;
         }
-        $this->walking->detach($set);
+        $this->walking->detach($this->vertices);
 
-        foreach ($this->vertices() as $v2 => $adjacent) {
-            if ($adjacent->contains($vertex)) {
-                yield $v2;
+        // Search inbound arcs
+        $set = $this->getTraversableSplos($this->vertices);
+        foreach ($set as $v) {
+            if ($this->vertices[$v]->contains($vertex)) {
+                yield $v;
             }
         }
+        $this->walking->detach($set);
     }
 
     /**
@@ -55,11 +58,13 @@ class DirectedAdjacencyList implements MutableDigraph {
             throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its predecessor vertices.');
         }
 
-        foreach ($this->vertices() as $v2 => $adjacent) {
-            if ($adjacent->contains($vertex)) {
-                yield $v2;
+        $set = $this->getTraversableSplos($this->vertices);
+        foreach ($set as $v) {
+            if ($this->vertices[$v]->contains($vertex)) {
+                yield $v;
             }
         }
+        $this->walking->detach($set);
     }
 
     /**
@@ -76,11 +81,13 @@ class DirectedAdjacencyList implements MutableDigraph {
         }
         $this->walking->detach($set);
 
-        foreach ($this->vertices() as $v2 => $adjacent) {
-            if ($adjacent->contains($vertex)) {
-                yield array($v2, $vertex);
+        $set = $this->getTraversableSplos($this->vertices);
+        foreach ($set as $v) {
+            if ($this->vertices[$v]->contains($vertex)) {
+                yield array($v, $vertex);
             }
         }
+        $this->walking->detach($set);
     }
 
     /**
@@ -106,12 +113,15 @@ class DirectedAdjacencyList implements MutableDigraph {
             throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its predecessor vertices.');
         }
 
-        foreach ($this->vertices() as $v2 => $adjacent) {
-            if ($adjacent->contains($vertex)) {
-                yield array($v2, $vertex);
+        $set = $this->getTraversableSplos($this->vertices);
+        foreach ($set as $v) {
+            if ($this->vertices[$v]->contains($vertex)) {
+                yield array($v, $vertex);
             }
         }
+        $this->walking->detach($set);
     }
+
     /**
      * {@inheritdoc}
      */
@@ -132,8 +142,8 @@ class DirectedAdjacencyList implements MutableDigraph {
             throw new NonexistentVertexException('Vertex is not in the graph, it cannot be removed.', E_WARNING);
         }
 
-        foreach ($this->vertices() as $v => $outgoing) {
-            $outgoing->detach($vertex);
+        foreach ($this->vertices() as $v) {
+            $this->vertices[$v]->detach($vertex);
         }
         unset($this->vertices[$vertex]);
     }
@@ -149,13 +159,15 @@ class DirectedAdjacencyList implements MutableDigraph {
      * {@inheritdoc}
      */
     public function edges() {
-        foreach ($this->vertices() as $tail => $outgoing) {
-            $set = $this->getTraversableSplos($outgoing);
+        $oset = $this->getTraversableSplos($this->vertices);
+        foreach ($oset as $tail) {
+            $set = $this->getTraversableSplos($this->vertices[$tail]);
             foreach ($set as $head) {
                 yield array($tail, $head);
             }
             $this->walking->detach($set);
         }
+        $this->walking->detach($oset);
     }
 
     /**
@@ -201,8 +213,8 @@ class DirectedAdjacencyList implements MutableDigraph {
         }
 
         $count = 0;
-        foreach ($this->vertices() as $adjacent) {
-            if ($adjacent->contains($vertex)) {
+        foreach ($this->vertices() as $v) {
+            if ($this->vertices[$v]->contains($vertex)) {
                 $count++;
             }
         }

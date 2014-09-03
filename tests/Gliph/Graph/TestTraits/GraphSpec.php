@@ -67,7 +67,7 @@ trait GraphSpec {
         $g->ensureVertex($b);
 
         $found = array();
-        foreach ($g->vertices() as $vertex => $adjacent) {
+        foreach ($g->vertices() as $vertex) {
             $found[] = $vertex;
         }
 
@@ -75,9 +75,9 @@ trait GraphSpec {
 
         // Now, test nested iteration
         $found = array();
-        foreach ($g->vertices() as $vertex => $adjacent) {
+        foreach ($g->vertices() as $vertex) {
             $found[] = $vertex;
-            foreach ($g->vertices() as $vertex => $adjacent) {
+            foreach ($g->vertices() as $vertex) {
                 $found[] = $vertex;
             }
         }
