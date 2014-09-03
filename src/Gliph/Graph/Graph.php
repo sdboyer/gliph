@@ -2,7 +2,6 @@
 
 namespace Gliph\Graph;
 
-use Gliph\Exception\InvalidVertexTypeException;
 use Gliph\Exception\NonexistentVertexException;
 
 /**
@@ -11,41 +10,58 @@ use Gliph\Exception\NonexistentVertexException;
 interface Graph {
 
     /**
-     * Loops over each vertex that is adjacent to the given vertex.
+     * Enumerates each vertex adjacent to the provided vertex via a generator.
      *
-     * The meaning of "adjacency" depends on the type of graph. In a directed
-     * graph, it refers to all the out-edges of the provided vertex. In an
-     * undirected graph, in-edges and out-edges are the same, so this method
-     * will iterate over both.
+     * A vertex is adjacent to another vertex if they share an edge. Edge
+     * direction, if any, does not matter.
      *
-     * The generator yields an edge as key and the adjacent vertex as value. The
-     * form by which the edge is represented may vary from one graph
-     * implementation to another, but the representation should be the same as
-     * produced by the graph's eachEdge() implementation.
-     *
-     * @see Graph::eachEdge()
+     * The generator yields only a value: the adjacent vertex. The
      *
      * @param object $vertex
-     *   The vertex whose out-edges should be visited.
+     *   The vertex whose adjacent vertices should be visited.
      *
      * @return \Generator
-     *   A generator that yields the edge as key and adjacent vertex as value.
+     *   A generator that yields adjacent vertices as values.
      *
      * @throws NonexistentVertexException
-     *   Thrown if the vertex provided in the first parameter is not present in
-     *   the graph.
+     *   Thrown if the vertex provided is not present in the graph.
      */
-    public function eachAdjacent($vertex);
+    public function adjacentTo($vertex);
+
+    /**
+     * Enumerates each edge incident to the provided vertex via a generator.
+     *
+     * A vertex is incident to an edge if that edge connects to it. Edge
+     * direction, if any, does not matter.
+     *
+     * Returns a generator that yields 2-tuple (array) where the first two values
+     * represent the vertex pair. Vertex order is neither guaranteed nor
+     * implied, as edges are an unordered pair. If the graph has additional edge
+     * data (e.g., weight), additional elements are appended to the edge array
+     * as needed. (See implementation-specific documentation for more detail).
+     *
+     * @see Graph::adjacentTo().
+     *
+     * @param $vertex
+     *  The vertex whose incident edges should be visited.
+     *
+     * @return \Generator
+     *  A generator that yields incident edges as values.
+     *
+     * @throws NonexistentVertexException
+     *   Thrown if the vertex provided is not present in the graph.
+     */
+    public function incidentTo($vertex);
 
     /**
      * Returns a generator that loops through each vertex in the graph.
      *
      * @return \Generator
      *   A generator that yields the vertex as key and its connected edges as
-     *   value. The form of the connected edges may value from one graph
+     *   value. The form of the connected edges may vary from one graph
      *   implementation to the next, but it is guaranteed to be Traversable.
      */
-    public function eachVertex();
+    public function vertices();
 
     /**
      * Loops over each edge in the graph via a generator.
@@ -61,7 +77,22 @@ interface Graph {
      *   A generator that produces a single value representing an edge on each
      *   iteration.
      */
-    public function eachEdge();
+    public function edges();
+
+    /**
+     * Returns the degree (number of incident edges) for the provided vertex.
+     *
+     * @param object $vertex
+     *   The vertex for which to retrieve degree information.
+     *
+     * @return int
+     *
+     * @throws NonexistentVertexException
+     *   Thrown if the vertex provided in the first parameter is not present in
+     *   the graph.
+     *
+     */
+    public function degreeOf($vertex);
 
     /**
      * Indicates whether or not the provided vertex is present in the graph.
@@ -73,40 +104,6 @@ interface Graph {
      *   TRUE if the vertex is present, FALSE otherwise.
      */
     public function hasVertex($vertex);
-
-    /**
-     * Returns the in-degree (number of incoming edges) for the provided vertex.
-     *
-     * In undirected graphs, in-degree and out-degree are the same.
-     *
-     * @param object $vertex
-     *   The vertex for which to retrieve in-degree information.
-     *
-     * @return int
-     *
-     * @throws NonexistentVertexException
-     *   Thrown if the vertex provided in the first parameter is not present in
-     *   the graph.
-     *
-     */
-    public function inDegree($vertex);
-
-    /**
-     * Returns the out-degree (count of outgoing edges) for the provided vertex.
-     *
-     * In undirected graphs, in-degree and out-degree are the same.
-     *
-     * @param object $vertex
-     *   The vertex for which to retrieve out-degree information.
-     *
-     * @return int
-     *
-     * @throws NonexistentVertexException
-     *   Thrown if the vertex provided in the first parameter is not present in
-     *   the graph.
-     *
-     */
-    public function outDegree($vertex);
 
     /**
      * Returns the number of edges in the graph.

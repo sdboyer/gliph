@@ -3,10 +3,9 @@
 namespace Gliph\Graph;
 
 use Gliph\Exception\InvalidVertexTypeException;
-use Gliph\Exception\NonexistentVertexException;
 
 /**
- * A graph, represented as an adjacency list.
+ * Core logic for an adjacency list-based graph representation.
  *
  * Adjacency lists store vertices directly, and edges relative to the vertices
  * they connect. That means there is no overall list of edges in the graph; only
@@ -22,7 +21,7 @@ use Gliph\Exception\NonexistentVertexException;
  * adjacency list. This makes accessing in-edge information in a directed graph
  * highly inefficient.
  */
-abstract class AdjacencyList implements MutableGraph {
+trait AdjacencyList {
 
     /**
      * Contains the adjacency list of vertices.
@@ -55,7 +54,7 @@ abstract class AdjacencyList implements MutableGraph {
     /**
      * {@inheritdoc}
      */
-    public function addVertex($vertex) {
+    public function ensureVertex($vertex) {
         if (!is_object($vertex)) {
             throw new InvalidVertexTypeException('Vertices must be objects; non-object provided.');
         }
@@ -70,23 +69,7 @@ abstract class AdjacencyList implements MutableGraph {
     /**
      * {@inheritdoc}
      */
-    public function eachAdjacent($vertex) {
-        if (!$this->hasVertex($vertex)) {
-            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
-        }
-
-        $set = $this->getTraversableSplos($this->vertices[$vertex]);
-        foreach ($set as $adjacent_vertex) {
-            yield array($vertex, $adjacent_vertex) => $adjacent_vertex;
-        }
-        $this->walking->detach($set);
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function eachVertex() {
+    public function vertices() {
         $set = $this->getTraversableSplos($this->vertices);
         foreach ($set as $vertex) {
             $adjacent = $set->getInfo();

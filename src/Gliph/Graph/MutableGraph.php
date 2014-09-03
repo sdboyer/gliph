@@ -2,55 +2,35 @@
 namespace Gliph\Graph;
 
 /**
- * Describes a graph that can be modified after initial creation.
+ * Describes an undirected graph that can be modified after initial creation.
  */
-interface MutableGraph extends Graph {
+interface MutableGraph extends Graph, MutableVertexSet {
 
     /**
-     * Adds a vertex to the graph.
+     * Adds an undirected edge to this graph.
      *
-     * Gliph requires that its graph vertices be objects; beyond that, it does
-     * not care about vertex type.
+     * @param object $u
+     *   One object vertex in the edge pair. The vertex will be added to
+     *   the graph if it is not already present.
+     * @param object $v
+     *   The other object vertex in the edge pair. The vertex will be added to
+     *   the graph if it is not already present.
      *
-     * @param object $vertex
-     *   An object to use as a vertex in the graph.
-     *
-     * @return Graph
+     * @return MutableGraph
      *   The current graph instance.
-     *
-     * @throws InvalidVertexTypeException
-     *   Thrown if an invalid type of data is provided as a vertex.
      */
-    public function addVertex($vertex);
+    public function ensureEdge($u, $v);
 
     /**
-     * Remove a vertex from the graph.
+     * Removes an undirected edge from the graph.
      *
-     * This will also remove any edges that include the vertex.
+     * @param $u
+     *   One vertex in the edge pair to remove.
+     * @param $v
+     *   The other vertex in the edge pair to remove.
      *
-     * @param object $vertex
-     *   A vertex object to remove from the graph.
-     *
-     * @return Graph
-     *   The current graph instance.
-     *
-     * @throws NonexistentVertexException
-     *   Thrown if the provided vertex is not present in the graph.
-     */
-    public function removeVertex($vertex);
-
-    /**
-     * Removes an edge from the graph.
-     *
-     * @param $a
-     *   The first vertex in the edge pair to remove. In a directed graph, this
-     *   is the tail vertex.
-     * @param $b
-     *   The second vertex in the edge pair to remove. In a directed graph, this
-     *   is the head vertex.
-     *
-     * @return Graph
+     * @return MutableGraph
      *   The current graph instance.
      */
-    public function removeEdge($a, $b);
+    public function removeEdge($u, $v);
 }

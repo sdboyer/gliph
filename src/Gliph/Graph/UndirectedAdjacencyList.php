@@ -4,13 +4,56 @@ namespace Gliph\Graph;
 
 use Gliph\Exception\NonexistentVertexException;
 
-class UndirectedAdjacencyList extends AdjacencyList implements MutableUndirectedGraph {
+class UndirectedAdjacencyList implements MutableGraph {
+    use AdjacencyList;
 
     /**
      * {@inheritdoc}
      */
-    public function addEdge($from, $to) {
-        $this->addVertex($from)->addVertex($to);
+    public function vertices() {
+        $set = $this->getTraversableSplos($this->vertices);
+        foreach ($set as $vertex) {
+            $adjacent = $set->getInfo();
+            yield $vertex => $adjacent;
+        }
+        $this->walking->detach($set);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function adjacentTo($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its adjacent vertices.');
+        }
+
+        $set = $this->getTraversableSplos($this->vertices[$vertex]);
+        foreach ($set as $adjacent_vertex) {
+            yield $adjacent_vertex;
+        }
+        $this->walking->detach($set);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function incidentTo($vertex) {
+        if (!$this->hasVertex($vertex)) {
+            throw new NonexistentVertexException('Vertex is not in graph; cannot iterate over its incident edges.');
+        }
+
+        $set = $this->getTraversableSplos($this->vertices[$vertex]);
+        foreach ($set as $adjacent_vertex) {
+            yield array($vertex, $adjacent_vertex);
+        }
+        $this->walking->detach($set);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function ensureEdge($from, $to) {
+        $this->ensureVertex($from)->ensureVertex($to);
         if (!$this->vertices[$from]->contains($to)) {
             $this->size++;
         }
@@ -44,9 +87,9 @@ class UndirectedAdjacencyList extends AdjacencyList implements MutableUndirected
     /**
      * {@inheritdoc}
      */
-    public function eachEdge() {
+    public function edges() {
         $complete = new \SplObjectStorage();
-        foreach ($this->eachVertex() as $v => $adjacent) {
+        foreach ($this->vertices() as $v => $adjacent) {
             $set = $this->getTraversableSplos($adjacent);
             foreach ($set as $a) {
                 if (!$complete->contains($a)) {
@@ -61,20 +104,9 @@ class UndirectedAdjacencyList extends AdjacencyList implements MutableUndirected
     /**
      * {@inheritdoc}
      */
-    public function inDegree($vertex) {
+    public function degreeOf($vertex) {
         if (!$this->hasVertex($vertex)) {
             throw new NonexistentVertexException('Vertex is not in the graph, in-degree information cannot be provided', E_WARNING);
-        }
-
-        return $this->vertices[$vertex]->count();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function outDegree($vertex) {
-        if (!$this->hasVertex($vertex)) {
-            throw new NonexistentVertexException('Vertex is not in the graph, out-degree information cannot be provided', E_WARNING);
         }
 
         return $this->vertices[$vertex]->count();
