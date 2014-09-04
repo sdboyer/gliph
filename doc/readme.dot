@@ -1,0 +1,8 @@
+digraph base {
+  a -> b -> c;
+  a -> c;
+  d -> a;
+  d -> e;
+  f;
+}
+
