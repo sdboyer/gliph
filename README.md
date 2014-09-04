@@ -53,7 +53,7 @@ This would create the following directed graph:
 
 ![Base digraph](doc/base.dot.png)
 
-Once your graph is created, gliph provides a number of `Traversable` mechanisms for doing work on the graph. These mechanisms are important to understand and are explored in considerably greater detail in the wiki, but for those familiar with graph theory, the method naming is intended to be self-explanatory:
+Once your graph is created, gliph provides a number of `Traversable` mechanisms for doing work on the graph. These mechanisms are important to understand and are explored in greater detail [in the wiki](https://github.com/sdboyer/gliph/wiki/Iterators), but for those familiar with graph theory, the method naming is intended to be self-explanatory:
 
 For directed and undirected graphs:
 
