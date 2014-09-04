@@ -81,10 +81,6 @@ Gliph’s most important baseline export is its assorted [graph interfaces](http
 
 Gliph’s own implementations are designed to be as performant as possible for the general case. Current implementations include only adjacency lists, in both directed and undirected flavors.
 
-There are a number of different strategies for representing graphs; these strategies are more or less efficient depending on certain properties the graph, and what needs to be done to the graph. The approach taken in Gliph is to offer a roughly consistent 'Graph' interface that is common to all these different strategies. The strategies will have varying levels of efficiency at meeting this common interface, so it is the responsibility of the user to select a graph implementation that is appropriate for their use case. This approach draws heavily from the [taxonomy of graphs](http://www.boost.org/doc/libs/1_54_0/libs/graph/doc/graph_concepts.html) established by the BGL.
-
-Gliph currently implements only an adjacency list graph strategy, in both directed and undirected flavors. Adjacency lists offer efficient access to out-edges, but inefficient access to in-edges (in a directed graph - in an undirected graph, in-edges and out-edges are the same). Adjacency lists and are generally more space-efficient for sparse graphs.
-
 ### Algorithms
 
 Gliph provides various algorithms that can be run on graph objects. These algorithms interact with the graph by making calls to methods, primarily the iterators, defined in the assorted Graph interfaces. If a graph implements the interface type-hinted by a particular algorithm, then the algorithm can run on that graph. But the efficiency of the algorithm will be largely determined by how efficiently that graph implementation can meet the requirements of the interface. Adjacency lists, for example, are not terribly efficient at providing a list of all edges in a graph, but are very good at single-vertex-centric operations.
